@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 @Entity
 public class Member {
-
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MEMBER_ID")
     private Long id;
@@ -16,7 +15,6 @@ public class Member {
     @OneToOne
     @JoinColumn(name = "CHARACTER_ID")
     private Character character;
-//    private ArrayList<Lists> lists; //LIST로 해도 되지 않을까용?
 
     public Long getId() {
         return id;

@@ -3,10 +3,10 @@ package org.example.Domain;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Character {
-
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CHARACTER_ID")
     private Long id;
@@ -22,7 +22,7 @@ public class Character {
 
     @OneToMany
     @JoinColumn(name = "ITEM_ID")
-    private ArrayList<Item> items;
+    private List<Item> items;
 
     public Long getId() {
         return id;
@@ -56,11 +56,11 @@ public class Character {
         this.exp = exp;
     }
 
-    public ArrayList<Item> getItems() {
+    public List<Item> getItems() {
         return items;
     }
 
-    public void setItems(ArrayList<Item> items) {
+    public void setItems(List<Item> items) {
         this.items = items;
     }
 }
