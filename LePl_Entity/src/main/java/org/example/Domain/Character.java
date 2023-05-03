@@ -20,8 +20,7 @@ public class Character {
     @JoinColumn(name = "EXP_ID")
     private Exp exp;
 
-    @OneToMany
-    @JoinColumn(name = "ITEM_ID")
+    @OneToMany(mappedBy = "character")
     private List<Item> items;
 
     public Long getId() {

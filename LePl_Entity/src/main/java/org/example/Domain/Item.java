@@ -9,6 +9,12 @@ public class Item {
     @Column(name = "ITEM_ID")
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "CHARACTER_ID")
+    private Character character;
+
+    private Long item_one_id;
+
     private Boolean wearing_status;
 
     public Long getId() {

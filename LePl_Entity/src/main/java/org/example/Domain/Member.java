@@ -3,6 +3,7 @@ package org.example.Domain;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Member {
@@ -15,6 +16,9 @@ public class Member {
     @OneToOne
     @JoinColumn(name = "CHARACTER_ID")
     private Character character;
+
+    @OneToMany(mappedBy = "member")
+    private List<Lists> lists;
 
     public Long getId() {
         return id;
