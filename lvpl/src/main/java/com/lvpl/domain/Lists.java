@@ -24,4 +24,11 @@ public class Lists {
     @OneToMany(mappedBy = "lists") // 양방향
     private List<ListsTask> listsTasks = new ArrayList<>();
 
+    /**
+     * 연관관계 편의 메서드
+     */
+    public void addListsTask(ListsTask listsTask) {
+        listsTask.setLists(this); // ListsTask(엔티티)에 Lists(엔티티)참조
+        this.listsTasks.add(listsTask); // Lists(엔티티)의 listsTasks 리스트에 ListsTask(엔티티)추가
+    }
 }

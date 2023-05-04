@@ -17,8 +17,8 @@ public class Timer {
     @JoinColumn(name = "task_id") // FK
     private Task task;
 
-    private LocalDateTime start;
-    private LocalDateTime end;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
 
     @Enumerated(EnumType.STRING)
     private TimerStatus timerStatus; // 집중상태 [허용앱 상태, 최대집중 상태]
