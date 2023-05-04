@@ -1,9 +1,14 @@
 package org.example.Domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
+@Getter @Setter
 @Entity
 public class Task {
 
@@ -12,53 +17,14 @@ public class Task {
     private Long id;
 
     private String content;
-    private String start_task;
-    private String end_task;
+    private LocalDateTime start_task;
+    private LocalDateTime end_task;
 
-    @OneToMany(mappedBy = "task")
-    private List<Timer> timer;
+    @OneToMany(mappedBy = "task") //양방향 연결
+    private List<Timer> timer = new ArrayList<>(); //null 값 대비 초기화
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TASK_STATUS_ID")
     private Task_Status task_status;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getStart_task() {
-        return start_task;
-    }
-
-    public void setStart_task(String start_task) {
-        this.start_task = start_task;
-    }
-
-    public String getEnd_task() {
-        return end_task;
-    }
-
-    public void setEnd_task(String end_task) {
-        this.end_task = end_task;
-    }
-
-    public Task_Status getTask_status() {
-        return task_status;
-    }
-
-    public void setTask_status(Task_Status task_status) {
-        this.task_status = task_status;
-    }
 }

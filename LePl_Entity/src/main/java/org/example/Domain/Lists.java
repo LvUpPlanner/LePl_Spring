@@ -1,10 +1,15 @@
 package org.example.Domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Getter @Setter
 @Entity
 public class Lists {
 
@@ -12,35 +17,12 @@ public class Lists {
     @Column(name = "LISTS_ID")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY) //지연로딩
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
-    private Date lists_date;
+    private LocalDateTime lists_date; //Date -> LocalDateTime
 
     @OneToMany(mappedBy = "lists")
-    private List<Lists_Task> lists_tasks;
+    private List<Lists_Task> lists_tasks = new ArrayList<>(); //List 초기화, null 값 대비
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Date getLists_date() {
-        return lists_date;
-    }
-
-    public void setLists_date(Date lists_date) {
-        this.lists_date = lists_date;
-    }
-
-    public List<Lists_Task> getLists_tasks() {
-        return lists_tasks;
-    }
-
-    public void setLists_tasks(List<Lists_Task> lists_tasks) {
-        this.lists_tasks = lists_tasks;
-    }
 }

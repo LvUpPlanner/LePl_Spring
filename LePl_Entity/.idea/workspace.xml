@@ -21,7 +21,9 @@
       <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Domain/Profile.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Domain/Task.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Domain/Task_Status.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Domain/TimeStatus.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Domain/Timer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Domain/WearingStatus.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/resources/META-INF/persistence.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../hello-spring/src/test/java/hello/hellospring/Service/MemberServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../hello-spring/src/test/java/hello/hellospring/Service/MemberServiceTest.java" afterDir="false" />
     </list>
@@ -34,6 +36,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
@@ -58,9 +61,14 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "last_opened_file_path": "C:/Users/Choi/dev/Spring/hello-jpa"
+    "last_opened_file_path": "C:/Users/Choi/dev/Spring/LePl_Entity"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="org.example.Domain" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.example.Main" />

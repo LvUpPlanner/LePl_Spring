@@ -1,7 +1,12 @@
 package org.example.Domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.time.LocalDateTime;
+
+@Getter @Setter
 @Entity
 public class Timer {
 
@@ -9,42 +14,14 @@ public class Timer {
     @Column(name = "TIMER_ID")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TASK_ID")
     private Task task;
-    private String start_task;
-    private String end_task;
-    private Boolean status;
 
-    public Long getId() {
-        return id;
-    }
+    private LocalDateTime start_task;
+    private LocalDateTime end_task;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @Enumerated(EnumType.STRING)
+    private TimeStatus timeStatus; //ALLOW, FOCUS
 
-    public String getStart_task() {
-        return start_task;
-    }
-
-    public void setStart_task(String start_task) {
-        this.start_task = start_task;
-    }
-
-    public String getEnd_task() {
-        return end_task;
-    }
-
-    public void setEnd_task(String end_task) {
-        this.end_task = end_task;
-    }
-
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
 }

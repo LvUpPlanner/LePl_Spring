@@ -1,7 +1,10 @@
 package org.example.Domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter @Setter
 @Entity
 public class Coin {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -10,19 +13,4 @@ public class Coin {
 
     private Long coin_all;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getCoin_all() {
-        return coin_all;
-    }
-
-    public void setCoin_all(Long coin_all) {
-        this.coin_all = coin_all;
-    }
 }

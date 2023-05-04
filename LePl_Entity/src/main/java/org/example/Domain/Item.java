@@ -1,7 +1,10 @@
 package org.example.Domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter @Setter
 @Entity
 public class Item {
 
@@ -15,21 +18,6 @@ public class Item {
 
     private Long item_one_id;
 
-    private Boolean wearing_status;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Boolean getWearing_status() {
-        return wearing_status;
-    }
-
-    public void setWearing_status(Boolean wearing_status) {
-        this.wearing_status = wearing_status;
-    }
+    @Enumerated(EnumType.STRING)
+    private WearingStatus wearingStatus; //아이템 착용여부, YES NO
 }
