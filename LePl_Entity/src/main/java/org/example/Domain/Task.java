@@ -17,8 +17,12 @@ public class Task {
     private Long id;
 
     private String content;
-    private LocalDateTime start_task;
-    private LocalDateTime end_task;
+
+    @Column(name = "start_time")
+    private LocalDateTime start;
+
+    @Column(name = "end_time")
+    private LocalDateTime end;
 
     @OneToMany(mappedBy = "task") //양방향 연결
     private List<Timer> timer = new ArrayList<>(); //null 값 대비 초기화

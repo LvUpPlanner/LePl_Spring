@@ -18,8 +18,11 @@ public class Timer {
     @JoinColumn(name = "TASK_ID")
     private Task task;
 
-    private LocalDateTime start_task;
-    private LocalDateTime end_task;
+    @Column(name = "start_time")
+    private LocalDateTime start;
+
+    @Column(name = "end_time")
+    private LocalDateTime end;
 
     @Enumerated(EnumType.STRING)
     private TimeStatus timeStatus; //ALLOW, FOCUS
