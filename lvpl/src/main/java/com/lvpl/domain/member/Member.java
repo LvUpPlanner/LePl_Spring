@@ -1,6 +1,7 @@
-package com.lvpl.domain;
+package com.lvpl.domain.member;
 
-import com.sun.istack.NotNull;
+import com.lvpl.domain.task.Lists;
+import com.lvpl.domain.character.Character;
 import lombok.Getter;
 import lombok.Setter;
 

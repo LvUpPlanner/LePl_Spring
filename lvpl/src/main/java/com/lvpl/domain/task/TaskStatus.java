@@ -1,4 +1,4 @@
-package com.lvpl.domain;
+package com.lvpl.domain.task;
 
 
 import lombok.Getter;

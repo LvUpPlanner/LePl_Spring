@@ -1,4 +1,4 @@
-package com.lvpl.Repository;
+package com.lvpl.Repository.member;
 
 import com.lvpl.domain.member.Member;
 import lombok.RequiredArgsConstructor;

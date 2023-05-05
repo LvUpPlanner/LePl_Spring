@@ -1,5 +1,6 @@
-package com.lvpl.domain;
+package com.lvpl.domain.task.timer;
 
+import com.lvpl.domain.task.Task;
 import lombok.Getter;
 import lombok.Setter;
 

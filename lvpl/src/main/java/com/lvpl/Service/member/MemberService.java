@@ -1,6 +1,6 @@
-package com.lvpl.Service;
+package com.lvpl.Service.member;
 
-import com.lvpl.Repository.MemberRepository;
+import com.lvpl.Repository.member.MemberRepository;
 import com.lvpl.domain.member.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

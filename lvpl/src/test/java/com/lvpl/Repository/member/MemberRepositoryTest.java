@@ -1,4 +1,4 @@
-package com.lvpl.Repository;
+package com.lvpl.Repository.member;
 
 
 import com.lvpl.domain.member.Member;
@@ -17,7 +17,8 @@ import javax.persistence.EntityManager;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 class MemberRepositoryTest {
-    @Autowired MemberRepository memberRepository;
+    @Autowired
+    MemberRepository memberRepository;
     @Autowired EntityManager em;
 
     @Test

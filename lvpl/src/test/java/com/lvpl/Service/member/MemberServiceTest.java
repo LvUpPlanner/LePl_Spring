@@ -1,6 +1,6 @@
-package com.lvpl.Service;
+package com.lvpl.Service.member;
 
-import com.lvpl.Repository.MemberRepository;
+import com.lvpl.Repository.member.MemberRepository;
 import com.lvpl.domain.member.Member;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -15,7 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional // 서비스 부분은 대부분 트랜잭션 사용
 //@Rollback(false)
 public class MemberServiceTest {
-    @Autowired MemberService memberService;
+    @Autowired
+    MemberService memberService;
     @Autowired MemberRepository memberRepository;
 
     @Test
