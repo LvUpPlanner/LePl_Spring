@@ -11,13 +11,23 @@ public class MemberApiController {
     private final MemberService memberService;
 
     /**
-     * 회원가입
-     * uid를 필수로 받아서 회원가입을 한다.
+     * 로그인
+     * uid로 조회 후 세션Id 응답 쿠키
      */
 
+
+
     /**
-     * 로그인(조회)
-     * uid로 조회를 한다.
+     * 회원가입
+     * uid를 필수로 받아서 DB 기록 및 세션Id 메모리에 기록
+     * 이후 세션Id를 응답 쿠키
+     */
+
+    
+
+    /**
+     * 로그아웃
+     * 세션 정보 메모리에서 제거
      */
 
 }

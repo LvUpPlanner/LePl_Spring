@@ -1,7 +1,7 @@
 package com.lvpl.Repository;
 
 
-import com.lvpl.domain.Member;
+import com.lvpl.domain.member.Member;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;

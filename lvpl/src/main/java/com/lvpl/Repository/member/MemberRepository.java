@@ -1,7 +1,6 @@
 package com.lvpl.Repository;
 
-import com.lvpl.domain.Member;
-import com.sun.istack.NotNull;
+import com.lvpl.domain.member.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

@@ -1,7 +1,7 @@
 package com.lvpl.Service;
 
 import com.lvpl.Repository.MemberRepository;
-import com.lvpl.domain.Member;
+import com.lvpl.domain.member.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
