@@ -94,10 +94,12 @@ public class MemberApiController {
         }
         return "로그아웃 성공";
     }
-    // test용 GET (웹에서 쿠키 확인) => "인터셉터" 동작도 확인
-    @GetMapping("/test")
+    // test용 GET (웹에서 쿠키 확인) => "인터셉터" 동작도 확인 => Uid 얻어내나 확인
+    @GetMapping("/testUid")
     public String test(HttpServletRequest request) {
-        return "테스트 창";
+        HttpSession session = request.getSession();
+        Member member = (Member) session.getAttribute("login_member");
+        return "테스트 uid : "+member.getUid();
     }
 
     @Getter
