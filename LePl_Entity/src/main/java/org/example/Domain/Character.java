@@ -17,11 +17,13 @@ public class Character {
     private Long level;
 
     @OneToOne
-    @JoinColumn(name = "COIN_ID")
+    @JoinColumn(name = "MEMBER_ID")
+    private Member member;
+
+    @OneToOne(mappedBy = "character")
     private Coin coin;
 
-    @OneToOne
-    @JoinColumn(name = "EXP_ID")
+    @OneToOne(mappedBy = "character")
     private Exp exp;
 
     @OneToMany(mappedBy = "character")

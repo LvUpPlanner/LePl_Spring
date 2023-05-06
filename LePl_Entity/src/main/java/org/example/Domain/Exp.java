@@ -10,6 +10,10 @@ public class Exp {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "EXP_ID")
     private Long id;
+
     private Long exp_all;
 
+    @OneToOne
+    @JoinColumn(name = "CHARACTER_ID")
+    private Character character;
 }

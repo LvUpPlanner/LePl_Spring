@@ -19,10 +19,10 @@ public class Task {
     private String content;
 
     @Column(name = "start_time")
-    private LocalDateTime start;
+    private String start;
 
     @Column(name = "end_time")
-    private LocalDateTime end;
+    private String end;
 
     @OneToMany(mappedBy = "task") //양방향 연결
     private List<Timer> timer = new ArrayList<>(); //null 값 대비 초기화

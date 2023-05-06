@@ -16,8 +16,7 @@ public class Member {
 
     private String nickname;
 
-    @OneToOne
-    @JoinColumn(name = "CHARACTER_ID")
+    @OneToOne(mappedBy = "member")
     private Character character;
 
     @OneToMany(mappedBy = "member")

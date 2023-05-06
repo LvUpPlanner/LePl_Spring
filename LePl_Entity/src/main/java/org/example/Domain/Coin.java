@@ -13,4 +13,8 @@ public class Coin {
 
     private Long coin_all;
 
+    @OneToOne
+    @JoinColumn(name = "CHARACTER_ID")
+    private Character character;
+
 }
