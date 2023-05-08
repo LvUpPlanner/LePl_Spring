@@ -1,10 +1,10 @@
-package org.example.Domain;
+package org.example.Domain.List;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.example.Domain.List.Timer.Timer;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,15 +20,18 @@ public class Task {
 
     @Column(name = "start_time")
     private String start;
-
     @Column(name = "end_time")
     private String end;
 
-    @OneToMany(mappedBy = "task") //양방향 연결
-    private List<Timer> timer = new ArrayList<>(); //null 값 대비 초기화
+    @OneToMany(mappedBy = "task") //양방향
+    private List<Timer> timer = new ArrayList<>(); //초기화
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY) //지연로딩
     @JoinColumn(name = "TASK_STATUS_ID")
-    private Task_Status task_status;
+    private Task_Status task_status; //FK
+
+    /*
+    연관관계 편의 메서드
+    */
 
 }

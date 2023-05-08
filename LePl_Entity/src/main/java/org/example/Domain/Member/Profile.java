@@ -1,4 +1,4 @@
-package org.example.Domain;
+package org.example.Domain.Member;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -6,13 +6,9 @@ import lombok.Setter;
 
 @Getter @Setter
 @Entity
-public class Task_Status {
+public class Profile {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "TASK_STATUS_ID")
+    @Column(name = "PROFILE_ID")
     private Long id;
-
-    private Boolean status;
-    private Boolean timerOnOff;
-
 }

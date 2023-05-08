@@ -1,4 +1,4 @@
-package org.example.Domain;
+package org.example.Domain.List;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -12,13 +12,13 @@ public class Lists_Task {
     @Column(name = "LISTS_TASK_ID")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY) //지연로딩
     @JoinColumn(name = "LISTS_ID")
-    private Lists lists;
+    private Lists lists; //FK
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY) //지연로딩
     @JoinColumn(name = "TASK_ID")
-    private Task task;
+    private Task task; //FK
 
     private int count;
 }

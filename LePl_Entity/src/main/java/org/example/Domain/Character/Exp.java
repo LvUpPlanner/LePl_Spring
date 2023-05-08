@@ -1,4 +1,4 @@
-package org.example.Domain;
+package org.example.Domain.Character;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -13,7 +13,4 @@ public class Exp {
 
     private Long exp_all;
 
-    @OneToOne
-    @JoinColumn(name = "CHARACTER_ID")
-    private Character character;
 }

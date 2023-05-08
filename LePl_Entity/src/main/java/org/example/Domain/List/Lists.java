@@ -1,12 +1,12 @@
-package org.example.Domain;
+package org.example.Domain.List;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.example.Domain.Member.Member;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Getter @Setter
@@ -19,10 +19,14 @@ public class Lists {
 
     @ManyToOne(fetch = FetchType.LAZY) //지연로딩
     @JoinColumn(name = "MEMBER_ID")
-    private Member member;
-    private LocalDateTime lists_date; //Date -> LocalDateTime
+    private Member member; //FK
 
-    @OneToMany(mappedBy = "lists")
+    private LocalDate lists_date; //Date -> LocalDateTime -> LocalDate 으로 변경
+
+    @OneToMany(mappedBy = "lists") //양방향
     private List<Lists_Task> lists_tasks = new ArrayList<>(); //List 초기화, null 값 대비
 
+    /*
+    연관관계 편의 메서드
+    */
 }

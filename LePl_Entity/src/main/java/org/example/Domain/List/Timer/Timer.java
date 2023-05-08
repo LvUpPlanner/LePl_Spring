@@ -1,8 +1,9 @@
-package org.example.Domain;
+package org.example.Domain.List.Timer;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.example.Domain.List.Task;
 
 import java.time.LocalDateTime;
 
@@ -14,13 +15,12 @@ public class Timer {
     @Column(name = "TIMER_ID")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY) //지연로딩
     @JoinColumn(name = "TASK_ID")
-    private Task task;
+    private Task task; //FK
 
     @Column(name = "start_time")
     private LocalDateTime start;
-
     @Column(name = "end_time")
     private LocalDateTime end;
 
