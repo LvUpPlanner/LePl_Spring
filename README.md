@@ -179,7 +179,7 @@
 
 ### 3-4. ERDCloud
 
-![LvPl](https://user-images.githubusercontent.com/80165014/236461896-b89f1ef7-660c-4f3f-8a92-842adb3db44c.png)
+[![ERDCloud](https://user-images.githubusercontent.com/80165014/236461896-b89f1ef7-660c-4f3f-8a92-842adb3db44c.png)](https://www.erdcloud.com/d/ZThXeWGTiKuj23yzT "ERDCloud로 이동하기")
 
 <br><br>
 
