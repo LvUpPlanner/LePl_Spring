@@ -95,6 +95,7 @@ public class MemberApiController {
         }
         return "로그아웃 성공";
     }
+
     // test용 GET (웹에서 쿠키 확인) => "인터셉터" 동작도 확인 => Uid 얻어내나 확인
     @GetMapping("/v1/testUid")
     public String testUidV1(HttpServletRequest request) {

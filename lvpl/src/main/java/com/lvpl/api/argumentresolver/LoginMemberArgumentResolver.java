@@ -23,7 +23,7 @@ public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolve
 
         boolean hasLoginAnnotation = parameter.hasParameterAnnotation(Login.class);
         boolean hasLongType = Long.class.isAssignableFrom(parameter.getParameterType());
-        // 어노테이션이 @Login 이고, 해당 파라미터 타입이 Member 라면 true 반환
+        // 어노테이션이 @Login 이고, 해당 파라미터 타입이 Long 라면 true 반환
         return hasLoginAnnotation && hasLongType;
     }
 
