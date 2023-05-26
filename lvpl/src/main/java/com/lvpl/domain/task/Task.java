@@ -17,8 +17,8 @@ public class Task {
     private Long id;
 
     private String content;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private String startTime;
+    private String endTime;
 
     @OneToMany(mappedBy = "task") // 양방향
     private List<Timer> timers = new ArrayList<>();
