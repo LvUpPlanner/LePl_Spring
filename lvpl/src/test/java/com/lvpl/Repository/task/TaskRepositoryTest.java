@@ -67,14 +67,15 @@ public class TaskRepositoryTest {
         // when
         List<Task> list = taskRepository.findAll(); // test1, test2
         if(!list.isEmpty()) getTask = list.get(0); // test1
-        
-        // then
+
         if(getTask != null) {
             System.out.println(getTask.getId()); // 1
             taskRepository.remove(getTask.getId());
 //            em.flush(); // 강제 flush
         }
         list = taskRepository.findAll(); // test2
+        
+        // then
         if(!list.isEmpty()) {
             for(Task t : list) System.out.println(t.getId()); // 2
         }
