@@ -17,4 +17,11 @@ public class TaskStatus {
     private Boolean completedStatus; // 일정 완료 유무
     private Boolean timerOnOff; // 타이머 사용 유무
 
+    //==생성 편의 메서드==//
+    public static TaskStatus createTaskStatus(Boolean completedStatus, Boolean timerOnOff) {
+        TaskStatus taskStatus = new TaskStatus();
+        taskStatus.setCompletedStatus(completedStatus);
+        taskStatus.setTimerOnOff(timerOnOff);
+        return taskStatus;
+    }
 }
