@@ -58,6 +58,7 @@ public class ListsRepositoryTest {
         // then
         System.out.println(findListsOne.getListsDate()); // 2022-04-23T12:30
         System.out.println(findListsAll.get(findListsAll.size()-1).getListsDate()); // 2023-05-28T18:00:28.672150900
+        System.out.println(findListsAll.size()); // 2
 
         System.out.println("findListsAll_date 개수 : "+findListsAll.size()); // findListsAll_date 개수 : 2
         for(int i = 0 ;i <findListsAll_date.size();i++){
