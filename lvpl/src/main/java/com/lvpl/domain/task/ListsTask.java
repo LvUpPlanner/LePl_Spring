@@ -13,7 +13,7 @@ public class ListsTask {
     @Column(name = "lists_task_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "lists_id") // FK
     private Lists lists; // 리스트(하루단위) => 주문, 상품중에 주문
 
