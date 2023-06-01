@@ -38,14 +38,15 @@ public class TaskApiController {
      * 요청 형식(json) : CreateTaskRequestDto
      */
     @PostMapping(value = "/new")
-    public String create(@Login Long id, @RequestBody CreateTaskRequestDto request) {
+    public String create(@Login Long memberId, @RequestBody CreateTaskRequestDto request) {
         Lists lists = null;
-        List<Lists> listsList = listsService.findByCurrent(request.startTime); // db 에 기존 lists 가 있나 확인 (startTime 으로 확인)
-        if(listsList.isEmpty()) {
-            Member member = memberService.findOne(id);
-            List<Task> taskList = new ArrayList<>();
-            lists = Lists.createLists(member, request.startTime, taskList);
+        List<Lists> listsList = listsService.findByCurrent(memberId, request.startTime); // db 에 기존 lists+member 가 있나 확인 (startTime, id 로 확인)
+        // lists 가 없을 경우
+        if(listsList.isEmpty()) { 
+            Member member = memberService.findOne(memberId);
+            lists = Lists.createLists(member, request.startTime, new ArrayList<Task>());
         }
+        // lists 가 있을 경우
         else lists = listsList.get(0);
         listsService.join(lists);
 
@@ -55,7 +56,7 @@ public class TaskApiController {
 
         taskStatusService.join(taskStatus);
         taskService.join(task);
-        return task.getId().toString(); // OK
+        return task.getId().toString(); // task id 반 환
     }
 
     /**
@@ -88,7 +89,6 @@ public class TaskApiController {
         private String content;
         private LocalDateTime startTime;
         private LocalDateTime endTime;
-
     }
     @Getter
     static class FindTaskResponseDto {

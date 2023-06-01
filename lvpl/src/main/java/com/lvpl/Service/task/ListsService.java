@@ -28,17 +28,26 @@ public class ListsService {
     public Lists findOne(Long id) {
         return listsRepository.findOne(id);
     }
+    public List<Lists> findOneWithTask(Long id) {
+        return listsRepository.findOneWithTask(id);
+    }
     public List<Lists> findByDate(LocalDateTime start, LocalDateTime end) {
         return listsRepository.findByDate(start, end);
     }
-    public List<Lists> findByCurrent(LocalDateTime curDate) {
-        return listsRepository.findByCurrent(curDate);
+    public List<Lists> findByCurrent(Long memberId, LocalDateTime curDate) {
+        return listsRepository.findByCurrent(memberId, curDate);
     }
     public List<Lists> findAll() {
         return listsRepository.findAll();
     }
     public List<Lists> findAllWithTask() {
         return listsRepository.findAllWithTask();
+    }
+    public List<Lists> findAllWithMemberTask(Long memberId) {
+        return listsRepository.findAllWithMemberTask(memberId);
+    }
+    public List<Lists> findByDateWithMemberTask(Long memberId, LocalDateTime start, LocalDateTime end) {
+        return listsRepository.findByDateWithMemberTask(memberId, start, end);
     }
     public void remove(Lists lists) {
         listsRepository.remove(lists);
