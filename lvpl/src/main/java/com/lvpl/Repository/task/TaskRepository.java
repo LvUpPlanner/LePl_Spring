@@ -1,10 +1,12 @@
 package com.lvpl.Repository.task;
 
+import com.lvpl.domain.task.Lists;
 import com.lvpl.domain.task.Task;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -30,10 +32,18 @@ public class TaskRepository {
                 .getResultList();
     }
 
-    public void remove(Long id) {
-        em.createQuery("delete from Task t where t.id = :id") // delete 의 경우 Task.class 가 필요없음
-                .setParameter("id", id)
-                .executeUpdate(); // select 를 제외하고는 해당 함수 필요
+    public List<Task> findOneWithMember(Long memberId, Long taskId) {
+        return em.createQuery(
+                "select distinct t from Task t" +
+                        " join fetch t.lists l" +
+                        " where t.id = :taskId and" +
+                        " l.member.id = :memberId", Task.class)
+                .setParameter("taskId", taskId)
+                .setParameter("memberId", memberId)
+                .getResultList();
     }
 
+    public void remove(Task task) {
+        em.remove(task);
+    }
 }

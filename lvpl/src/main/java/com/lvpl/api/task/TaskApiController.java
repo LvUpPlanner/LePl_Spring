@@ -14,6 +14,8 @@ import com.lvpl.domain.task.timer.Timer;
 import com.lvpl.domain.task.timer.TimerStatus;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.swing.text.StyledEditorKit;
@@ -56,32 +58,32 @@ public class TaskApiController {
 
         taskStatusService.join(taskStatus);
         taskService.join(task);
-//        return task.getId().toString(); // task id 반 환
         return "일정 등록 성공";
     }
 
-    /**
-     * 일정 조회
-     * 필요없어 보임
-     */
-//    @GetMapping(value = "")
-//    public List<FindTaskResponseDto> findAll() {
-//        List<Task> findTasks = taskService.findTasks();
-//        List<FindTaskResponseDto> result = findTasks.stream()
-//                .map(o -> new FindTaskResponseDto(o))
-//                .collect(Collectors.toList());
-//        return result;
-//    }
 
     /**
-     * 일정 삭제 => memberId 까지 확인해서 안정성을 높이겠음. 또한, cacade 필요할 수도 있으니 잘 확인
+     * 일정 삭제 => memberId 까지 확인해서 안정성을 높이겠음. 또한, cascade 필요할 수도 있으니 잘 확인
      */
-
+    @PostMapping(value = "/member/delete")
+    public ResponseEntity<String> delete(@Login Long memberId, @RequestBody DeleteTaskRequestDto request) {
+        List<Task> tasks = taskService.findOneWithMember(memberId, request.getTaskId());
+        if(tasks.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("이미 삭제된 일정입니다."); // 404
+        taskService.remove(tasks.get(0));
+        return ResponseEntity.status(HttpStatus.OK).body("해당 일정이 삭제되었습니다."); // 200
+    }
 
     /**
-     * 일정 수정 => memberId 까지 확인해서 안정성을 높이겠음. 또한, cacade 필요할 수도 있으니 잘 확인
+     * 일정 수정 => memberId 까지 확인해서 안정성을 높이겠음. 또한, cascade 필요할 수도 있으니 잘 확인
+     * (변경 감지를 사용해서 데이터를 수정) => 더티체킹
      */
-
+    @PostMapping(value = "/member/update")
+    public ResponseEntity<String> update(@Login Long memberId, @RequestBody UpdateTaskRequestDto request) {
+        List<Task> tasks = taskService.findOneWithMember(memberId, request.getTaskId());
+        if(tasks.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("이미 삭제된 일정입니다."); // 404
+        taskService.update(tasks.get(0), request.content, request.startTime, request.endTime); // 변경 감지
+        return ResponseEntity.status(HttpStatus.OK).body("해당 일정이 수정되었습니다."); // 200
+    }
 
 
     // DTO => 엔티티 외부노출 금지 + 필요한것만 담아서 반환할 수 있어서 효과적
@@ -92,21 +94,14 @@ public class TaskApiController {
         private LocalDateTime endTime;
     }
     @Getter
-    static class FindTaskResponseDto {
+    static class DeleteTaskRequestDto {
+        private Long taskId;
+    }
+    @Getter
+    static class UpdateTaskRequestDto {
+        private Long taskId;
         private String content;
         private LocalDateTime startTime;
         private LocalDateTime endTime;
-        private List<Timer> timers;
-        private Boolean completedStatus;
-        private Boolean timerOnOff;
-        // 생성자 꼭 작성
-        public FindTaskResponseDto(Task task) {
-            this.content = task.getContent();
-            this.startTime = task.getStartTime();
-            this.endTime = task.getEndTime();
-            this.timers = task.getTimers();
-            this.completedStatus = task.getTaskStatus().getCompletedStatus(); // lazy 강제 초기화 반드시
-            this.timerOnOff = task.getTaskStatus().getTimerOnOff(); // lazy 강제 초기화 반드시(에러뜸 안하면)
-        }
     }
 }

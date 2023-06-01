@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -32,12 +33,21 @@ public class TaskService {
     public List<Task> findTasks() {
         return taskRepository.findAll();
     }
+    public List<Task> findOneWithMember(Long memberId, Long taskId) {
+        return taskRepository.findOneWithMember(memberId, taskId);
+    }
 
     /**
      * 일정 삭제
      */
     @Transactional // 쓰기모드 사용 위해
-    public void remove(Long taskId) {
-        taskRepository.remove(taskId);
+    public void remove(Task task) {
+        taskRepository.remove(task);
+    }
+    @Transactional // 쓰기모드 사용 위해 - db 적용
+    public void update(Task task, String content, LocalDateTime startTime, LocalDateTime endTime) {
+        task.setContent(content);
+        task.setStartTime(startTime);
+        task.setEndTime(endTime);
     }
 }
