@@ -49,6 +49,10 @@ public class ListsService {
     public List<Lists> findByDateWithMemberTask(Long memberId, LocalDateTime start, LocalDateTime end) {
         return listsRepository.findByDateWithMemberTask(memberId, start, end);
     }
+    public List<Lists> findOneWithMemberTask(Long memberId, Long listsId) {
+        return listsRepository.findOneWithMemberTask(memberId, listsId);
+    }
+    @Transactional // 쓰기모드
     public void remove(Lists lists) {
         listsRepository.remove(lists);
     }

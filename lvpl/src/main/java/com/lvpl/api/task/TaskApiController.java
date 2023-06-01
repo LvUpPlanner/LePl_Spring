@@ -56,7 +56,8 @@ public class TaskApiController {
 
         taskStatusService.join(taskStatus);
         taskService.join(task);
-        return task.getId().toString(); // task id 반 환
+//        return task.getId().toString(); // task id 반 환
+        return "일정 등록 성공";
     }
 
     /**
@@ -73,12 +74,12 @@ public class TaskApiController {
 //    }
 
     /**
-     * 일정 삭제
+     * 일정 삭제 => memberId 까지 확인해서 안정성을 높이겠음. 또한, cacade 필요할 수도 있으니 잘 확인
      */
 
 
     /**
-     * 일정 수정
+     * 일정 수정 => memberId 까지 확인해서 안정성을 높이겠음. 또한, cacade 필요할 수도 있으니 잘 확인
      */
 
 

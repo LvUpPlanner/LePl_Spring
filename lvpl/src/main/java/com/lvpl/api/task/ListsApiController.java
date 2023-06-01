@@ -11,6 +11,8 @@ import com.lvpl.domain.task.TaskStatus;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -23,8 +25,6 @@ import java.util.stream.Collectors;
 @RequestMapping("api/v1/lists")
 public class ListsApiController {
     private final ListsService listsService;
-    private final MemberService memberService;
-    private final TaskService taskService;
 
     /**
      * 일정 조회 1과 2는 프론트에서 사용할 일 없음. 프론트는 일정 조회 3과 4 사용
@@ -78,14 +78,17 @@ public class ListsApiController {
         return result;
     }
 
-
     /**
-     * 일정 수정
+     * 일정 삭제 => memberId 까지 확인해서 안정성을 높이겠음. + cascade 사용
      */
+    @PostMapping(value = "/member/delete")
+    public ResponseEntity<String> delete(@Login Long memberId, @RequestBody DeleteRequestDto request) {
+        List<Lists> lists = listsService.findOneWithMemberTask(memberId, request.getListsId());
+        if(lists.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("이미 삭제된 일정입니다."); // 404
+        listsService.remove(lists.get(0));
+        return ResponseEntity.status(HttpStatus.OK).body("해당 일정이 삭제되었습니다."); // 200
+    }
 
-    /**
-     * 일정 삭제
-     */
 
     // DTO
     @Getter
@@ -123,5 +126,9 @@ public class ListsApiController {
     static class CreateListsRequestDto {
         private LocalDateTime startTime;
         private LocalDateTime endTime;
+    }
+    @Getter
+    static class DeleteRequestDto {
+        private Long listsId;
     }
 }

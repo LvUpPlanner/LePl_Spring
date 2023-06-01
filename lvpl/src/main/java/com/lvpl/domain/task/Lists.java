@@ -22,7 +22,8 @@ public class Lists {
 
     private LocalDateTime listsDate;
 
-    @OneToMany(mappedBy = "lists", cascade = CascadeType.ALL) // 양방향
+    // CascadeType.REMOVE 를 해줘야 고아객체가 안생기게 되며, Lists 삭제도 정상적으로 가능
+    @OneToMany(mappedBy = "lists", cascade = CascadeType.REMOVE) // 양방향
     private List<Task> tasks = new ArrayList<>();
 
     /**

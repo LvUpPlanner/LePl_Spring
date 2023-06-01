@@ -102,6 +102,15 @@ public class ListsRepository {
                 .setParameter("end", end.toLocalDate().toString())
                 .getResultList();
     }
+    public List<Lists> findOneWithMemberTask(Long memberId, Long listsId) {
+        return em.createQuery(
+                        "select l from Lists l" +
+                                " where l.member.id = :memberId and" +
+                                " l.id = :listsId", Lists.class)
+                .setParameter("memberId", memberId)
+                .setParameter("listsId", listsId)
+                .getResultList();
+    }
     // 하루 일정 삭제 => lists(=하루 일정모음) 하나를 삭제하는 것!!
     public void remove(Lists lists) {
         em.remove(lists);
