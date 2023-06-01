@@ -35,7 +35,6 @@ public class ListsRepository {
     }
     // 현재 일정 조회
     public List<Lists> findByCurrent(LocalDateTime curDate) {
-//        String todayDate = LocalDate.now().toString();
         return em.createQuery(
                 "select l from Lists l where FORMATDATETIME(l.listsDate, 'yyyy-MM-dd') = :curDate", Lists.class)
                 .setParameter("curDate", curDate.toLocalDate().toString())
@@ -44,6 +43,16 @@ public class ListsRepository {
     // 모든날의 리스트(하루단위 일정들) 조회
     public List<Lists> findAll() {
         return em.createQuery("select l from Lists l", Lists.class)
+                .getResultList();
+    }
+
+    // fetch join 사용 => 중복 제거하고 싶으면 distinct 활용(근데 여기선 중복이 없어서 미사용)
+    // fetch join 은 lazy 로 인한 쿼리문 여러번 나가는 비효율적인 방법을 쿼리문 1번으로 종결시켜주는 중요한 방법
+    public List<Lists> findAllWithTask() {
+        return em.createQuery(
+                "select l from Lists l" +
+                        " join fetch l.tasks t" +
+                        " join fetch t.taskStatus ts", Lists.class)
                 .getResultList();
     }
     public void remove(Lists lists) {

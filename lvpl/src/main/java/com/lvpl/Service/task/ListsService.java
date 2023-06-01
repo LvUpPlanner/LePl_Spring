@@ -34,11 +34,12 @@ public class ListsService {
     public List<Lists> findByCurrent(LocalDateTime curDate) {
         return listsRepository.findByCurrent(curDate);
     }
-
     public List<Lists> findAll() {
         return listsRepository.findAll();
     }
-
+    public List<Lists> findAllWithTask() {
+        return listsRepository.findAllWithTask();
+    }
     public void remove(Lists lists) {
         listsRepository.remove(lists);
     }
