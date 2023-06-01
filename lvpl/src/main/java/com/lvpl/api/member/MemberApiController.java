@@ -32,7 +32,7 @@ public class MemberApiController {
     public ResponseEntity<String> login(@RequestBody @Valid LoginMemberRequestDto LoginRequest, HttpServletRequest request){
         Member loginMember = memberService.findByUid(LoginRequest.getUid());
         if(loginMember==null) { // 회원 아닌경우
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("회원이 아닙니다."); // 401
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("회원이 아닙니다."); // 404 : Not Found
         }
 
         // 로그인 성공 처리  => 세션Id 응답 쿠키
@@ -41,7 +41,7 @@ public class MemberApiController {
         // 세션에 로그인 회원 정보 보관
         session.setAttribute("login_member", loginMember.getId());
 
-        return ResponseEntity.status(HttpStatus.OK).body("회원 인증 완료"); // 200 : 쿠키에 세션을 담아서 같이 전송하므로 클라는 인증서를 발급받은 효과
+        return ResponseEntity.status(HttpStatus.OK).body("회원 인증 완료"); // 200 : OK, 쿠키에 세션을 담아서 같이 전송하므로 클라는 인증서를 발급받은 효과
     }
     // test용 GET (웹에서 쿠키 확인)
     @GetMapping("/login/{uid}")
