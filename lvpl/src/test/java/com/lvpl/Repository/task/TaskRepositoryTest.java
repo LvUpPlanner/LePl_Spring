@@ -33,12 +33,12 @@ public class TaskRepositoryTest {
         // given
         Task task1 = new Task();
         task1.setContent("test1");
-        task1.setStartTime("10:30");
-        task1.setEndTime("11:00");
+//        task1.setStartTime("10:30");
+//        task1.setEndTime("11:00");
         Task task2 = new Task();
         task2.setContent("test2");
-        task2.setStartTime("10:30");
-        task2.setEndTime("11:00");
+//        task2.setStartTime("10:30");
+//        task2.setEndTime("11:00");
         System.out.println(task1.getId()); // null
 
         // when

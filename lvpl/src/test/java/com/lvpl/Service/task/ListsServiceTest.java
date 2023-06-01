@@ -56,7 +56,7 @@ public class ListsServiceTest {
         listsService.join(list3);
         Lists findLists = listsService.findOne(lists1.getId());
         List<Lists> findLists_date = listsService.findByDate(testDate2, testDate3);
-        List<Lists> findListsToday = listsService.findByCurrent(testDate4);
+        List<Lists> findListsToday = listsService.findByCurrent(member.getId(), testDate4);
 
         // then
         Assertions.assertEquals(lists1, findLists);

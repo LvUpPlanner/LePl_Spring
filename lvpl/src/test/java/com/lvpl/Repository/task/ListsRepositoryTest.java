@@ -57,7 +57,7 @@ public class ListsRepositoryTest {
         Lists findListsOne = listsRepository.findOne(list1.getId());
         List<Lists> findListsAll = listsRepository.findAll();
         List<Lists> findListsAll_date = listsRepository.findByDate(testDate2, testDate3);
-        List<Lists> findListsToday = listsRepository.findByCurrent(testDate4);
+        List<Lists> findListsToday = listsRepository.findByCurrent(member.getId(), testDate4);
 
         // then
         System.out.println(findListsOne.getListsDate()); // 2022-04-23T12:30
