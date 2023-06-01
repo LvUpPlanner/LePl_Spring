@@ -7,10 +7,13 @@ import com.lvpl.domain.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
@@ -26,11 +29,10 @@ public class MemberApiController {
      * uid로 조회 후 세션Id 응답 쿠키
      */
     @PostMapping("/login") // 입력 => json 이용
-    public String login(@RequestBody @Valid LoginMemberRequestDto LoginRequest, HttpServletRequest request){
+    public ResponseEntity<String> login(@RequestBody @Valid LoginMemberRequestDto LoginRequest, HttpServletRequest request){
         Member loginMember = memberService.findByUid(LoginRequest.getUid());
-//        Member loginMember = memberService.findOne(Long.parseLong(uid));
         if(loginMember==null) { // 회원 아닌경우
-            return "회원이 아닙니다."; // 에러 코드 날려주던지 등등
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("회원이 아닙니다."); // 401
         }
 
         // 로그인 성공 처리  => 세션Id 응답 쿠키
@@ -39,7 +41,7 @@ public class MemberApiController {
         // 세션에 로그인 회원 정보 보관
         session.setAttribute("login_member", loginMember.getId());
 
-        return "회원 인증 완료"; // 쿠키에 세션을 담아서 같이 전송하므로 클라는 인증서를 발급받은 효과
+        return ResponseEntity.status(HttpStatus.OK).body("회원 인증 완료"); // 200 : 쿠키에 세션을 담아서 같이 전송하므로 클라는 인증서를 발급받은 효과
     }
     // test용 GET (웹에서 쿠키 확인)
     @GetMapping("/login/{uid}")
@@ -59,15 +61,15 @@ public class MemberApiController {
      * 이후 세션Id를 응답 쿠키
      */
     @PostMapping("/register") // 입력 => json 이용
-    public RegisterMemberResponseDto saveMember(@RequestBody @Valid RegisterMemberRequestDto request) {
+    public ResponseEntity<RegisterMemberResponseDto> saveMember(@RequestBody @Valid RegisterMemberRequestDto request) {
         Member member = new Member();
         member.setUid(request.getUid());
         member.setNickname(request.getNickname());
 
         memberService.join(member);
-        // 중복회원 처리는 나중에,, 하겠음,,
+        // 중복회원 처리는,, 나중에,, 하겠음,,
 
-        return new RegisterMemberResponseDto(member);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new RegisterMemberResponseDto(member));
     }
 
     /**
