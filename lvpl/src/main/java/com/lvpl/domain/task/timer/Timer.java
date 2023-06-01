@@ -36,7 +36,7 @@ public class Timer {
     //==생성 편의 메서드==//
     static public Timer createTimer(Task task, LocalDateTime start, LocalDateTime end, TimerStatus status) {
         Timer timer = new Timer();
-        timer.setTask(task); // 명시적으로 만든 setTask함수 사용
+        timer.setTask(task); // 롬복이 아닌 명시적으로 만든 setTask() 함수를 꼭 사용
         timer.setStartTime(start);
         timer.setEndTime(end);
         timer.setTimerStatus(status);

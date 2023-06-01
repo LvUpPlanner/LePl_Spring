@@ -17,7 +17,7 @@ public class ListsService {
     private final ListsRepository listsRepository;
 
     /**
-     * save, findOne, findByDate, findAll, remove
+     * save, findOne, findByDate, findAll, remove, findByToday
      */
 
     @Transactional // 쓰기모드
@@ -31,6 +31,10 @@ public class ListsService {
     public List<Lists> findByDate(LocalDateTime start, LocalDateTime end) {
         return listsRepository.findByDate(start, end);
     }
+    public List<Lists> findByCurrent(LocalDateTime curDate) {
+        return listsRepository.findByCurrent(curDate);
+    }
+
     public List<Lists> findAll() {
         return listsRepository.findAll();
     }

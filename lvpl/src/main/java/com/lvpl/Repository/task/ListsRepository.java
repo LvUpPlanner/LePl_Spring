@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class ListsRepository {
     private final EntityManager em;
 
     /**
-     * save, findOne, findByDate, findAll, remove
+     * save, findOne, findByDate, findAll, remove, findByToday
      */
     public void save(Lists lists) {
         em.persist(lists);
@@ -30,6 +31,14 @@ public class ListsRepository {
                         "l.listsDate <= :end", Lists.class)
                 .setParameter("start", start)
                 .setParameter("end", end)
+                .getResultList();
+    }
+    // 현재 일정 조회
+    public List<Lists> findByCurrent(LocalDateTime curDate) {
+//        String todayDate = LocalDate.now().toString();
+        return em.createQuery(
+                "select l from Lists l where FORMATDATETIME(l.listsDate, 'yyyy-MM-dd') = :curDate", Lists.class)
+                .setParameter("curDate", curDate.toLocalDate().toString())
                 .getResultList();
     }
     // 모든날의 리스트(하루단위 일정들) 조회

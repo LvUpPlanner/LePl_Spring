@@ -23,15 +23,15 @@ public class Lists {
     private LocalDateTime listsDate;
 
     @OneToMany(mappedBy = "lists", cascade = CascadeType.ALL) // 양방향
-    private List<ListsTask> listsTasks = new ArrayList<>();
+    private List<Task> tasks = new ArrayList<>();
 
     /**
      * 연관관계 편의 메서드 => 코드 감소
      * 즉, 연관관계 있는 엔티티끼리 유용한 메서드를 작성하면 됨
      */
-    public void addListsTask(ListsTask listsTask) {
-        listsTask.setLists(this); // ListsTask(엔티티)에 Lists(엔티티)참조
-        this.listsTasks.add(listsTask); // Lists(엔티티)의 listsTasks 리스트에 ListsTask(엔티티)추가
+    public void addTask(Task task) {
+        task.setLists(this); // Task(엔티티)에 Lists(엔티티)참조
+        this.tasks.add(task); // Lists(엔티티)의 List<Task>에 Task(엔티티)추가
     }
     public void setMember(Member member) {
         this.member = member;
@@ -42,11 +42,12 @@ public class Lists {
      * 생성 메서드 => 수많은 정보를 한번에
      * 즉, 수많은 코드 작성을 또 줄여줌 & localDateTime null 일때 처리 등등
      */
-    public static Lists createLists(Member member, LocalDateTime localDateTime, ListsTask... listsTasks) {
+    public static Lists createLists(Member member, LocalDateTime localDateTime, List<Task> tasks) {
         Lists lists = new Lists();
         lists.setMember(member);
-        for(ListsTask listsTask : listsTasks) {
-            lists.addListsTask(listsTask);
+        // null이면 바로 pass 될것임
+        for(Task task : tasks) {
+            lists.addTask(task); // addTask로 넣어줘야 task.setLists(this); 적용
         }
         // null이면 오늘날짜
         if(localDateTime==null) lists.setListsDate(LocalDateTime.now());
@@ -64,6 +65,6 @@ public class Lists {
      * 리스트(하루단위)내의 전체 일정 개수 조회
      */
     public int getTaskCount() {
-        return this.listsTasks.size();
+        return this.tasks.size();
     }
 }
