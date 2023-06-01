@@ -1,35 +1,18 @@
-# LePl_Spring
+## LePl Team Project
 
-#### »ç¿ëÀÚ ´Ð³×ÀÓ : yujin
+-----------------
 
-#### <yujinÀÇ Ä³¸¯ÅÍ>
+1. ìš”êµ¬ì‚¬í•­ ë¶„ì„
+    ![](img/step1.png)
+2. ë„ë©”ì¸ ëª¨ë¸ ë¶„ì„
+    ![](img/step2.png)
+3. ì—”í‹°í‹° ì„¤ê³„
+    ![](img/step3.png)
+4. í…Œì´ë¸” ì„¤ê³„
+    ![](img/step4.png)
 
-yujinÀÇ Ä³¸¯ÅÍ ·¹º§ : 1
+    ![](img/table.png) 
 
-Ä³¸¯ÅÍÀÇ ÇöÀç ÃÑ ÄÚÀÎ : 100 ÄÚÀÎ
+    ![](img/table2.png)
 
-Ä³¸¯ÅÍÀÇ ´©Àû °æÇèÄ¡ : 200 °æÇèÄ¡ 
-
-Ä³¸¯ÅÍÀÇ ¼ÒÀ¯ ¾ÆÀÌÅÛ : 10¹ø ¾ÆÀÌÅÛ ¼ÒÀ¯, Âø¿ëx 
-
-#### <yujin ÀÇ ÀÏÁ¤>
-
-ÀÏÁ¤À» ¼öÇàÇÒ ³¯Â¥ : 2023-05-06
-
-ÀÏÁ¤ °³¼ö : 1°³ 
-
-ÀÏÁ¤ ³»¿ë : JPA °øºÎÇÏ±â 
-
-ÀÏÁ¤ ¼öÇà ½Ã°£ : 17:00 ~ 18:00
-
-ÀÏÁ¤ ¼öÇà »óÅÂ : ¿Ï·á
-
-Å¸ÀÌ¸Ó »ç¿ë ¿©ºÎ : »ç¿ë¾ÈÇÔ 
-
---------
-
-#### <Ãß°¡ °ÇÀÇ»çÇ×>
-
-character Å×ÀÌºí¿¡ ¾ÆÀÌÅÛ °³¼ö ¼Ó¼ºµµ Ãß°¡ÇÏ´Â °ÍÀÌ ¾î¶³±î¿ä??
-
-½ÃÀÛ½Ã°£°ú Á¾·á½Ã°£Àº ÀÔ·Â ¹ÞÀº °ªÀ» StringÀ¸·Î ÀúÀåÇÏ´Â ¹æ¹ýÀº ¾î¶³±î¿ä??
+------------------
