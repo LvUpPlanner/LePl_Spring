@@ -18,14 +18,13 @@ public class ApiConfig implements WebMvcConfigurer {
         resolvers.add(new LoginMemberArgumentResolver());
     }
 
-    // "/api/v1/members/login/123" 테스트용으로 삽입한것이라 제거해야함
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new MemberCheckInterceptor())
                 .order(2)
                 .addPathPatterns("/**") // 모든 경로 접근
                 .excludePathPatterns("/", "/api/v1/members/login", "/api/v1/members/register",
-                        "/api/v1/members/logout","/css/**","/*.ico","/error","/api/v1/members/login/123"); // 제외 경로!
+                        "/api/v1/members/logout","/css/**","/*.ico","/error"); // 제외 경로!
 
     }
 }

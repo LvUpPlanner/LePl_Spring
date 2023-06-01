@@ -1,6 +1,7 @@
 package com.lvpl.api.interceptor;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ public class MemberCheckInterceptor implements HandlerInterceptor {
         if(session == null || session.getAttribute("login_member")==null) {
             log.info("미인증 사용자 요청");
             // 회원 아님을 알림
+            response.setStatus(HttpStatus.UNAUTHORIZED.value()); // status code : 401
             return false;
         }
         return true;
