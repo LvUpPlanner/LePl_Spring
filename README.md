@@ -16,4 +16,6 @@
 
 ![image](https://github.com/LvUpPlanner/LePl_Spring/assets/105353163/3bedda7f-726b-42e0-8cf6-9034f5aa93a8)
 
-https://www.erdcloud.com/d/ZThXeWGTiKuj23yzT
+![image](https://github.com/LvUpPlanner/LePl_Spring/assets/105353163/a21cfbc8-5bd8-405d-a174-aa90ecf26370)
+
+![image](https://github.com/LvUpPlanner/LePl_Spring/assets/105353163/29233293-2436-427c-a1f6-1b2be636320c)
