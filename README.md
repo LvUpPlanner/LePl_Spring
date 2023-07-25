@@ -221,82 +221,79 @@
 <br>
 
 * [`/lvpl/src/main/resources/application.yml`](./lvpl/src/main/resources/application.yml)
-
   * db연결 등등 환경 설정
-
-* [`/lvpl/src/main/LvplApplication.java`](./lvpl/src/main/LvplApplication.java)
-
+  
+* [`/lvpl/src/main/java/com/lvpl/LvplApplication.java`](./lvpl/src/main/java/com/lvpl/LvplApplication.java)
   * 제일 최상의 루트 파일이며, 이 파일을 실행해서 서버를 오픈
-
-* **[`/lvpl/src/main/domain/character/Character.java`](./lvpl/src/main/domain/character/Character.java)**
-
+  
+* **[`/lvpl/src/main/java/com/lvpl/domain/character/Character.java`](./lvpl/src/main/java/com/lvpl/domain/character/Character.java)**
   * **도메인(엔티티) - 캐릭터 관련**
-  * [`/lvpl/src/main/domain/character/CharacterItem.java`](./lvpl/src/main/domain/character/CharacterItem.java)
+  * [`/lvpl/src/main/java/com/lvpl/domain/character/CharacterItem.java`](./lvpl/src/main/java/com/lvpl/domain/character/CharacterItem.java)
     * 캐릭터가 가진 아이템 목록
-  * [`/lvpl/src/main/domain/character/Coin.java`](./lvpl/src/main/domain/character/Coin.java)
+  * [`/lvpl/src/main/java/com/lvpl/domain/character/Coin.java`](./lvpl/src/main/java/com/lvpl/domain/character/Coin.java)
     * 화폐
-  * [`/lvpl/src/main/domain/character/Exp.java`](./lvpl/src/main/domain/character/Exp.java)
+  * [`/lvpl/src/main/java/com/lvpl/domain/character/Exp.java`](./lvpl/src/main/java/com/lvpl/domain/character/Exp.java)
     * 경험치
-
-* **[`/lvpl/src/main/domain/member/Member.java`](./lvpl/src/main/domain/member/Member.java)**
+  
+* **[`/lvpl/src/main/java/com/lvpl/domain/member/Member.java`](./lvpl/src/main/java/com/lvpl/domain/member/Member.java)**
 
   * **도메인(엔티티) - 회원 관련**
   * uid(회원 로그인용)가 필수
   * 프로필, 캐릭터, 일정들 관계
 
-  * [`/lvpl/src/main/domain/member/Profile.java`](./lvpl/src/main/domain/member/Profile.java)
+  * [`/lvpl/src/main/java/com/lvpl/domain/member/Profile.java`](./lvpl/src/main/java/com/lvpl/domain/member/Profile.java)
     * 회원 프로필(정보)
 
-* **[`/lvpl/src/main/domain/task/Task.java`](./lvpl/src/main/domain/task/Task.java)**
+* **[`/lvpl/src/main/java/com/lvpl/domain/task/Task.java`](./lvpl/src/main/java/com/lvpl/domain/task/Task.java)**
 
   * **도메인(엔티티) - 일정(플래너) 관련**
 
-  * [`/lvpl/src/main/domain/task/TaskStatus.java`](./lvpl/src/main/domain/task/TaskStatus.java)
+  * [`/lvpl/src/main/java/com/lvpl/domain/task/TaskStatus.java`](./lvpl/src/main/java/com/lvpl/domain/task/TaskStatus.java)
     * 상태 : 일정완료 유무, 타이머사용 유무
-  * [`/lvpl/src/main/domain/task/Lists.java`](./lvpl/src/main/domain/task/Lists.java)
+  * [`/lvpl/src/main/java/com/lvpl/domain/task/Lists.java`](./lvpl/src/main/java/com/lvpl/domain/task/Lists.java)
     * 날짜별로 Task(일정)들을 하나로(Lists) 묶은 구조
-  * [`/lvpl/src/main/domain/task/timer/Timer.java`](./lvpl/src/main/domain/task/timer/Timer.java)
+  * [`/lvpl/src/main/java/com/lvpl/domain/task/timer/Timer.java`](./lvpl/src/main/java/com/lvpl/domain/task/timer/Timer.java)
     * 일정(플래너)의 타이머 기능 관련
     * 하나의 Task(일정)을 타이머 사용시 활용
     * 타이머 시작과 끝시간을 기록
-    * [`/lvpl/src/main/domain/task/timer/TimerStatus.java`](./lvpl/src/main/domain/task/timer/TimerStatus.java)
+    * [`/lvpl/src/main/java/com/lvpl/domain/task/timer/TimerStatus.java`](./lvpl/src/main/java/com/lvpl/domain/task/timer/TimerStatus.java)
       * 상태 : ALLOW, FOCUS (허용앱 사용상태와 집중상태로 구분)
 
-* **[`/lvpl/src/main/Repository/member/MemberRepository.java`](./lvpl/src/main/Repository/member/MemberRepository.java)**
+* **[`/lvpl/src/main/java/com/lvpl/Repository/member/MemberRepository.java`](./lvpl/src/main/java/com/lvpl/Repository/member/MemberRepository.java)**
   * **레퍼지토리 - 회원 관련**
   * save, findOne, findByUid 기능
-* **[`/lvpl/src/main/Repository/task/TaskRepository.java`](./lvpl/src/main/Repository/task/TaskRepository.java)**
+* **[`/lvpl/src/main/java/com/lvpl/Repository/task/TaskRepository.java`](./lvpl/src/main/java/com/lvpl/Repository/task/TaskRepository.java)**
   * **레퍼지토리 - 일정 관련**
   * save, findOne, findAll, findOneWithMember, remove 기능
-  * [`/lvpl/src/main/Repository/task/TaskStatusRepository.java`](./lvpl/src/main/Repository/task/TaskStatusRepository.java)
-  * [`/lvpl/src/main/Repository/task/ListsRepository.java`](./lvpl/src/main/Repository/task/ListsRepository.java)
+  * [`/lvpl/src/main/java/com/lvpl/Repository/task/TaskStatusRepository.java`](./lvpl/src/main/java/com/lvpl/Repository/task/TaskStatusRepository.java)
+  * [`/lvpl/src/main/java/com/lvpl/Repository/task/ListsRepository.java`](./lvpl/src/main/java/com/lvpl/Repository/task/ListsRepository.java)
     * 일정에서 Lists 관련
     * findOne, findByDate, findAll, save, findByCurrent, findOneWithTask, findAllWithTask, findAllWithMemberTask, findByDateWithMemberTask, findOneWithMemberTask, remove 기능
-  * [`/lvpl/src/main/Repository/task/timer/TimerRepository.java`](./lvpl/src/main/Repository/task/timer/TimerRepository.java)
+  * [`/lvpl/src/main/java/com/lvpl/Repository/task/timer/TimerRepository.java`](./lvpl/src/main/java/com/lvpl/Repository/task/timer/TimerRepository.java)
     * 일정에서 타이머 관련
     * save, findOne, findAll 기능
-* **[`/lvpl/src/main/Service/member/MemberService.java`](./lvpl/src/main/Service/member/MemberService.java)**
+* **[`/lvpl/src/main/java/com/lvpl/Service/member/MemberService.java`](./lvpl/src/main/java/com/lvpl/Service/member/MemberService.java)**
   * **서비스 - 회원 관련**
   * join(중복도 검증), findOne, findByUid 기능
-* **[`/lvpl/src/main/Service/task/TaskService.java`](./lvpl/src/main/Service/task/TaskService.java)**
+* **[`/lvpl/src/main/java/com/lvpl/Service/task/TaskService.java`](./lvpl/src/main/java/com/lvpl/Service/task/TaskService.java)**
   * **서비스 - 일정 관련**
   * join, findOne, findTasks, findOneWithMember, remove, update 기능
-  * [`/lvpl/src/main/Service/task/TaskStatusService.java`](./lvpl/src/main/Service/task/TaskStatusService.java)
-  * [`/lvpl/src/main/Service/task/ListsService.java`](./lvpl/src/main/Service/task/ListsService.java)
+  * [`/lvpl/src/main/java/com/lvpl/Service/task/TaskStatusService.java`](./lvpl/src/main/java/com/lvpl/Service/task/TaskStatusService.java)
+  * [`/lvpl/src/main/java/com/lvpl/Service/task/ListsService.java`](./lvpl/src/main/java/com/lvpl/Service/task/ListsService.java)
     * 일정에서 Lists 관련
     * join, findOne, findOneWithTask, findByDate, findByCurrent, findAll, findAllWithTask, findAllWithMemberTask, findByDateWithMemberTask, findOneWithMemberTask, remove 기능
-  * [`/lvpl/src/main/Service/task/timer/TimerService.java`](./lvpl/src/main/Service/task/timer/TimerService.java)
+  * [`/lvpl/src/main/java/com/lvpl/Service/task/timer/TimerService.java`](./lvpl/src/main/java/com/lvpl/Service/task/timer/TimerService.java)
     * 일정에서 타이머 관련
     * join, findOne, findAll 기능
-* **[`/lvpl/src/main/api/member/MemberApiController.java`](./lvpl/src/main/api/member/MemberApiController.java)**
+* **[`/lvpl/src/main/java/com/lvpl/api/member/MemberApiController.java`](./lvpl/src/main/java/com/lvpl/api/member/MemberApiController.java)**
   * **컨트롤러(api) - 회원 관련**
   * **자세한 것은 API 명세서 확인**
-* **[`/lvpl/src/main/api/task/TaskApiController.java`](./lvpl/src/main/api/task/TaskApiController.java)**
+* **[`/lvpl/src/main/java/com/lvpl/api/task/TaskApiController.java`](./lvpl/src/main/java/com/lvpl/api/task/TaskApiController.java)**
   * **컨트롤러(api) - 일정 관련**
   * **자세한 것은 API 명세서 확인**
-  * [`/lvpl/src/main/api/task/ListsApiController.java`](./lvpl/src/main/api/task/ListsApiController.java)
+  * [`/lvpl/src/main/java/com/lvpl/api/task/ListsApiController.java`](./lvpl/src/main/java/com/lvpl/api/task/ListsApiController.java)
     * 일정에서 Lists 관련
-* **[`/lvpl/src/main/api/ApiConfig.java`](./lvpl/src/main/api/ApiConfig.java)**
+* **[`/lvpl/src/main/java/com/lvpl/api/ApiConfig.java`](./lvpl/src/main/java/com/lvpl/api/ApiConfig.java)**
   * **설정파일 - @Configuration 사용**
   * **`WebMvcConfigurer` 인터페이스 구현해서 오버라이딩(`addArgumentResolvers, addInterceptors`) 사용**
     * **`addArgumentResolvers` 의 경우 `HandlerMethodArgumentResolver` 를 추가**
@@ -308,14 +305,14 @@
       * **회원인지 인증하기 위함**
       * 모든 경로(`"/**"`)에 대해 실행되며, 
       * 몇 가지 경로(`"/", "/api/v1/members/login", "/api/v1/members/register", "/api/v1/members/logout", "/css/**", "/*.ico", "/error"`)는 인터셉터가 적용되지 않도록 설정
-  * **[`/lvpl/src/main/api/argumentresolver/Login.java`](./lvpl/src/main/api/argumentresolver/Login.java)**
+  * **[`/lvpl/src/main/java/com/lvpl/api/argumentresolver/Login.java`](./lvpl/src/main/java/com/lvpl/api/argumentresolver/Login.java)**
     * **위에서 언급한 @Login 어노테이션을 등록하기 위한 인터페이스**
     * @Target, @Retention 어노테이션 활용
-    * **[`/lvpl/src/main/api/argumentresolver/LoginMemberArgumentResolver.java`](./lvpl/src/main/api/argumentresolver/LoginMemberArgumentResolver.java)**
+    * **[`/lvpl/src/main/java/com/lvpl/api/argumentresolver/LoginMemberArgumentResolver.java`](./lvpl/src/main/java/com/lvpl/api/argumentresolver/LoginMemberArgumentResolver.java)**
       * `HandlerMethodArgumentResolver` 인터페이스를 구현해서 `supportsParameter, resolveArgument` 를 오버라이딩
       * supportsParameter 함수가 true 면 resolveArgument 함수를 실행하는 구조
       * @Login 어노테이션인지 판단하고 true면 세션에서 memberId 구해옴
-  * **[`/lvpl/src/main/api/interceptor/MemberCheckInterceptor.java`](./lvpl/src/main/api/interceptor/MemberCheckInterceptor.java)**
+  * **[`/lvpl/src/main/java/com/lvpl/api/interceptor/MemberCheckInterceptor.java`](./lvpl/src/main/java/com/lvpl/api/interceptor/MemberCheckInterceptor.java)**
     * **위에서 언급한 인터셉터 등록 클래스**
     * `HandlerInterceptor` 인터페이스를 구현해서 `preHandle` 을 오버라이딩
     * 사용자인지 인증을 한다.
