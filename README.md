@@ -220,11 +220,11 @@
 
 <br>
 
-* [`/lvpl/src/main/resources/application.yml`](./lvpl/src/main/resources/application.yml)
-  * db연결 등등 환경 설정
+* **[`/lvpl/src/main/resources/application.yml`](./lvpl/src/main/resources/application.yml)**
+  * **db연결 등등 환경 설정**
   
-* [`/lvpl/src/main/java/com/lvpl/LvplApplication.java`](./lvpl/src/main/java/com/lvpl/LvplApplication.java)
-  * 제일 최상의 루트 파일이며, 이 파일을 실행해서 서버를 오픈
+* **[`/lvpl/src/main/java/com/lvpl/LvplApplication.java`](./lvpl/src/main/java/com/lvpl/LvplApplication.java)**
+  * **제일 최상의 루트 파일이며, 이 파일을 실행해서 서버를 오픈**
   
 * **[`/lvpl/src/main/java/com/lvpl/domain/character/Character.java`](./lvpl/src/main/java/com/lvpl/domain/character/Character.java)**
   * **도메인(엔티티) - 캐릭터 관련**
