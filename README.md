@@ -4,6 +4,8 @@
 
 **`개발과정`과 `기능들 로직` 은 개발을 진행하면서 계속 수정해야한다.**
 
+* **현재 "로그인", "플래너" 기능 개발완료했으며 남은것은 "타이머", "캐릭터(친구,화폐,아이템 등)" 기능**
+
 <br>
 
 **단축키**
@@ -18,6 +20,15 @@
 * `Shift + F6` : 변수명을 한번에 바꿀 때 사용
 * `Alt + 1 ` : 왼쪽 프로젝트 폴더 구조 열기
 * `Alt + F12` : 터미널 창 열기
+
+<br>
+
+**개발 환경**
+
+* h2 : jdbc:h2:tcp://localhost/~/lvpldb/lvpl
+* spring boot : '2.7.11'
+* java : 11
+* dependencies : JUnit4
 
 <br>
 
@@ -76,7 +87,7 @@
   * 도메인 모델 분석(간략히)
   * 테이블 설계(DB)
   * 엔티티 설계(JPA)
-  * **ERDCloud 툴을 사용한 설계 => 테이블, 엔티티 설계 없애고 이걸로 통일할까...??**
+  * **ERDCloud 툴을 사용한 설계**
 * **코드 구현 (각 파트별 TDD도 함께)**
   * 도메인 구현 -> 엔티티를 의미하며, 모든 계층에서 사용
   * 레퍼지토리 구현 -> DB와 상호작용
@@ -89,91 +100,43 @@
 
 <br><br>
 
-## 1. 요구사항 분석(진행중)
+## 1. 요구사항 분석
 
 ![image](https://user-images.githubusercontent.com/80165014/236459680-a1ac2775-9f12-4c0f-9c2b-4171aa1baa50.png)
 
 <br><br>
 
-## 2. 구체적인 요구사항 목록(진행중)
+## 2. 구체적인 요구사항 목록
 
-**플래너** **기능**
-
-•Daily
-
-1.예정된 일정 기록 (일정 제목, 일정 시간 등을 기록)
-
-2.하루 목표 설정 (업무 제목, 업무 시작 시간 및 종료 시간) 
-
-3.하루 목표에 체크 박스 버튼을 추가 -> 업무 완료시 체크하고 해당 업무에 완료 표시가 됨.
-
-4.예정된 일정과 하루 목표 부분에 각각 추가 버튼을 넣어 일정과 업무를 자유롭게 추가할 수 있도록 함.
-
-5.하단에 오늘 하루 업무 진행률을 확인할 수 있도록 함. 
-
-6.하루 목표 옆에 시간 측정 버튼을 추가함 -> 버튼을 터치하면 타이머 화면을 전환되어 필요 시 시간을 측정하며 업무를 진행할 수 있음.
-
-7.업무 완료 시, 업무 시간에 비례하는 경험치가 부여됨. 경험치로 아이템을 구매할 수 있고, 화폐처럼 사용할 수 있음.
+![image](https://user-images.githubusercontent.com/105353163/243077791-cb3ef086-fbb6-42bc-bf60-d346905a5fb5.png) 
 
 <br>
 
-•Monthly
-
-1.현재 달을 표시하고 캘린더를 화면에 보여줌. 
-
-2.캘린더 화면에는 일정이나 업무가 있는 날에는 점을 찍어 표시함. 
-
-3.하단에는 이번 달에 계획한 총 목표 개수와 완료/미완료 목표를 표시함으로써 성취감(혹은 부진)을 느낄 수 있도록 함. 
-
-<br>
-
-**캐릭터 기능**
-
-•캐릭터 방 
-
-1.전체적인 캐릭터 방과 캐릭터를 보여준다. (웹 뷰를 활용하여 언리얼을 띄움)
-
-2.아이템 버튼을 터치하면 화면이 전환된다. -> 현재 보유하고 있는 아이템 목록을 확인할 수 있고, 미리보기 버튼을 통해 착용한 모습을 확인할 수 있으며 착용 버튼을 통해 아이템을 캐릭터에 실제로 착용 시킬 수 있다. 
-
-3.아이템 화면에는 ‘상점으로‘ 버튼이 있다. -> 이 버튼을 통해 상점으로 이동할 수 있고, 아이템의 이미지, 가격 등을 확인 할 수 있다. 미리보기 버튼을 통해 구매 전에 착용 모습을 볼 수 있고, 구매하기 버튼을 통해 아이템을 소유할 수 있다.
-
-4.MyPage 버튼을 터치하면 화면이 전환된다. -> 캐릭터 정보, 누적 경험치 등을 볼 수 있다.
-
-<br>
-
-**친구 기능**
-
-1.메뉴바에 있는 ‘친구‘ 버튼을 누르면 친구 목록을 확인 할 수 있다. 
-
-2.친구의 정보를 볼 수 있고, 친구 방에 방문할 수도 있다. 
-
-3.하단에 ‘+’ 버튼을 통해 친구를 추가할 수 있다. 
-
-<br>
-
-**설정 기능**
-
-1.메뉴바에 있는 ‘설정‘ 버튼을 누르면 설정을 변경하고 라이선스 정보를 확인 할 수 있다. 
+![image](https://user-images.githubusercontent.com/105353163/243077817-d405819e-5684-4def-a647-e8759e04b958.png) 
 
 <br><br>
 
-## 3. 설계시작(진행중)
+## 3. 설계시작
+
+![image](https://user-images.githubusercontent.com/105353163/243077831-b869af6d-4c9b-4a9b-a8d8-5ceae6f38fbd.png) 
+
+<br>
 
 ### 3-1. 도메인 모델 분석
 
-![image](https://user-images.githubusercontent.com/80165014/236460404-e3151f36-8c8e-4bc3-bda4-9d23d43063a7.png)
+![image](https://user-images.githubusercontent.com/105353163/243077840-c16f7956-a82d-478b-8534-907c959e6466.png) 
 
 <br>
 
 ### 3-2. 테이블 설계
 
-![image](https://user-images.githubusercontent.com/80165014/236460476-6fa237d5-067b-431c-970e-a94b6830012b.png)
+![image](https://user-images.githubusercontent.com/105353163/243077849-947a0afc-2439-4306-a092-fcb32dab8bc1.png) 
 
 <br>
 
 ### 3-3. 엔티티 설계
 
-![image](https://user-images.githubusercontent.com/80165014/236460598-19b1cef5-e82b-4d2f-a0fa-db4b41e6a1ae.png)
+![image](https://user-images.githubusercontent.com/105353163/243077854-3bedda7f-726b-42e0-8cf6-9034f5aa93a8.png) 
 
 <br>
 
@@ -187,7 +150,7 @@
 
 ## 1. 로그인 처리 로직
 
-**세션 방식을 사용 (물론 전달을 해야해서 쿠키도 함께 사용)**
+**토큰방식이 아닌 쿠키 세션 방식을 사용 (쿠키 세션방식 공부 목적)**
 
 * 맨 처음에 로그인을 하면 서버에서 세션Id를 담은 쿠키를 클라에 응답으로 준다.
 * 클라는 요청시 항상 쿠키에 세션Id가 포함되어 전달하게되고,  
@@ -237,6 +200,123 @@
 
 <br><br>
 
+## 2. 플래너 기능
+
+**기본적인 CRUD 방식 구현**
+
+* 플래너의 모든 일정(lists) 조회
+* 플래너의 날짜별 일정(lists) 조회
+* 일정 하루단위(lists) 삭제
+* 일정1개(task) 추가
+  * 자동으로 해당 날짜에 맞는 lists에 매핑해서 일정 추가
+* 일정1개(task) 삭제
+* 일정1개(task) 수정
+
+<br><br>
+
 # Folder Structure
 
-개발 끝무렵에 정리 => 프로젝트 코드, 폴더들 구조 나타내며 간단 설명
+**API 명세서 : https://documenter.getpostman.com/view/21970313/2s93mBwec5**
+
+<br>
+
+* [`/lvpl/src/main/resources/application.yml`](./lvpl/src/main/resources/application.yml)
+
+  * db연결 등등 환경 설정
+
+* [`/lvpl/src/main/LvplApplication.java`](./lvpl/src/main/LvplApplication.java)
+
+  * 제일 최상의 루트 파일이며, 이 파일을 실행해서 서버를 오픈
+
+* **[`/lvpl/src/main/domain/character/Character.java`](./lvpl/src/main/domain/character/Character.java)**
+
+  * **도메인(엔티티) - 캐릭터 관련**
+  * [`/lvpl/src/main/domain/character/CharacterItem.java`](./lvpl/src/main/domain/character/CharacterItem.java)
+    * 캐릭터가 가진 아이템 목록
+  * [`/lvpl/src/main/domain/character/Coin.java`](./lvpl/src/main/domain/character/Coin.java)
+    * 화폐
+  * [`/lvpl/src/main/domain/character/Exp.java`](./lvpl/src/main/domain/character/Exp.java)
+    * 경험치
+
+* **[`/lvpl/src/main/domain/member/Member.java`](./lvpl/src/main/domain/member/Member.java)**
+
+  * **도메인(엔티티) - 회원 관련**
+  * uid(회원 로그인용)가 필수
+  * 프로필, 캐릭터, 일정들 관계
+
+  * [`/lvpl/src/main/domain/member/Profile.java`](./lvpl/src/main/domain/member/Profile.java)
+    * 회원 프로필(정보)
+
+* **[`/lvpl/src/main/domain/task/Task.java`](./lvpl/src/main/domain/task/Task.java)**
+
+  * **도메인(엔티티) - 일정(플래너) 관련**
+
+  * [`/lvpl/src/main/domain/task/TaskStatus.java`](./lvpl/src/main/domain/task/TaskStatus.java)
+    * 상태 : 일정완료 유무, 타이머사용 유무
+  * [`/lvpl/src/main/domain/task/Lists.java`](./lvpl/src/main/domain/task/Lists.java)
+    * 날짜별로 Task(일정)들을 하나로(Lists) 묶은 구조
+  * [`/lvpl/src/main/domain/task/timer/Timer.java`](./lvpl/src/main/domain/task/timer/Timer.java)
+    * 일정(플래너)의 타이머 기능 관련
+    * 하나의 Task(일정)을 타이머 사용시 활용
+    * 타이머 시작과 끝시간을 기록
+    * [`/lvpl/src/main/domain/task/timer/TimerStatus.java`](./lvpl/src/main/domain/task/timer/TimerStatus.java)
+      * 상태 : ALLOW, FOCUS (허용앱 사용상태와 집중상태로 구분)
+
+* **[`/lvpl/src/main/Repository/member/MemberRepository.java`](./lvpl/src/main/Repository/member/MemberRepository.java)**
+  * **레퍼지토리 - 회원 관련**
+  * save, findOne, findByUid 기능
+* **[`/lvpl/src/main/Repository/task/TaskRepository.java`](./lvpl/src/main/Repository/task/TaskRepository.java)**
+  * **레퍼지토리 - 일정 관련**
+  * save, findOne, findAll, findOneWithMember, remove 기능
+  * [`/lvpl/src/main/Repository/task/TaskStatusRepository.java`](./lvpl/src/main/Repository/task/TaskStatusRepository.java)
+  * [`/lvpl/src/main/Repository/task/ListsRepository.java`](./lvpl/src/main/Repository/task/ListsRepository.java)
+    * 일정에서 Lists 관련
+    * findOne, findByDate, findAll, save, findByCurrent, findOneWithTask, findAllWithTask, findAllWithMemberTask, findByDateWithMemberTask, findOneWithMemberTask, remove 기능
+  * [`/lvpl/src/main/Repository/task/timer/TimerRepository.java`](./lvpl/src/main/Repository/task/timer/TimerRepository.java)
+    * 일정에서 타이머 관련
+    * save, findOne, findAll 기능
+* **[`/lvpl/src/main/Service/member/MemberService.java`](./lvpl/src/main/Service/member/MemberService.java)**
+  * **서비스 - 회원 관련**
+  * join(중복도 검증), findOne, findByUid 기능
+* **[`/lvpl/src/main/Service/task/TaskService.java`](./lvpl/src/main/Service/task/TaskService.java)**
+  * **서비스 - 일정 관련**
+  * join, findOne, findTasks, findOneWithMember, remove, update 기능
+  * [`/lvpl/src/main/Service/task/TaskStatusService.java`](./lvpl/src/main/Service/task/TaskStatusService.java)
+  * [`/lvpl/src/main/Service/task/ListsService.java`](./lvpl/src/main/Service/task/ListsService.java)
+    * 일정에서 Lists 관련
+    * join, findOne, findOneWithTask, findByDate, findByCurrent, findAll, findAllWithTask, findAllWithMemberTask, findByDateWithMemberTask, findOneWithMemberTask, remove 기능
+  * [`/lvpl/src/main/Service/task/timer/TimerService.java`](./lvpl/src/main/Service/task/timer/TimerService.java)
+    * 일정에서 타이머 관련
+    * join, findOne, findAll 기능
+* **[`/lvpl/src/main/api/member/MemberApiController.java`](./lvpl/src/main/api/member/MemberApiController.java)**
+  * **컨트롤러(api) - 회원 관련**
+  * **자세한 것은 API 명세서 확인**
+* **[`/lvpl/src/main/api/task/TaskApiController.java`](./lvpl/src/main/api/task/TaskApiController.java)**
+  * **컨트롤러(api) - 일정 관련**
+  * **자세한 것은 API 명세서 확인**
+  * [`/lvpl/src/main/api/task/ListsApiController.java`](./lvpl/src/main/api/task/ListsApiController.java)
+    * 일정에서 Lists 관련
+* **[`/lvpl/src/main/api/ApiConfig.java`](./lvpl/src/main/api/ApiConfig.java)**
+  * **설정파일 - @Configuration 사용**
+  * **`WebMvcConfigurer` 인터페이스 구현해서 오버라이딩(`addArgumentResolvers, addInterceptors`) 사용**
+    * **`addArgumentResolvers` 의 경우 `HandlerMethodArgumentResolver` 를 추가**
+      * `LoginMemberArgumentResolver` 는 `HandlerMethodArgumentResolver` 인터페이스를 구현
+      * @Login 어노테이션을 등록 및 해당 어노테이션을 구현함
+      * **간단히 @Login 어노테이션을 사용해서 세션 메모리에 등록된 memberId를 얻기 위함**
+    * **`addInterceptors` 의 경우 인터셉터(클라 요청을 가로챔)를 등록 `HandlerInterceptor` 를 추가**
+      * `MemberCheckInterceptor` 는 `HandlerInterceptor` 인터페이스를 구현
+      * **회원인지 인증하기 위함**
+      * 모든 경로(`"/**"`)에 대해 실행되며, 
+      * 몇 가지 경로(`"/", "/api/v1/members/login", "/api/v1/members/register", "/api/v1/members/logout", "/css/**", "/*.ico", "/error"`)는 인터셉터가 적용되지 않도록 설정
+  * **[`/lvpl/src/main/api/argumentresolver/Login.java`](./lvpl/src/main/api/argumentresolver/Login.java)**
+    * **위에서 언급한 @Login 어노테이션을 등록하기 위한 인터페이스**
+    * @Target, @Retention 어노테이션 활용
+    * **[`/lvpl/src/main/api/argumentresolver/LoginMemberArgumentResolver.java`](./lvpl/src/main/api/argumentresolver/LoginMemberArgumentResolver.java)**
+      * `HandlerMethodArgumentResolver` 인터페이스를 구현해서 `supportsParameter, resolveArgument` 를 오버라이딩
+      * supportsParameter 함수가 true 면 resolveArgument 함수를 실행하는 구조
+      * @Login 어노테이션인지 판단하고 true면 세션에서 memberId 구해옴
+  * **[`/lvpl/src/main/api/interceptor/MemberCheckInterceptor.java`](./lvpl/src/main/api/interceptor/MemberCheckInterceptor.java)**
+    * **위에서 언급한 인터셉터 등록 클래스**
+    * `HandlerInterceptor` 인터페이스를 구현해서 `preHandle` 을 오버라이딩
+    * 사용자인지 인증을 한다.
+
