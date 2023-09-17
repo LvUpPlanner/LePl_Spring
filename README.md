@@ -49,3 +49,10 @@ Task.class 를 지우고 실행 해보니 원하는 방식으로 test가 진행�
 
 ### 06/07
 * TaskStatusRepository, TaskStatusService 생성
+
+------
+
+### 09/17
+* Character 기능 개발 진행중
+* 회원가입시 유저의 캐릭터도 생성, 로그인시 유저의 캐릭터 불러오기
+* 캐릭터의 레벨도 같이 가져오기
