@@ -1,7 +1,6 @@
 package com.lepl.Repository.character;
 
 import com.lepl.domain.character.CharacterItem;
-import com.lepl.domain.character.Friend;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

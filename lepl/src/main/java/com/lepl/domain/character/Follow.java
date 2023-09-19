@@ -6,14 +6,15 @@ import lombok.Setter;
 
 @Entity
 @Getter @Setter
-public class Friend {
+public class Follow {
     @Id @GeneratedValue
-    @Column(name = "friend_id")
+    @Column(name = "follow_id")
     private Long id;
-    private String friendNickname;
+
+    private Long followerId; // from
+    private Long followingId; // to
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "character_id") // FK
     private Character character;
-
 }

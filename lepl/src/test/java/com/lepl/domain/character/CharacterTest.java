@@ -21,10 +21,10 @@ class CharacterTest {
     public void 캐릭터_경험치_관련() throws Exception {
         // given
         Exp exp = new Exp();
-        exp.setExpAll(0l);
-        exp.setExpValue(0l);
+        exp.setExpAll(0d);
+        exp.setExpValue(0d);
         List<CharacterItem> characterItems = new ArrayList<>();
-        List<Friend> friends = new ArrayList<>();
+        List<Follow> follows = new ArrayList<>();
 
         for(int i=0; i<2; i++) {
             CharacterItem characterItem = new CharacterItem();
@@ -32,14 +32,14 @@ class CharacterTest {
             characterItem.setWearingStatus(true);
             characterItems.add(characterItem);
 
-            Friend friend = new Friend();
-            friend.setFriendNickname("김철수"+i);
-            friends.add(friend);
+            Follow follow = new Follow();
+            follow.setFollowerId(10L);
+            follows.add(follow);
         }
 
         // when
-        exp.updateExp(15l); // 경험치 15
-        Character character = Character.createCharacter(exp, characterItems,friends);
+        exp.updateExp(15d); // 경험치 15
+        Character character = Character.createCharacter(exp, characterItems, follows);
         em.persist(character); // id 확인
 
         // then
@@ -48,7 +48,7 @@ class CharacterTest {
         log.info("character.getExp().getExpValue() : {}",character.getExp().getExpValue());
         log.info("character.getExp().getLevel() : {}",character.getExp().getLevel());
         log.info("character.getCharacterItems().get(0).getItemId() : {}",character.getCharacterItems().get(0).getItemId());
-        log.info("character.getFriends().get(0).getFriendNickname() : {}",character.getFriends().get(0).getFriendNickname());
+        log.info("character.getFriends().get(0).getFriendNickname() : {}",character.getFollows().get(0).getFollowerId());
     }
 
 }
