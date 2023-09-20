@@ -1,11 +1,16 @@
 package com.lepl.api.member;
 
 
+import com.lepl.Service.character.CharacterService;
+import com.lepl.Service.character.ExpService;
 import com.lepl.Service.member.MemberService;
 import com.lepl.api.argumentresolver.Login;
+import com.lepl.domain.character.Character;
+import com.lepl.domain.character.Exp;
 import com.lepl.domain.member.Member;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,11 +20,14 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/members")
 public class MemberApiController {
     private final MemberService memberService;
+    private final ExpService expService;
+    private final CharacterService characterService;
 
     /**
      * 로그인
@@ -63,6 +71,16 @@ public class MemberApiController {
         member.setUid(request.getUid());
         member.setNickname(request.getNickname());
 
+        // 캐릭터, 경험치 테이블 추가!
+        Exp exp = new Exp();
+        Character character = new Character();
+        expService.join(exp);
+//        log.info("expId : {}", exp.getId());
+        character.setExp(exp);
+        characterService.join(character);
+//        log.info("expId FK : {}", character.getExp().getId());
+
+        member.setCharacter(character);
         memberService.join(member);
         // 중복회원 처리는,, 나중에,, 하겠음,,
 

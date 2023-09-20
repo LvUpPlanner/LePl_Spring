@@ -27,4 +27,11 @@ public class TimerRepository {
         return em.createQuery("select l from Timer l", Timer.class)
                 .getResultList();
     }
+    public List<Timer> findAllWithTask(Long taskId) {
+        return em.createQuery(
+                "select t from Timer t" +
+                        " where t.task.id = :taskId", Timer.class)
+                .setParameter("taskId", taskId)
+                .getResultList();
+    }
 }

@@ -32,6 +32,7 @@ public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolve
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
         HttpSession session = request.getSession(false); // false : 없으면 null
         if(session == null) {
+            log.info("null");
             return null;
         }
 
