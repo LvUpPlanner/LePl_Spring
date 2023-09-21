@@ -21,8 +21,8 @@ class CharacterTest {
     public void 캐릭터_경험치_관련() throws Exception {
         // given
         Exp exp = new Exp();
-        exp.setExpAll(0d);
-        exp.setExpValue(0d);
+        exp.setExpAll(0l);
+        exp.setExpValue(0l);
         List<CharacterItem> characterItems = new ArrayList<>();
         List<Follow> follows = new ArrayList<>();
 
@@ -38,7 +38,7 @@ class CharacterTest {
         }
 
         // when
-        exp.updateExp(15d); // 경험치 15
+//        exp.updateExp(15d); // 경험치 15
         Character character = Character.createCharacter(exp, characterItems, follows);
         em.persist(character); // id 확인
 

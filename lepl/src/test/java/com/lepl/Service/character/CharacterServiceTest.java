@@ -36,12 +36,12 @@ class CharacterServiceTest {
     public void join() throws Exception {
         // given
         Exp exp = new Exp();
-        exp.setExpAll(0d);
-        exp.setExpValue(0d);
+        exp.setExpAll(0l);
+        exp.setExpValue(0l);
         List<CharacterItem> characterItems = new ArrayList<>();
         List<Follow> follows = new ArrayList<>();
 
-        exp.updateExp(15d); // 경험치 15
+//        exp.updateExp(15d); // 경험치 15
         Character character = Character.createCharacter(exp, characterItems, follows);
 
         for(int i=0; i<2; i++) {

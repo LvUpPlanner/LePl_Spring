@@ -35,4 +35,10 @@ public class ExpRepository {
     }
 
     public void remove(Exp exp) { em.remove(exp);}
+
+    public void updatePoint() {
+        em.createQuery(
+            "update Exp e set e.pointTodayTimer=0, e.pointTodayTask=0")
+                .executeUpdate();
+    }
 }
