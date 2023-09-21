@@ -25,6 +25,7 @@ class CharacterTest {
         exp.setExpValue(0l);
         List<CharacterItem> characterItems = new ArrayList<>();
         List<Follow> follows = new ArrayList<>();
+        List<Notification> notifications = new ArrayList<>();
 
         for(int i=0; i<2; i++) {
             CharacterItem characterItem = new CharacterItem();
@@ -39,7 +40,7 @@ class CharacterTest {
 
         // when
 //        exp.updateExp(15d); // 경험치 15
-        Character character = Character.createCharacter(exp, characterItems, follows);
+        Character character = Character.createCharacter(exp, characterItems, follows, notifications);
         em.persist(character); // id 확인
 
         // then

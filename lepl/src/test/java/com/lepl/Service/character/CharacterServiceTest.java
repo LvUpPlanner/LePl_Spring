@@ -1,9 +1,7 @@
 package com.lepl.Service.character;
 
+import com.lepl.domain.character.*;
 import com.lepl.domain.character.Character;
-import com.lepl.domain.character.CharacterItem;
-import com.lepl.domain.character.Exp;
-import com.lepl.domain.character.Follow;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,9 +38,10 @@ class CharacterServiceTest {
         exp.setExpValue(0l);
         List<CharacterItem> characterItems = new ArrayList<>();
         List<Follow> follows = new ArrayList<>();
+        List<Notification> notifications = new ArrayList<>();
 
 //        exp.updateExp(15d); // 경험치 15
-        Character character = Character.createCharacter(exp, characterItems, follows);
+        Character character = Character.createCharacter(exp, characterItems, follows, notifications);
 
         for(int i=0; i<2; i++) {
             CharacterItem characterItem = new CharacterItem();

@@ -1,9 +1,7 @@
 package com.lepl.Service.character;
 
+import com.lepl.domain.character.*;
 import com.lepl.domain.character.Character;
-import com.lepl.domain.character.CharacterItem;
-import com.lepl.domain.character.Exp;
-import com.lepl.domain.character.Follow;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +31,8 @@ class FollowServiceTest {
         List<CharacterItem> characterItems = new ArrayList<>();
         List<Follow> follows = new ArrayList<>();
         Exp exp = new Exp();
-        Character character = Character.createCharacter(exp, characterItems, follows);
+        List<Notification> notifications = new ArrayList<>();
+        Character character = Character.createCharacter(exp, characterItems, follows, notifications);
 
         // when
         Long id = characterService.join(character);
