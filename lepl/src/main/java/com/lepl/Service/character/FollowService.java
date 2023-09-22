@@ -18,11 +18,14 @@ public class FollowService {
      * save, findOne, findAll, remove
      */
     @Transactional // 쓰기모드
-    public Long join(Follow follow) { followRepository.save(follow); return follow.getId(); }
+    public Long join(Follow follow) { followRepository.save(follow); follow.setFollowerId(follow.getCharacter().getId()); return follow.getId(); }
 
     public Follow findOne(Long followId) { return followRepository.findOne(followId); }
     public List<Follow> findAll() {return followRepository.findAll();}
 
     @Transactional
     public void remove(Follow follow) { followRepository.remove(follow); }
+
+    public List<Follow> findAllWithFollowing(Long characterId) { return followRepository.findAllWithFollowing(characterId); }
+    public List<Follow> findAllWithFollower(Long characterId) { return followRepository.findAllWithFollower(characterId); }
 }

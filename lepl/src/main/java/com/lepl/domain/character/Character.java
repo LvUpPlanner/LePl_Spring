@@ -32,7 +32,7 @@ public class Character {
         characterItem.setCharacter(this); // CharacterItem(엔티티)에 Character(엔티티)참조
         this.characterItems.add(characterItem); // Character(엔티티)의 characterItems 리스트에 CharacterItem(엔티티)추가
     }
-    public void addFriend(Follow follow) {
+    public void addFollow(Follow follow) {
         follow.setCharacter(this);
         this.follows.add(follow);
     }
@@ -50,7 +50,7 @@ public class Character {
             character.addCharacterItem(characterItem); // 연관관계 편의 메서드
         }
         for(Follow follow : follows) {
-            character.addFriend(follow); // 연관관계 편의 메서드
+            character.addFollow(follow); // 연관관계 편의 메서드
         }
         for(Notification notification : notifications) {
             character.addNotification(notification); // 연관관계 편의 메서드

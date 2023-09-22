@@ -25,4 +25,8 @@ public class NotificationService {
 
     @Transactional
     public void remove(Notification notification) { notificationRepository.remove(notification); }
+
+    public List<Notification> findAllWithCharacter(Long characterId) {
+        return notificationRepository.findAllWithCharacter(characterId);
+    }
 }

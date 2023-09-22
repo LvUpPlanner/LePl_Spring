@@ -13,7 +13,7 @@ public class FollowRepository {
     private final EntityManager em;
 
     /**
-     * save, findOne, findAll, remove
+     * save, findOne, findAll, remove + findAllWithCharacter
      */
     public void save(Follow follow) {
         if(follow.getId() == null) {
@@ -31,4 +31,19 @@ public class FollowRepository {
     }
 
     public void remove(Follow follow) { em.remove(follow);}
+
+    public List<Follow> findAllWithFollowing(Long characterId) {
+        return em.createQuery(
+                        "select f from Follow f" +
+                                " where f.character.id = :characterId", Follow.class)
+                .setParameter("characterId", characterId)
+                .getResultList();
+    }
+    public List<Follow> findAllWithFollower(Long characterId) {
+        return em.createQuery(
+                "select f from Follow f" +
+                        " where f.followingId = :characterId", Follow.class)
+                .setParameter("characterId", characterId)
+                .getResultList();
+    }
 }

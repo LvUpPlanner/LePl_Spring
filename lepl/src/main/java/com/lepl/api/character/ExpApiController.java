@@ -5,25 +5,20 @@ import com.lepl.Service.character.ExpService;
 import com.lepl.Service.task.TaskService;
 import com.lepl.Service.task.timer.TimerService;
 import com.lepl.api.argumentresolver.Login;
-import com.lepl.domain.character.Character;
 import com.lepl.domain.character.Exp;
 import com.lepl.domain.member.Member;
 import com.lepl.domain.task.Task;
-import com.lepl.domain.task.TaskStatus;
 import com.lepl.domain.task.timer.Timer;
 import jakarta.annotation.PostConstruct;
-import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 

@@ -31,4 +31,12 @@ public class NotificationRepository {
     }
 
     public void remove(Notification notification) { em.remove(notification);}
+
+    public List<Notification> findAllWithCharacter(Long characterId) {
+        return em.createQuery(
+                "select n from Notification n" +
+                        " where n.character.id = :characterId", Notification.class)
+                .setParameter("characterId", characterId)
+                .getResultList();
+    }
 }
