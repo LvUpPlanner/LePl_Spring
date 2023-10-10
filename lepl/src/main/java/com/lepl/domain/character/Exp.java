@@ -18,11 +18,13 @@ public class Exp {
 
     private Long expAll = 0L; //누적 경험치
     private Long expValue = 0L; //현재 경험치 -> 상점에서 사용하고 남은 경험치
-    private Long reqExp = 1L; //필요 경험치
+    private Long reqExp = 1L; //필요 경험치, 초기값 1
     private Long level = 1L; //누적 경험치를 가지고 공식에 따라 표현한 레벨
 
     private Long pointTodayTimer = 0L; //일일 타이머 획득 경험치
     private Long pointTodayTask = 0L; //일일 일정 획득 경험치
+
+    //매일 pointTodayTimer, pointTodayTask 는 0L 으로 초기화!
 
     /*
     * 비즈니스 편의 메서드

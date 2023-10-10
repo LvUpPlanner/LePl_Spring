@@ -23,19 +23,47 @@ class ExpRepositoryTest {
     public void 경험치_증가() throws Exception {
         //Given
         Exp exp = new Exp();
-        exp.setExpValue(5l);
-        exp.setExpAll(5l);
-        exp.setLevel(1l);
+        exp.setExpValue(15l);
+        exp.setExpAll(24l);
+        exp.setLevel(3l);
         exp.setReqExp(1l);
         expRepository.save(exp);
 
         //When
-        for(int i = 0; i < 15; i++) {
+        for(int i = 0; i < 12; i++) { //Timer 사용
             exp.updateExp(1l, 1l);
             System.out.println("LEVEL: " + exp.getLevel());
             System.out.println("EXP: " + exp.getExpAll());
+            System.out.println("EXP_VALUE: " + exp.getExpValue());
             System.out.println("TASK: " + exp.getPointTodayTask());
             System.out.println("TIMER: " + exp.getPointTodayTimer());
+            System.out.println("REQUEST: " + exp.getReqExp());
+
+            if(exp.getPointTodayTask() >= 12) {
+                System.out.println("already full");
+            }
+            if(exp.getPointTodayTimer() >= 12) {
+                System.out.println("already full");
+            }
+
+            System.out.println("----------------------");
+        }
+        for(int i = 0; i < 10; i++) { //Timer 사용 안 함.
+            exp.updateExp(0l, 1l);
+            System.out.println("LEVEL: " + exp.getLevel());
+            System.out.println("EXP: " + exp.getExpAll());
+            System.out.println("EXP_VALUE: " + exp.getExpValue());
+            System.out.println("TASK: " + exp.getPointTodayTask());
+            System.out.println("TIMER: " + exp.getPointTodayTimer());
+            System.out.println("REQUEST: " + exp.getReqExp());
+
+            if(exp.getPointTodayTask() >= 12) {
+                System.out.println("already full");
+            }
+            if(exp.getPointTodayTimer() >= 12) {
+                System.out.println("already full");
+            }
+
             System.out.println("----------------------");
         }
 
@@ -44,5 +72,18 @@ class ExpRepositoryTest {
         System.out.println("EXP: " + exp.getExpAll());
         System.out.println("TASK: " + exp.getPointTodayTask());
         System.out.println("TIMER: " + exp.getPointTodayTimer());
+    }
+
+    @Test
+    @Transactional
+    public void 다음날_경험치() throws Exception {
+        //Given
+
+
+        //When
+
+
+        //Then
+
     }
 }

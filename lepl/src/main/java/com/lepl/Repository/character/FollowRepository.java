@@ -14,12 +14,14 @@ public class FollowRepository {
     private final EntityManager em;
 
     /*
-        save, findOne, findAll, remove
+        save, findOne, findAll, remove. findAllWithFollowing, findAllWithFollower
      */
 
     //친구 팔로우
     public void save(Follow follow) {
-        em.persist(follow);
+        if(follow.getId() == null) {
+            em.persist(follow);
+        }
     }
 
     //특정 친구 검색(조회)
@@ -36,5 +38,19 @@ public class FollowRepository {
     //친구 팔로우 취소
     public void remove(Long id) {
         em.remove(id);
+    }
+
+    public List<Follow> findAllWithFollowing(Long characterId) {
+        return em.createQuery("select f from Follow f" +
+                " where f.character.id = :characterId", Follow.class)
+                .setParameter("characterId", characterId)
+                .getResultList();
+    }
+
+    public List<Follow> findAllWithFollower(Long characterId) {
+        return em.createQuery("select f from Follow f" +
+                " where f.followingId = :characterId", Follow.class)
+                .setParameter("characterId", characterId)
+                .getResultList();
     }
 }
