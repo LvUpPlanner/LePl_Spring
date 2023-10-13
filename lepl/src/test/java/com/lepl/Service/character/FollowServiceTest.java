@@ -39,10 +39,10 @@ class FollowServiceTest {
         log.debug("id : {}", id);
         for(long i=0; i<2; i++) {
             Follow follow = new Follow();
-            follow.setFollowingId(id);
+//            follow.setFollowingId(id);
             follow.setFollowerId(i+2);
 
-            character.addFriend(follow);
+//            character.addFriend(follow);
             followService.join(follow);
         }
         expService.join(exp);

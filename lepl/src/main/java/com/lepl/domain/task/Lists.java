@@ -21,6 +21,8 @@ public class Lists {
     private Member member;
 
     private LocalDateTime listsDate;
+    private Long timerAllUseTime=0L; // 타이머총사용시간 -> 반환때는 시:분:초로!
+    private Long curTime=0L; // 사용시간(계산용) -> 반환 절대안함
 
     // CascadeType.REMOVE 를 해줘야 고아객체가 안생기게 되며, Lists 삭제도 정상적으로 가능
     @OneToMany(mappedBy = "lists", cascade = CascadeType.REMOVE) // 양방향

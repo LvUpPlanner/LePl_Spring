@@ -1,6 +1,7 @@
 package com.lepl.domain.task;
 
 
+import com.lepl.domain.member.Member;
 import lombok.Getter;
 import lombok.Setter;
 
