@@ -77,6 +77,7 @@ public class TaskApiController {
         taskService.update(tasks.get(0), request.content, request.startTime, request.endTime); // 변경 감지
         return ResponseEntity.status(HttpStatus.OK).body("해당 일정이 수정되었습니다."); // 200
     }
+    
 
 
     // DTO => 엔티티 외부노출 금지 + 필요한것만 담아서 반환할 수 있어서 효과적

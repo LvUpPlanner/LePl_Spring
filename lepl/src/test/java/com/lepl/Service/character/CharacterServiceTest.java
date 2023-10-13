@@ -51,7 +51,7 @@ class CharacterServiceTest {
             characterItemService.join(characterItem);
 
             Follow follow = new Follow();
-            character.addFriend(follow);
+//            character.addFriend(follow);
             followService.join(follow);
         }
 

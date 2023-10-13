@@ -84,15 +84,25 @@ public class ListsApiController {
     }
 
 
+
+
     // DTO
     @Getter
     static class ListsDto {
         private Long listsId;
         private LocalDateTime listsDate; // 등록 날짜
+        private String timerAllUseTime; // 타이머총사용시간
         private List<TaskDto> listsTasks;
         public ListsDto(Lists lists) { // lazy 강제 초기화
             listsId = lists.getId();
             listsDate = lists.getListsDate();
+            Long time = lists.getTimerAllUseTime();
+            Long hour = time/(60*60*1000);
+            time %= (60*60*1000);
+            Long minute = time / (60*1000);
+            time %= (60*1000);
+            Long second = time / (1000);
+            timerAllUseTime = hour+":"+minute+":"+second; // 시:분:초 형태로 반환
             listsTasks = lists.getTasks().stream()
                     .map(o -> new TaskDto(o))
                     .collect(Collectors.toList());
@@ -104,6 +114,7 @@ public class ListsApiController {
         private String content;
         private LocalDateTime startTime;
         private LocalDateTime endTime;
+        private String remainTime;
         private Boolean completedStatus;
         private Boolean timerOnOff;
         public TaskDto(Task task) { // lazy 강제 초기화
@@ -111,6 +122,13 @@ public class ListsApiController {
             content = task.getContent();
             startTime = task.getStartTime();
             endTime = task.getEndTime();
+            Long time = task.getRemainTime();
+            Long hour = time/(60*60*1000);
+            time %= (60*60*1000);
+            Long minute = time / (60*1000);
+            time %= (60*1000);
+            Long second = time / (1000);
+            remainTime = hour+":"+minute+":"+second; // 시:분:초 형태로 반환
             completedStatus = task.getTaskStatus().getCompletedStatus();
             timerOnOff = task.getTaskStatus().getTimerOnOff();
         }

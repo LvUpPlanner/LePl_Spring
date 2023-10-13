@@ -1,7 +1,6 @@
 package com.lepl.domain.character;
 
 
-import com.lepl.domain.task.timer.Timer;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,7 +22,7 @@ public class Exp {
 
     private Long expAll=0L; // 누적
     private Long expValue=0L; // 현재
-    private Long reqExp= 1L; // 필요경험치(초기값 1)
+    private Long reqExp= 10L; // 필요경험치(초기값 10)
     private Long level= 1L;
 
     private Long pointTodayTimer=0L; // 일일 타이머 경험치량
@@ -46,9 +45,11 @@ public class Exp {
             while(this.expValue >= reqExp) {
                 this.level++;
                 this.expValue = this.expValue-reqExp;
-                this.reqExp = (long)(Math.pow(this.level,2) * 1.5); // 필요경험치 update
+                this.reqExp = (long)(Math.pow(this.level,1.2)+10); // 필요경험치 update
                 log.debug("expValue {}, reqExp {}, level {}",expValue,reqExp,level);
             }
+        }else if(pointTodayTask>=12) { // 디버깅용
+            log.debug("exp pointTodayTask>=12 즉, 일일경험치 최대치 흭득상태");
         }
         if(pointTimer>0 && pointTodayTimer < 12){
             Long checkMax = pointTodayTimer+pointTimer;
@@ -63,9 +64,11 @@ public class Exp {
             while(this.expValue >= reqExp) {
                 this.level++;
                 this.expValue = this.expValue-reqExp;
-                this.reqExp = (long)(Math.pow(this.level,2) * 1.5); // 필요경험치 update
+                this.reqExp = (long)(Math.pow(this.level,1.2)+10); // 필요경험치 update
                 log.debug("expValue {}, reqExp {}, level {}",expValue,reqExp,level);
             }
+        }else if(pointTodayTimer>=12) { // 디버깅용
+            log.debug("exp pointTodayTimer>=12 즉, 일일경험치 최대치 흭득상태");
         }
 
         return this;

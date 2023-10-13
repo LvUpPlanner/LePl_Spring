@@ -5,7 +5,6 @@ import com.lepl.Repository.character.ExpRepository;
 import com.lepl.domain.character.Character;
 import com.lepl.domain.character.Exp;
 import com.lepl.domain.member.Member;
-import com.lepl.domain.task.timer.Timer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -37,7 +36,7 @@ public class ExpService {
     }
 
     // 초(0-59) 분(0-59) 시간(0-23) 일(1-31) 월(1-12) 요일(0-6) (0: 일, 1: 월, 2:화, 3:수, 4:목, 5:금, 6:토)
-    @Scheduled(cron = "30 00 00 * * *")
+    @Scheduled(cron = "30 00 00 * * *") // 00시 00분 30초 마다 수행
     @Transactional
     public void updatePoint() {
         log.debug("updatePoint Test");

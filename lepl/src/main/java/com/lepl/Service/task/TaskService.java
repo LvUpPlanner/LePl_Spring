@@ -2,11 +2,13 @@ package com.lepl.Service.task;
 
 import com.lepl.Repository.task.TaskRepository;
 import com.lepl.domain.task.Task;
+import com.lepl.domain.task.TaskStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -49,5 +51,11 @@ public class TaskService {
         task.setContent(content);
         task.setStartTime(startTime);
         task.setEndTime(endTime);
+    }
+    @Transactional // 일정 완료 & 타이머 종료 - db 적용
+    public void updateStatus(Task task, TaskStatus taskStatus, Long remainTime) {
+        task.getTaskStatus().setCompletedStatus(taskStatus.getCompletedStatus());
+        task.getTaskStatus().setTimerOnOff(taskStatus.getTimerOnOff());
+        task.setRemainTime(remainTime);
     }
 }
