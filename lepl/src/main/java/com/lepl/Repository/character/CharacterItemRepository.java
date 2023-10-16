@@ -27,7 +27,7 @@ public class CharacterItemRepository {
     }
 
     public List<CharacterItem> findAll() {
-        return em.createQuery("select f from Friend f", CharacterItem.class)
+        return em.createQuery("select f from CharacterItem f", CharacterItem.class)
                 .getResultList();
     }
 
