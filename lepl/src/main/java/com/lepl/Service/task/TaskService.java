@@ -2,6 +2,7 @@ package com.lepl.Service.task;
 
 import com.lepl.Repository.task.TaskRepository;
 import com.lepl.domain.task.Task;
+import com.lepl.domain.task.TaskStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,10 +45,23 @@ public class TaskService {
     public void remove(Task task) {
         taskRepository.remove(task);
     }
+
+    /*
+    * 일정 업데이트
+    * 1. 일정 추가
+    * 2. 일정 잔여 시간 업데이트
+    * */
     @Transactional // 쓰기모드 사용 위해 - db 적용
     public void update(Task task, String content, LocalDateTime startTime, LocalDateTime endTime) {
         task.setContent(content);
         task.setStartTime(startTime);
         task.setEndTime(endTime);
+    }
+
+    @Transactional // 일정 완료 & 타이머 종료 - db 적용
+    public void updateStatus(Task task, TaskStatus taskStatus, Long remainTime) {
+        task.getTaskStatus().setCompletedStatus(taskStatus.getCompletedStatus());
+        task.getTaskStatus().setTimerOnOff(taskStatus.getTimerOnOff());
+        task.setRemainTime(remainTime);
     }
 }

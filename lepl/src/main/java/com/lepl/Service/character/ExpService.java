@@ -25,8 +25,9 @@ public class ExpService {
 
     //경험치 쌓기
     @Transactional //쓰기 모드
-    public void save(Exp exp) {
+    public Long save(Exp exp) {
         expRepository.save(exp);
+        return exp.getId();
     }
 
     //경험치 조회 -> 현재 경험치, 누적 경험치
@@ -47,7 +48,7 @@ public class ExpService {
     }
 
     //매일 경험치 리셋
-    @Scheduled(cron = "30 00 00 * * *")
+    @Scheduled(cron = "30 00 00 * * *") //매일 00시 00분 30초 획득 경험치 초기화
     @Transactional
     public void updatePoint() {
         log.debug("updatePoint Test");
