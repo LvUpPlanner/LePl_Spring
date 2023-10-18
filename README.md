@@ -2,17 +2,26 @@
 
 -----------------
 
-1. 요구사항 분석
-![step1](https://github.com/LvUpPlanner/LePl_Spring/assets/105353163/15aa6cab-f295-4da3-9088-5f2cd0af6a94)
-2. 도메인 모델 분석
-![step2](https://github.com/LvUpPlanner/LePl_Spring/assets/105353163/3f41bc83-575c-497d-b38d-60bb8f06b04e)
-3. 엔티티 설계
-![step3](https://github.com/LvUpPlanner/LePl_Spring/assets/105353163/84bfbe6f-75cd-4a1b-af37-228e97e5076d)
-4. 테이블 설계
-![step4](https://github.com/LvUpPlanner/LePl_Spring/assets/105353163/0b98c6b2-08e0-410d-af9f-a089840ff0fe)
-![table](https://github.com/LvUpPlanner/LePl_Spring/assets/105353163/f6970d00-db12-4ac9-92c7-9c60f8fb5dca)
-![table2](https://github.com/LvUpPlanner/LePl_Spring/assets/105353163/2c23ac57-fad1-41a9-a927-7d077861abf7)
+#### Version
 
+* org.springframework.boot: version '3.1.2'
+* io.spring.dependency-management: version '1.1.0'
+* java: version 17
+* junit: version '4.13.2'
+
+-----------------
+
+#### 1. 요구사항 분석
+![image](https://github.com/yujinchoi20/LePl_Team/assets/105353163/d0567ab8-1f33-4d64-8711-274eb21c083a)
+
+#### 2. 도메인 모델 분석
+![image](https://github.com/yujinchoi20/LePl_Team/assets/105353163/a351fe5e-1b13-4752-8914-30d945059f06)
+
+#### 3. 엔티티 설계
+![image](https://github.com/yujinchoi20/LePl_Team/assets/105353163/4353fc00-6314-4a44-ba04-22818ecfeab2)
+
+#### 4. 테이블 설계
+![image](https://github.com/yujinchoi20/LePl_Team/assets/105353163/73cd0ba8-b791-4162-bfef-bb1a76853dbf)
 ------------------
 
 ### 06/01
@@ -87,3 +96,24 @@ private Exp exp;
 -> FK 영속성 전이 추가!
 
 PK 데이터가 추가되기 전에 FK 데이터가 추가되는 것을 막아줌. 
+
+### 09/26
+
+* Exp 테스트 코드 -> 하루 최대 경험치가 넘어가면 레벨업 안됨, 레벨업 필요 경험치 수식 변경((level - 1) ^ 2) * 2)
+* Notification Entity, Repository, Service 추가
+
+###### Service/Character/ExpService.java
+
+-> 매일 경험치를 리셋하는 updatePoint() 메서드 
+
+-> @Scheduled(cron = ), 쿼츠 크론 사용(0 0 0 1/1 * ? *): 매일 오전 12시 마다
+
+* Notification 테스트 코드 추가 예정
+
+### 10/10
+
+* Notification 수정
+* MemberApiController 중복회원 추가
+* TimerApiContoller 추가 
+
+-> 테스트 코드 작성 예정
