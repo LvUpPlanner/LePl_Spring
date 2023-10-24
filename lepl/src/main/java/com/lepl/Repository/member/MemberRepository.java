@@ -1,5 +1,6 @@
 package com.lepl.Repository.member;
 
+import com.lepl.domain.character.Character;
 import com.lepl.domain.member.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

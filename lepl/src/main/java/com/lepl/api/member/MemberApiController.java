@@ -82,7 +82,6 @@ public class MemberApiController {
 
         member.setCharacter(character);
         memberService.join(member);
-        // 중복회원 처리는,, 나중에,, 하겠음,,
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new RegisterMemberResponseDto(member));
     }

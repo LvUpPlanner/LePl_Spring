@@ -30,6 +30,21 @@ public class FollowRepository {
                 .getResultList();
     }
 
+    /**
+     * 중복 검증용 함수
+     */
+    public Follow findById(Long followerId, Long followingId) {
+        List<Follow> follows = em.createQuery("select f from Follow f " +
+                "where f.followerId = :followerId " +
+                "and f.followingId = :followingId", Follow.class)
+                .setParameter("followerId", followerId)
+                .setParameter("followingId", followingId)
+                .getResultList();
+        if(follows.isEmpty()) return null;
+        else return follows.get(0);
+    }
+
+
     public void remove(Follow follow) { em.remove(follow);}
 
     public List<Follow> findAllWithFollowing(Long characterId) {

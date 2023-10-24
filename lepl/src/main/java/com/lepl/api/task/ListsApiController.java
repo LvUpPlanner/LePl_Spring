@@ -21,7 +21,8 @@ public class ListsApiController {
     private final ListsService listsService;
 
     /**
-     * 일정 조회 1과 2는 프론트에서 사용할 일 없음. 프론트는 일정 조회 3과 4 사용
+     * 일정 조회 1과 2는 프론트에서 사용X -> 그냥 서버에서 확인용으로 만들어둔 것
+     * 프론트는 일정 조회 3, 4 사용
      */
     
     /**

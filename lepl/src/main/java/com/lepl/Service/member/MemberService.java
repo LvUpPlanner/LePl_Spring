@@ -1,6 +1,7 @@
 package com.lepl.Service.member;
 
 import com.lepl.Repository.member.MemberRepository;
+import com.lepl.domain.character.Character;
 import com.lepl.domain.member.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -42,4 +43,5 @@ public class MemberService {
     public Member findByUid(String uid) {
         return memberRepository.findByUid(uid);
     }
+
 }
