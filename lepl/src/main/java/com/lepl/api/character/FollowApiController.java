@@ -38,7 +38,7 @@ public class FollowApiController {
     private final NotificationService notificationService;
 
     /**
-     * 팔로우 생성 API -> 중복검증 꼭 해야함! 나중에 추가하겠음
+     * 팔로우 생성 API -> 중복검증 추가했음
      */
     @PostMapping("/new")
     public ResponseEntity<String> addFollow(@Login Long memberId, @RequestBody Map<String, Long> json) {
@@ -46,7 +46,7 @@ public class FollowApiController {
         Member member = memberService.findOne(memberId);
         Character character = member.getCharacter();
         Follow follow = Follow.createFollow(character, followingId);
-        followService.join(follow);
+        followService.join(follow); // 중복검증 포함
 
         // 알림 생성
         log.debug("followingId : {}",followingId);
@@ -55,7 +55,7 @@ public class FollowApiController {
         Notification notification = Notification.createNotification(findCharacter, "테스트 알림 : "+member.getNickname()+"가 팔로우 하였습니다.");
         notificationService.join(notification);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body("팔로우 추가");
+        return ResponseEntity.status(HttpStatus.CREATED).body("팔로우 추가(알림 포함)");
     }
 
 
@@ -66,7 +66,7 @@ public class FollowApiController {
     @PostMapping("/delete")
     public ResponseEntity<String> deleteFollow(@Login Long memberId, @RequestBody Map<String, Long> json) {
         Long followId = json.get("followId");
-        Character character = memberService.findOne(memberId).getCharacter();
+        Character character = characterService.findCharacterWithMember(memberId);
         Follow follow = followService.findOne(followId);
         if(follow.getCharacter().getId() == character.getId()) {
             followService.remove(follow);
@@ -78,10 +78,11 @@ public class FollowApiController {
 
     /**
      * 팔로잉 조회 API -> 해당 캐릭터의 팔로잉
+     * 자신이 팔로우 한 사람들을 조회
      */
     @GetMapping("/ing/all")
     public ResponseEntity<List<ResFollowingDto>> findFollowing(@Login Long memberId) {
-        Character character = memberService.findOne(memberId).getCharacter();
+        Character character = characterService.findCharacterWithMember(memberId);
         List<Follow> follows = followService.findAllWithFollowing(character.getId());
         if(follows.isEmpty()) return null;
         List<ResFollowingDto> result = follows.stream()
@@ -92,10 +93,11 @@ public class FollowApiController {
 
     /**
      * 팔로워 조회 API -> 모든 캐릭터의 팔로잉
+     * 자신을 팔로우 한 사람들을 조회
      */
     @GetMapping("/er/all")
     public ResponseEntity<List<ResFollowerDto>> findFollower(@Login Long memberId) {
-        Character character = memberService.findOne(memberId).getCharacter();
+        Character character = characterService.findCharacterWithMember(memberId);
         List<Follow> follows = followService.findAllWithFollower(character.getId());
         if(follows.isEmpty()) return null;
         List<ResFollowerDto> result = follows.stream()

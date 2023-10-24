@@ -25,6 +25,7 @@ public class Follow {
         Follow follow = new Follow();
         follow.character = character;
         follow.followingId = followingId;
+        follow.followerId = character.getId(); // 자기자신(from)
         return follow;
     }
 
