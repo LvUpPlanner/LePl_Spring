@@ -1,6 +1,7 @@
 package com.lepl.Repository.task;
 
 import com.lepl.domain.task.Lists;
+import com.lepl.domain.task.Task;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -77,6 +78,9 @@ public class ListsRepository {
                         " join fetch t.taskStatus ts", Lists.class)
                 .getResultList();
     }
+
+    /////////////// TEST START ///////////////
+    /*
     public List<Lists> findAllWithMemberTask(Long memberId) {
         return em.createQuery(
                 "select distinct l from Lists l" +
@@ -99,6 +103,26 @@ public class ListsRepository {
                 .setParameter("end", end.toLocalDate().toString())
                 .getResultList();
     }
+    */
+    public List<Lists> findAllWithMemberTask(Long memberId) {
+       return em.createQuery("select l from Lists l" +
+                " where l.member.id = :memberId", Lists.class)
+                .setParameter("memberId", memberId)
+                .getResultList();
+    }
+    public List<Lists> findByDateWithMemberTask(Long memberId, LocalDateTime start, LocalDateTime end) {
+        return em.createQuery(
+                        "select distinct l from Lists l" +
+                                " where l.member.id = :memberId and" +
+                                " FORMATDATETIME(l.listsDate, 'yyyy-MM-dd') >= :start and" +
+                                " FORMATDATETIME(l.listsDate, 'yyyy-MM-dd') <= :end", Lists.class)
+                .setParameter("memberId", memberId)
+                .setParameter("start", start.toLocalDate().toString())
+                .setParameter("end", end.toLocalDate().toString())
+                .getResultList();
+    }
+    /////////////// TEST END ///////////////
+
     public List<Lists> findOneWithMemberTask(Long memberId, Long listsId) {
         return em.createQuery(
                         "select l from Lists l" +
