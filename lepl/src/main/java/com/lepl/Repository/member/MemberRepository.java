@@ -25,4 +25,14 @@ public class MemberRepository {
                 .getResultList(); // List로 반환 받아야 null처리가 쉬움
         return findMembers.isEmpty() ? null : findMembers.get(0);
     }
+
+    public List<Member> findAllWithPage(int pageId) {
+        return em.createQuery("select m from Member m " +
+                        "join fetch m.character c " +
+                        "join fetch c.exp e " +
+                        "order by m.id desc", Member.class)
+                .setFirstResult((pageId-1)*10)
+                .setMaxResults(10) // 개수임!!
+                .getResultList();
+    }
 }
