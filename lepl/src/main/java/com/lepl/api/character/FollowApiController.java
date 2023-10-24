@@ -55,7 +55,7 @@ public class FollowApiController {
         Notification notification = Notification.createNotification(findCharacter, "테스트 알림 : "+member.getNickname()+"가 팔로우 하였습니다.");
         notificationService.join(notification);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body("팔로우 추가");
+        return ResponseEntity.status(HttpStatus.CREATED).body("팔로우 추가(알림 포함)");
     }
 
 
