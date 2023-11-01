@@ -38,8 +38,8 @@ public class ExpService {
     // 초(0-59) 분(0-59) 시간(0-23) 일(1-31) 월(1-12) 요일(0-6) (0: 일, 1: 월, 2:화, 3:수, 4:목, 5:금, 6:토)
     @Scheduled(cron = "30 00 00 * * *") // 00시 00분 30초 마다 수행
     @Transactional
-    public void updatePoint() {
-        log.debug("updatePoint Test");
-        expRepository.updatePoint();
+    public void initPointToday() {
+        log.debug("initPointToday Test");
+        expRepository.initPointToday();
     }
 }

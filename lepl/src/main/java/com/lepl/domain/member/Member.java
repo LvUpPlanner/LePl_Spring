@@ -48,6 +48,7 @@ public class Member {
         if(nickname == null) nickname = "닉네임을 등록해주세요";
         member.setUid(uid);
         member.setNickname(nickname);
+
         return member;
     }
 }
