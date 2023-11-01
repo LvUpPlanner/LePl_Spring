@@ -38,7 +38,6 @@ public class Lists {
     }
     public void setMember(Member member) {
         this.member = member;
-        member.getLists().add(this); // 기존 setter 로는 이부분 로직이 없음
     }
 
     /**

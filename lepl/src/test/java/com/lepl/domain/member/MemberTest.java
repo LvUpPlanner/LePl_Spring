@@ -30,11 +30,7 @@ class MemberTest {
 
         // when
         member.addLists(new Lists());
-        log.info("{}",member.getLists().size()); // 2개가 기록되는 문제 발견
-        for(Lists lists : member.getLists()) {
-            log.info("{}", lists);
-            log.info("{}", lists.getMember());
-        }
+        log.info("{}",member.getLists().size()); // 오류 해결
 
         // then
         Assertions.assertEquals(member.getLists().size(), 1);
