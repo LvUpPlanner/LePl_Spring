@@ -55,15 +55,20 @@ public class ExpRepositoryTest {
         Exp exp = new Exp();
         em.persist(exp); // id 위해
         Character character = Character.createCharacter(exp, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        log.info("persist 이전 character id : {}", character.getId()); // null
         em.persist(character); // id 위해 -> FK 오류 피하기 위함
+        log.info("persist 이후 character id : {}", character.getId());
         member2.setCharacter(character);
         em.persist(member);
         em.persist(member2);
-//        em.flush(); // findOneWithMember 는 DB 에서 검색하므로 강제 flush()
+//        em.flush(); // findOneWithMember 는 DB 에서 검색하므로 강제 flush() // findOneWithMember 에서 쌓인 쿼리들 순서대로 커밋될거라 여기서 flush 안해도 됨
 
         // when
+        log.info("flush 이전");
         Member findMember = expRepository.findOneWithMember(member.getId());
+        log.info("flush 이전1");
         Member findMember2 = expRepository.findOneWithMember(member2.getId());
+        log.info("flush 이후");
 
         // then
         Assertions.assertEquals(findMember, null); // findMember 는 null 이여야 정상
@@ -77,13 +82,17 @@ public class ExpRepositoryTest {
     @Transactional
     public void 전체_경험치_일일제한_초기화() throws Exception {
         // given
+        log.info("flush 이전");
         Exp findExp = expRepository.findOne(expId);
+        log.info("flush 이후");
         findExp.updateExp(5L, 5L);
-//        em.flush(); // dirty checking -> 변경내용 DB로 insert 쿼리
+//        em.flush(); // dirty checking -> 변경내용 DB로 insert 쿼리 // 아래에서 flush 할거라 여기서 안해도됨
         log.info("findExp.getPointTodayTask() : {}, findExp.getPointTodayTimer() : {}", findExp.getPointTodayTask(), findExp.getPointTodayTimer());
 
         // when
-        expRepository.initPointToday();
+        log.info("flush 이전");
+        expRepository.initPointToday(); // 강제 flush()
+        log.info("flush 이후");
         em.clear(); // 캐시 제거 (flush 로는 안지워짐)
         findExp = expRepository.findOne(expId); // 다시 조회 select 쿼리
 
