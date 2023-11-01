@@ -16,7 +16,6 @@ public class MemberRepository {
     public void save(Member member) {
         em.persist(member); // db 저장
     }
-
     public Member findOne(Long id) {
         return em.find(Member.class, id);
     }
