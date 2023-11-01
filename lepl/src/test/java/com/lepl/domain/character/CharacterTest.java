@@ -52,5 +52,4 @@ class CharacterTest {
         Assertions.assertEquals(character.getFollows().size(), 1);
     }
 
-
 }
