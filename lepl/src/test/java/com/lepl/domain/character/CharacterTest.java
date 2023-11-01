@@ -50,6 +50,10 @@ class CharacterTest {
         Assertions.assertEquals(character.getNotifications().size(), 2);
         Assertions.assertEquals(character.getCharacterItems().size(), 1);
         Assertions.assertEquals(character.getFollows().size(), 1);
+
+        Assertions.assertEquals(character.getNotifications().get(0).getCharacter(), character);
+        Assertions.assertEquals(character.getCharacterItems().get(0).getCharacter(), character);
+        Assertions.assertEquals(character.getFollows().get(0).getCharacter(), character);
     }
 
 }
