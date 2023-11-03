@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,13 +49,15 @@ public class Lists {
     public static Lists createLists(Member member, LocalDateTime listsDate, List<Task> tasks) {
         Lists lists = new Lists();
         lists.setMember(member);
-        // null이면 바로 pass 될것임
-        for(Task task : tasks) {
-            lists.addTask(task); // addTask로 넣어줘야 task.setLists(this); 적용
-        }
-        // null이면 오늘날짜
+        // null 이면 오늘날짜
         if(listsDate==null) lists.setListsDate(LocalDateTime.now());
         else lists.setListsDate(listsDate);
+        // null 이면 바로 pass
+        for(Task task : tasks) {
+            // 날짜 비교 함수
+            if(!compareDate(task, lists.getListsDate())) continue;
+            lists.addTask(task); // addTask로 넣어줘야 task.setLists(this); 적용
+        }
         return lists;
     }
 
@@ -61,6 +65,15 @@ public class Lists {
      * 비지니스 로직 => 엔티티내에서 가능한 비지니스 로직은 작성 권장(객체지향적)
      * 이건 작성할게 생기면 작성.
      */
+    private static boolean compareDate(Task task, LocalDateTime listsDate) {
+        // 년,월,일 만 비교하면 충분 하므로 Time 은 비교X
+        LocalDate taskDay = task.getStartTime().toLocalDate();
+        LocalDate listsDay = listsDate.toLocalDate();
+        if(taskDay.compareTo(listsDay) == 0) { // 동일시 0
+            return true;
+        }
+        return false;
+    }
 
     /**
      * 조회 편의메서드
