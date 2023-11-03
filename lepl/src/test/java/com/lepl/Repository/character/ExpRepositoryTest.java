@@ -36,6 +36,7 @@ public class ExpRepositoryTest {
 
         // when
         expRepository.save(exp); // persist
+        log.info("save 시점 확인");
         expId = exp.getId();
         Exp findExp = expRepository.findOne(expId);
 
@@ -91,7 +92,7 @@ public class ExpRepositoryTest {
 
         // when
         log.info("flush 이전");
-        expRepository.initPointToday(); // 강제 flush()
+        expRepository.initPointToday(); // flush
         log.info("flush 이후");
         em.clear(); // 캐시 제거 (flush 로는 안지워짐)
         findExp = expRepository.findOne(expId); // 다시 조회 select 쿼리

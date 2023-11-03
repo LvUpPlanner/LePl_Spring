@@ -34,7 +34,7 @@ public class ListsService {
     public List<Lists> findByDate(LocalDateTime start, LocalDateTime end) {
         return listsRepository.findByDate(start, end);
     }
-    public List<Lists> findByCurrent(Long memberId, LocalDateTime curDate) {
+    public Lists findByCurrent(Long memberId, LocalDateTime curDate) {
         return listsRepository.findByCurrent(memberId, curDate);
     }
     public List<Lists> findAll() {
@@ -49,7 +49,7 @@ public class ListsService {
     public List<Lists> findByDateWithMemberTask(Long memberId, LocalDateTime start, LocalDateTime end) {
         return listsRepository.findByDateWithMemberTask(memberId, start, end);
     }
-    public List<Lists> findOneWithMemberTask(Long memberId, Long listsId) {
+    public Lists findOneWithMemberTask(Long memberId, Long listsId) {
         return listsRepository.findOneWithMemberTask(memberId, listsId);
     }
     @Transactional // 쓰기모드

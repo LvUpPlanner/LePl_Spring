@@ -35,7 +35,7 @@ public class TaskService {
     public List<Task> findTasks() {
         return taskRepository.findAll();
     }
-    public List<Task> findOneWithMember(Long memberId, Long taskId) {
+    public Task findOneWithMember(Long memberId, Long taskId) {
         return taskRepository.findOneWithMember(memberId, taskId);
     }
 

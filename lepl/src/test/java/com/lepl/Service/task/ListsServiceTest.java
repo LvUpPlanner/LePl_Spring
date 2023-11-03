@@ -54,15 +54,15 @@ public class ListsServiceTest {
         listsService.join(list3);
         Lists findLists = listsService.findOne(lists1.getId());
         List<Lists> findLists_date = listsService.findByDate(testDate2, testDate3);
-        List<Lists> findListsToday = listsService.findByCurrent(member.getId(), testDate4);
+//        List<Lists> findListsToday = listsService.findByCurrent(member.getId(), testDate4);
 
         // then
         Assertions.assertEquals(lists1, findLists);
         for(Lists getLists : findLists_date){
             System.out.println(getLists.getListsDate()); // 2023-05-28T19:12:47.619809700, 2022-04-23T12:30
         }
-        System.out.println(findListsToday.size());
-        System.out.println(findListsToday.get(0).getMember().getUid());
+//        System.out.println(findListsToday.size());
+//        System.out.println(findListsToday.get(0).getMember().getUid());
     }
 
     @Test

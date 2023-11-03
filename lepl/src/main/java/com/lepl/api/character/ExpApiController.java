@@ -192,8 +192,8 @@ public class ExpApiController {
         memberService.join(member);
 
         // Task 3개정도
-        Lists lists = new Lists();
-        lists.setMember(member);
+        LocalDateTime today = LocalDateTime.now();
+        Lists lists = Lists.createLists(member, today, new ArrayList<>());
         listsService.join(lists); // 먼저 lists init
         for(long i = 1 ; i<=3; i++) {
             LocalDateTime end = LocalDateTime.now();
