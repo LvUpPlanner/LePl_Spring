@@ -26,6 +26,7 @@ class FollowServiceTest {
     static Long followId; // 전역
     static Long characterId; // 전역
     static final Long CHARACTER_EX_ID = 10L;
+    static final String MESSAGE = "이미 팔로우 요청을 하셨습니다.";
 
     /**
      * join(중복검증 포함), findOne, findAll, remove, findAllWithFollowing, findAllWithFollower
@@ -109,7 +110,7 @@ class FollowServiceTest {
         Throwable exception = Assertions.assertThrows(IllegalStateException.class, () -> {
             followService.join(findFollow); // 중복검증 예외 발생
         });
-        Assertions.assertEquals("이미 팔로우 요청을 하셨습니다.", exception.getMessage());
+        Assertions.assertEquals(MESSAGE, exception.getMessage());
         log.info("exception.getMessage() : {}", exception.getMessage());
     }
 

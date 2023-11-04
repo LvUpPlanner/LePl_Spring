@@ -4,6 +4,7 @@ import com.lepl.domain.member.Member;
 import com.lepl.domain.task.Lists;
 import com.lepl.domain.task.Task;
 import com.lepl.domain.task.TaskStatus;
+import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.persistence.EntityManager;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +32,7 @@ public class ListsRepositoryTest {
     public void beforeEach() {
         tasks = new ArrayList<>(); // init
         // 2023-11-1~3 일정 임시로 추가 -> 각 task 는 2개씩
-        for(int i=1; i<=3; i++) {
+        for (int i = 1; i <= 3; i++) {
             LocalDateTime date_s = LocalDateTime.of(2023, 11, i, 1, 0); // 1시
             LocalDateTime date_e = LocalDateTime.of(2023, 11, i, 3, 0); // 3시
             LocalDateTime date2_s = LocalDateTime.of(2023, 11, i, 5, 0); // 5시
@@ -63,31 +60,31 @@ public class ListsRepositoryTest {
 
         // when
         List<Lists> listsList = new ArrayList<>();
-        for(int i=1; i<=3; i++) {
+        for (int i = 1; i <= 3; i++) {
             LocalDateTime listsDate = LocalDateTime.of(2023, 11, i, 1, 0);
             Lists lists = Lists.createLists(member, listsDate, tasks);
             listsRepository.save(lists); // persist
             listsList.add(lists);
         }
-        for(Task t : tasks) {
+        for (Task t : tasks) {
             em.persist(t); // persist
             /**
              * 잠시 알게된 부분 정리
              * Lists.createLists 에서 tasks 내용이 수정이 되기 때문에 tasks 는 꼭 나중에 persist 적용!!
              * 만약 먼저 persist 적용된 상태에서 Lists.createLists 에서 tasks 내용 수정되면 더티체킹 발생하므로 update 쿼리 추가
              * 즉, insert + update 쿼리 전송되기 때문에 아래에서 persist 적용
-             * => 이런 부분 Controller 에 있을수도 있으니 조심
+             * => 이런 부분 Controller 에 있을수도 있으니 확인필요.
              */
         }
 
         // then
-        for(int i=1; i<=3; i++) {
+        for (int i = 1; i <= 3; i++) {
             LocalDateTime listsDate = LocalDateTime.of(2023, 11, i, 1, 0);
             Lists findLists = listsRepository.findByCurrent(member.getId(), listsDate); // flush
             Long listsId = findLists.getId();
             Lists findLists2 = listsRepository.findOneWithMemberTask(member.getId(), listsId); // flush
-            Assertions.assertEquals(findLists.getId(), listsList.get(i-1).getId());
-            Assertions.assertEquals(findLists2.getId(), listsList.get(i-1).getId());
+            Assertions.assertEquals(findLists.getId(), listsList.get(i - 1).getId());
+            Assertions.assertEquals(findLists2.getId(), listsList.get(i - 1).getId());
         }
     }
 
@@ -98,18 +95,18 @@ public class ListsRepositoryTest {
         // given
         log.info("size : {}", tasks.size());
         // 2023-11-1~3 일정 조회위해 start, end 를 1~4
-        LocalDateTime start = LocalDateTime.of(2023,11,1,1,0);
-        LocalDateTime end = LocalDateTime.of(2023,11,4,1,0);
+        LocalDateTime start = LocalDateTime.of(2023, 11, 1, 1, 0);
+        LocalDateTime end = LocalDateTime.of(2023, 11, 4, 1, 0);
 
         // when
         List<Lists> findLists = listsRepository.findAllWithMemberTask(memberId);
         List<Lists> findLists2 = listsRepository.findByDateWithMemberTask(1L, start, end);
 
         // then
-        for(Lists l: findLists) {
+        for (Lists l : findLists) {
             log.info("findLists : {}", l.getId());
         }
-        for(Lists l: findLists2) {
+        for (Lists l : findLists2) {
             log.info("findLists2 : {}", l.getListsDate());
         }
     }

@@ -74,8 +74,8 @@ public class ExpApiController {
         for(Task task : tasks) {
             if(task.getTaskStatus().getCompletedStatus()) continue; // 이미 이전에 완료했던 일정이라 pass
             if(!task.getTaskStatus().getTimerOnOff()) { // 타이머가 아닌지 추가 점검
-                TaskStatus taskStatus = TaskStatus.createTaskStatus(true, false);
-                taskService.updateStatus(task, taskStatus, null);
+//                TaskStatus taskStatus = TaskStatus.createTaskStatus(true, false);
+                taskService.updateStatus(task, true, false, null);
                 pointTask++;
                 log.debug("확인용 pointTask : {}",pointTask);
             }
@@ -128,7 +128,7 @@ public class ExpApiController {
                 curTime = curTime%(60*60*1000);
                 pointTimer = expTime; // 경험치용 시간
             }
-            taskService.updateStatus(task, taskStatus, remainTime); // 더티체킹
+            taskService.updateStatus(task, taskStatus.getCompletedStatus(), taskStatus.getTimerOnOff(), remainTime); // 더티체킹
             listsService.updateTime(task.getLists(), timerAllUseTime, curTime); // 더티체킹
         }else {
             log.debug("처음이후 타이머 종료(일정완료)");
@@ -154,7 +154,7 @@ public class ExpApiController {
                 curTime = curTime%(60*60*1000);
                 pointTimer = expTime; // 경험치용 시간
             }
-            taskService.updateStatus(task, taskStatus, remainTime); // 더티체킹
+            taskService.updateStatus(task, taskStatus.getCompletedStatus(), taskStatus.getTimerOnOff(), remainTime); // 더티체킹
             listsService.updateTime(task.getLists(), timerAllUseTime, curTime); // 더티체킹
         }
         // 경험치 업데이트
