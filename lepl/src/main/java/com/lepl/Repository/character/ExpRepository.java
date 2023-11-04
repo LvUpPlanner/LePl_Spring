@@ -26,7 +26,7 @@ public class ExpRepository {
     public Exp findOne(Long id) {
         return em.find(Exp.class, id);
     }
-    public Member findOneWithMember(Long memberId) {
+    public Exp findOneWithMember(Long memberId) {
         List<Member> members = em.createQuery(
                 "select m from Member m" +
                         " join fetch m.character c" +
@@ -35,7 +35,7 @@ public class ExpRepository {
                 .setParameter("memberId", memberId)
                 .getResultList();
         if(members.isEmpty()) return null;
-        else return members.get(0);
+        else return members.get(0).getCharacter().getExp();
     }
 
     public void remove(Exp exp) { em.remove(exp);}

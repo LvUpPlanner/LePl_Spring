@@ -1,8 +1,6 @@
 package com.lepl.Service.character;
 
-import com.lepl.Repository.character.CharacterRepository;
 import com.lepl.Repository.character.ExpRepository;
-import com.lepl.domain.character.Character;
 import com.lepl.domain.character.Exp;
 import com.lepl.domain.member.Member;
 import lombok.RequiredArgsConstructor;
@@ -19,16 +17,26 @@ public class ExpService {
     private final ExpRepository expRepository;
 
     /**
-     * save, findOne, remove
+     * join, findOne, findOneWithMember, remove, update, initPointToday
      */
     @Transactional // 쓰기모드
-    public Long join(Exp exp) { expRepository.save(exp); return exp.getId(); }
+    public Long join(Exp exp) {
+        expRepository.save(exp);
+        return exp.getId();
+    }
 
-    public Exp findOne(Long expId) { return expRepository.findOne(expId); }
-    public Member findOneWithMember(Long memberId) { return expRepository.findOneWithMember(memberId);}
+    public Exp findOne(Long expId) {
+        return expRepository.findOne(expId);
+    }
+
+    public Exp findOneWithMember(Long memberId) {
+        return expRepository.findOneWithMember(memberId);
+    }
 
     @Transactional
-    public void remove(Exp exp) { expRepository.remove(exp); }
+    public void remove(Exp exp) {
+        expRepository.remove(exp);
+    }
 
     @Transactional
     public Exp update(Exp exp, Long pointTask, Long pointTimer) {

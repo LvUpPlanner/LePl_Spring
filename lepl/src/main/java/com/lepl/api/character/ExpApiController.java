@@ -49,9 +49,9 @@ public class ExpApiController {
      */
     @GetMapping("/all")
     public Exp findOneWithMember(@Login Long memberId) {
-        Member member = expService.findOneWithMember(memberId);
-        if(member == null) return null;
-        return member.getCharacter().getExp();
+        Exp exp = expService.findOneWithMember(memberId);
+        if(exp == null) return null;
+        return exp;
     }
 
     /**
@@ -61,9 +61,8 @@ public class ExpApiController {
     @PostMapping("/tasks")
     public ResponseEntity<String> expTask(@Login Long memberId, @RequestBody List<TaskDto> taskDtos) {
         log.debug("exp/tasks 입장");
-        Member member = expService.findOneWithMember(memberId); // 영속 exp
-        if(member == null) return null;
-        Exp exp = member.getCharacter().getExp();;
+        Exp exp = expService.findOneWithMember(memberId); // 영속 exp
+        if(exp == null) return null;
         Long pointTimer = 0L;
         Long pointTask = 0L;
         log.debug("기존 exp? : {}",exp.getExpAll());
@@ -92,10 +91,9 @@ public class ExpApiController {
      */
     @PostMapping("/timers")
     public ResponseEntity<String> expTimer(@Login Long memberId, @RequestBody TimerDto timerDto) {
-        Member member = expService.findOneWithMember(memberId); // 영속 exp
+        Exp exp = expService.findOneWithMember(memberId); // 영속 exp
         Task task = taskService.findOne(timerDto.getTaskId());
-        if(member == null || task == null) return null;
-        Exp exp = member.getCharacter().getExp();
+        if(exp == null || task == null) return null;
         Long pointTimer = 0L;
         Long pointTask = 0L;
         // 이미 이전에 완료했던 일정은 아무처리 없이 null

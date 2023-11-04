@@ -66,16 +66,14 @@ public class ExpRepositoryTest {
 
         // when
         log.info("flush 이전");
-        Member findMember = expRepository.findOneWithMember(member.getId());
+        Exp findExp = expRepository.findOneWithMember(member.getId());
         log.info("flush 이전1");
-        Member findMember2 = expRepository.findOneWithMember(member2.getId());
+        Exp findExp2 = expRepository.findOneWithMember(member2.getId());
         log.info("flush 이후");
 
         // then
-        Assertions.assertEquals(findMember, null); // findMember 는 null 이여야 정상
-        Assertions.assertEquals(findMember2, member2);
-        Assertions.assertEquals(findMember2.getId(), member2.getId());
-        log.info("findMember2.getId() : {} , member2.getId() : {}", findMember2.getId(), member2.getId());
+        Assertions.assertEquals(findExp, null); // findMember 는 null 이여야 정상
+        Assertions.assertEquals(findExp2.getId(), exp.getId());
     }
 
     @Test
