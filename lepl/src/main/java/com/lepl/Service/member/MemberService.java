@@ -24,12 +24,13 @@ public class MemberService {
      * 회원가입
      */
     @Transactional // 쓰기모드 필요해서 선언
-    public Long join(Member member) {
+    public Member join(Member member) {
         // 1. 중복 회원 검증(필수)
         validateDuplicateMember(member);
         // 2. 회원 저장
         memberRepository.save(member);
-        return member.getId();
+//        return member.getId();
+        return member;
     }
 
     // 중복검증..
