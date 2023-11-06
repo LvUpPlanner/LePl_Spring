@@ -1,10 +1,11 @@
 package com.lepl.Repository.member;
 
+import com.lepl.domain.character.Character;
 import com.lepl.domain.member.Member;
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import jakarta.persistence.EntityManager;
 import java.util.List;
 
 @Repository
@@ -12,20 +13,12 @@ import java.util.List;
 public class MemberRepository {
     private final EntityManager em;
 
-    /**
-     * save, findOne, findByUid, findAllWithPage
-     */
-
     public void save(Member member) {
-        if(member.getId() == null) {
-            em.persist(member); // db 저장
-        }
+        em.persist(member); // db 저장
     }
-
     public Member findOne(Long id) {
         return em.find(Member.class, id);
     }
-
     public Member findByUid(String uid) {
         List<Member> findMembers = em.createQuery("select m from Member m where m.uid = :uid", Member.class)
                 .setParameter("uid", uid)
@@ -38,7 +31,7 @@ public class MemberRepository {
                         "join fetch m.character c " +
                         "join fetch c.exp e " +
                         "order by m.id desc", Member.class)
-                .setFirstResult((pageId - 1) * 10) // 페이징
+                .setFirstResult((pageId-1)*10)
                 .setMaxResults(10) // 개수임!!
                 .getResultList();
     }

@@ -11,7 +11,6 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import static com.lepl.util.Messages.SESSION_NAME_LOGIN;
 
 
 @Slf4j
@@ -39,7 +38,7 @@ public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolve
             return null;
         }
 
-        Long memberId = Long.valueOf(session.getAttribute(SESSION_NAME_LOGIN).toString());
+        Long memberId = Long.valueOf(session.getAttribute("login_member").toString());
         return memberId;
     }
 }

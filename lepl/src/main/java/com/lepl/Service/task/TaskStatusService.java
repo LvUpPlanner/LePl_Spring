@@ -13,13 +13,12 @@ public class TaskStatusService {
     private final TaskStatusRepository taskStatusRepository;
 
     /**
-     * join, findOne
+     * save, findOne
      */
     @Transactional // 쓰기 모드
     public void join(TaskStatus taskStatus) {
         taskStatusRepository.save(taskStatus);
     }
-
     public TaskStatus findOne(Long id) {
         return taskStatusRepository.findOne(id);
     }

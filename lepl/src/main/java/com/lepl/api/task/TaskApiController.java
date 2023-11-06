@@ -34,11 +34,15 @@ public class TaskApiController {
      */
     @PostMapping(value = "/new")
     public String create(@Login Long memberId, @RequestBody CreateTaskRequestDto request) {
-        Lists lists = listsService.findByCurrent(memberId, request.startTime); // db 에 기존 lists+member 가 있나 확인 (startTime, id 로 확인)
-        if(lists == null) { // null 인 경우 새로생성
+        Lists lists = null;
+        List<Lists> listsList = listsService.findByCurrent(memberId, request.startTime); // db 에 기존 lists+member 가 있나 확인 (startTime, id 로 확인)
+        // lists 가 없을 경우
+        if(listsList.isEmpty()) { 
             Member member = memberService.findOne(memberId);
             lists = Lists.createLists(member, request.startTime, new ArrayList<Task>());
         }
+        // lists 가 있을 경우
+        else lists = listsList.get(0);
         listsService.join(lists);
 
         TaskStatus taskStatus = TaskStatus.createTaskStatus(false, false);
@@ -56,9 +60,9 @@ public class TaskApiController {
      */
     @PostMapping(value = "/member/delete")
     public ResponseEntity<String> delete(@Login Long memberId, @RequestBody DeleteTaskRequestDto request) {
-        Task task = taskService.findOneWithMember(memberId, request.getTaskId());
-        if(task == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("이미 삭제된 일정입니다."); // 404
-        taskService.remove(task);
+        List<Task> tasks = taskService.findOneWithMember(memberId, request.getTaskId());
+        if(tasks.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("이미 삭제된 일정입니다."); // 404
+        taskService.remove(tasks.get(0));
         return ResponseEntity.status(HttpStatus.OK).body("해당 일정이 삭제되었습니다."); // 200
     }
 
@@ -68,9 +72,9 @@ public class TaskApiController {
      */
     @PostMapping(value = "/member/update")
     public ResponseEntity<String> update(@Login Long memberId, @RequestBody UpdateTaskRequestDto request) {
-        Task task = taskService.findOneWithMember(memberId, request.getTaskId());
-        if(task == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("이미 삭제된 일정입니다."); // 404
-        taskService.update(task, request.content, request.startTime, request.endTime); // 변경 감지
+        List<Task> tasks = taskService.findOneWithMember(memberId, request.getTaskId());
+        if(tasks.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("이미 삭제된 일정입니다."); // 404
+        taskService.update(tasks.get(0), request.content, request.startTime, request.endTime); // 변경 감지
         return ResponseEntity.status(HttpStatus.OK).body("해당 일정이 수정되었습니다."); // 200
     }
     

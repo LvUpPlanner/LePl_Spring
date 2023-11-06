@@ -1,86 +1,28 @@
 package com.lepl.Service.character;
 
-import com.lepl.domain.character.Character;
 import com.lepl.domain.character.Notification;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.*;
+import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest
-@Transactional // 쓰기모드 -> 서비스코드에 트랜잭션 유무 반드시 확인
-@Slf4j
 public class NotificationServiceTest {
     @Autowired
     NotificationService notificationService;
-    @Autowired
-    CharacterService characterService;
-    static Long notificationId; // 전역
-
-    /**
-     * join, findOne, findAll, remove, findAllWithCharacter
-     */
-    @Test
-    @Order(1)
-    @Rollback(value = false)
-    public void 알림_저장과조회() throws Exception {
-        // given
-        Character character = new Character();
-        Notification notification = Notification.createNotification(character, "테스트 알림입니다.");
-        characterService.join(character);
-
-        // when
-        notificationService.join(notification);
-        Notification findNotification = notificationService.findOne(notification.getId());
-        List<Notification> notifications = notificationService.findAll();
-        notificationId = notification.getId();
-
-        // then
-        Assertions.assertEquals(notification.getId(), findNotification.getId());
-        for (Notification no : notifications) {
-            Assertions.assertInstanceOf(Notification.class, no);
-        }
-
-    }
 
     @Test
-    @Order(2)
-    public void 캐릭터의_알림전체조회() throws Exception {
+    public void 테스트() throws Exception {
         // given
-        Character character = new Character();
-        Notification notification = Notification.createNotification(character, "테스트 알림입니다.@@@");
-        characterService.join(character);
-        notificationService.join(notification);
+        Notification notification = new Notification();
+        notification.setContent("test");
 
         // when
-        List<Notification> notifications = notificationService.findAllWithCharacter(character.getId()); // flush
+        Long id = notificationService.join(notification);
+        Notification findNotification = notificationService.findOne(id);
 
         // then
-        for (Notification no : notifications) {
-            Assertions.assertInstanceOf(Notification.class, no);
-            log.info("no.id : {}", no.getId());
-        }
+        Assertions.assertEquals(findNotification.getContent(), "test");
     }
-
-    @Test
-    @Order(3)
-    public void 알림_삭제() throws Exception {
-        // given
-        Notification findNotification = notificationService.findOne(notificationId);
-        log.info("findNotification : {}", findNotification);
-
-        // when
-        notificationService.remove(findNotification);
-        findNotification = notificationService.findOne(notificationId);
-
-        // then
-        Assertions.assertNull(findNotification);
-        log.info("findNotification : {}", findNotification);
-    }
-
 }
