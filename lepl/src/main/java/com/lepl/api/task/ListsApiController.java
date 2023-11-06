@@ -78,9 +78,9 @@ public class ListsApiController {
      */
     @PostMapping(value = "/member/delete")
     public ResponseEntity<String> delete(@Login Long memberId, @RequestBody DeleteRequestDto request) {
-        Lists lists = listsService.findOneWithMemberTask(memberId, request.getListsId());
-        if(lists == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("이미 삭제된 일정입니다."); // 404
-        listsService.remove(lists);
+        List<Lists> lists = listsService.findOneWithMemberTask(memberId, request.getListsId());
+        if(lists.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("이미 삭제된 일정입니다."); // 404
+        listsService.remove(lists.get(0));
         return ResponseEntity.status(HttpStatus.OK).body("해당 일정이 삭제되었습니다."); // 200
     }
 

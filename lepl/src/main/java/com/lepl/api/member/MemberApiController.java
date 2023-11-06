@@ -5,13 +5,10 @@ import com.lepl.Service.character.CharacterService;
 import com.lepl.Service.character.ExpService;
 import com.lepl.Service.member.MemberService;
 import com.lepl.api.argumentresolver.Login;
+import com.lepl.api.task.ListsApiController;
 import com.lepl.domain.character.Character;
 import com.lepl.domain.character.Exp;
 import com.lepl.domain.member.Member;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,11 +16,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.lepl.util.Messages.*;
 
 @Slf4j
 @RestController
@@ -35,30 +34,24 @@ public class MemberApiController {
     private final CharacterService characterService;
 
     /**
-     * login, loginTest(사용X), register, logout, logoutTest(사용X), findAllWithPage, testUidV1(사용X), testUidV2(사용X)
-     */
-
-    /**
      * 로그인
-     * 입력 -> JSON
-     * UID로 조회 후 세션Id 응답 쿠키
+     * uid로 조회 후 세션Id 응답 쿠키
      */
     @PostMapping("/login") // 입력 => json 이용
-    public ResponseEntity<String> login(@RequestBody @Valid LoginMemberRequestDto loginDto, HttpServletRequest request) {
-        Member findMember = memberService.findByUid(loginDto.getUid());
-        // 회원아닌 경우
-        if (findMember == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(FAIL_LOGIN); // 404 : Not Found
+    public ResponseEntity<String> login(@RequestBody @Valid LoginMemberRequestDto LoginRequest, HttpServletRequest request){
+        Member loginMember = memberService.findByUid(LoginRequest.getUid());
+        if(loginMember==null) { // 회원 아닌경우
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("회원이 아닙니다."); // 404 : Not Found
         }
-        // 회원인 경우 : 로그인 성공 처리  => 세션Id 응답 쿠키
+
+        // 로그인 성공 처리  => 세션Id 응답 쿠키
         // 세션 있으면 세션 반환, 없으면 신규 세션 생성
         HttpSession session = request.getSession(); // UUID 형태로 알아서 생성 (기본값 : true)
         // 세션에 로그인 회원 정보 보관
-        session.setAttribute(SESSION_NAME_LOGIN, findMember.getId());
+        session.setAttribute("login_member", loginMember.getId());
 
-        return ResponseEntity.status(HttpStatus.OK).body(SUCCESS_LOGIN); // 200 : OK, 쿠키에 세션을 담아서 같이 전송하므로 클라는 인증서를 발급받은 효과
+        return ResponseEntity.status(HttpStatus.OK).body("회원 인증 완료"); // 200 : OK, 쿠키에 세션을 담아서 같이 전송하므로 클라는 인증서를 발급받은 효과
     }
-
     // test용 GET (웹에서 쿠키 확인)
     @GetMapping("/login/{uid}")
     public String loginTest(@PathVariable("uid") String uid, HttpServletRequest request) {
@@ -67,27 +60,33 @@ public class MemberApiController {
             return "회원이 아닙니다."; // 에러 코드 날려주던지 등등
         }
         HttpSession session = request.getSession();
-        session.setAttribute(SESSION_NAME_LOGIN, loginMember.getId());
+        session.setAttribute("login_member", loginMember.getId());
         return "회원 인증 완료"; // 쿠키에 세션을 담아서 같이 전송하므로 클라는 인증서를 발급받은 효과
     }
 
     /**
      * 회원가입
-     * 입력 -> JSON
-     * UID, Nickname 필수
+     * uid를 필수로 받아서 DB 기록 및 세션Id 메모리에 기록
+     * 이후 세션Id를 응답 쿠키
      */
-    @PostMapping("/register")
-    public ResponseEntity<RegisterMemberResponseDto> register(@RequestBody @Valid RegisterMemberRequestDto registerDto) {
-        Member member = Member.createMember(registerDto.uid, registerDto.nickname);
+    @PostMapping("/register") // 입력 => json 이용
+    public ResponseEntity<RegisterMemberResponseDto> saveMember(@RequestBody @Valid RegisterMemberRequestDto request) {
+        Member member = new Member();
+        member.setUid(request.getUid());
+        member.setNickname(request.getNickname());
 
+        // 캐릭터, 경험치 테이블 추가!
         Exp exp = new Exp();
+        Character character = new Character();
         expService.join(exp);
-        Character character = Character.createCharacter(exp, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+//        log.info("expId : {}", exp.getId());
+        character.setExp(exp);
         characterService.join(character);
+//        log.info("expId FK : {}", character.getExp().getId());
 
         member.setCharacter(character);
-        member = memberService.join(member);
-//        log.info("멤버 테스트 id : {}", member.getId());
+        memberService.join(member);
+
         memberService.initCacheMembers(); // members 캐시 초기화
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new RegisterMemberResponseDto(member));
@@ -95,19 +94,16 @@ public class MemberApiController {
 
     /**
      * 로그아웃
-     * 입력 -> 쿠키에 세션정보
-     * 쿠키에 세션정보를 통해 메모리할당 제거
+     * 세션 정보 메모리에서 제거
      */
     @PostMapping("/logout") // 입력 => 쿠키의 세션정보 이용
-    public ResponseEntity<String> logout(HttpServletRequest request) {
+    public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false); // 세션 없으면 null을 반환
-        if (session == null) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(VALID_LOGOUT);
+        if (session != null) {
+            session.invalidate(); // 세션 제거
         }
-        session.invalidate(); // 세션 제거
-        return ResponseEntity.status(HttpStatus.OK).body(LOGOUT);
+        return "로그아웃 성공";
     }
-
     // test용 GET (웹에서 쿠키 확인)
     @GetMapping("/logout/{uid}")
     public String logoutTest(@PathVariable("uid") String uid, HttpServletRequest request) {
@@ -123,17 +119,17 @@ public class MemberApiController {
     }
 
     /**
-     * 멤버 조회 -> 페이징 사용(size:10)
-     * pageId 필수
-     * FindMemberResponseDto 에 내용 추가하고싶으면 수정
+     * 멤버 조회 -> 페이징
+     * size 는 10
+     * 수정필요! 임의로 레벨정보까지만 포함했음!
      */
     @GetMapping("/{pageId}")
-    public ResponseEntity<List<FindMemberResponseDto>> findAllWithPage(@PathVariable int pageId) {
+    public List<FindMemberResponseDto> findAllWithPage(@PathVariable int pageId) {
         List<Member> members = memberService.findAllWithPage(pageId);
         List<FindMemberResponseDto> result = members.stream()
                 .map(o -> new FindMemberResponseDto(o))
                 .collect(Collectors.toList());
-        return ResponseEntity.status(HttpStatus.OK).body(result);
+        return result;
     }
 
 
@@ -142,16 +138,15 @@ public class MemberApiController {
     public String testUidV1(HttpServletRequest request) {
         HttpSession session = request.getSession();
 //        Member member = (Member) session.getAttribute("login_member");
-        Long memberId = Long.valueOf(session.getAttribute(SESSION_NAME_LOGIN).toString());
+        Long memberId = Long.valueOf(session.getAttribute("login_member").toString());
         Member member = memberService.findOne(memberId);
-        return "테스트 uid : " + member.getUid();
+        return "테스트 uid : "+member.getUid();
     }
-
     // @Login Long 으로 바로 멤버 id 가져와서 멤버 객체 조회 되는지 테스트 => 이제부터 위 방법 말고 이 방법을 사용하면 된다.
     @GetMapping("/v2/testUid")
     public String testUidV2(@Login Long id) {
         Member member = memberService.findOne(id);
-        return "테스트 uid : " + member.getUid();
+        return "테스트 uid : "+member.getUid();
     }
 
     @Getter
@@ -159,7 +154,6 @@ public class MemberApiController {
         private Long id;
         private String nickname;
         private Long level;
-
         public FindMemberResponseDto(Member member) {
             this.id = member.getId();
             this.nickname = member.getNickname();
@@ -172,25 +166,21 @@ public class MemberApiController {
         private Long id;
         private String uid;
         private String nickname;
-
         public RegisterMemberResponseDto(Member member) {
             this.id = member.getId();
             this.uid = member.getUid();
             this.nickname = member.getNickname();
         }
     }
-
     @Getter
     static class RegisterMemberRequestDto {
-        @NotEmpty(message = "UID는 필수입니다.") // 에러코드 날려줘도 됨 (Valid와 세트)
+        @NotEmpty(message = "회원 정보는 필수입니다.") // 에러코드 날려줘도 됨 (Valid와 세트)
         private String uid;
-        @NotEmpty(message = "닉네임은 필수입니다.") // 에러코드 날려줘도 됨 (Valid와 세트)
         private String nickname;
     }
-
     @Getter
     static class LoginMemberRequestDto {
-        @NotEmpty(message = "UID는 필수입니다.")
+        @NotEmpty(message = "회원 정보는 필수입니다.")
         private String uid;
     }
 }

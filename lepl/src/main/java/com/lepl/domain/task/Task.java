@@ -1,10 +1,13 @@
 package com.lepl.domain.task;
 
-import jakarta.persistence.*;
+import com.lepl.domain.member.Member;
 import lombok.Getter;
 import lombok.Setter;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Getter
@@ -18,7 +21,7 @@ public class Task {
     private String content;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private Long remainTime = 0L; // 잔여시간 -> 반환때는 시:분:초로!
+    private Long remainTime=0L; // 잔여시간 -> 반환때는 시:분:초로!
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL) // 1:1관계며 같이 존재함. (생명주기 같아야함)
     @JoinColumn(name = "task_status_id")
@@ -37,18 +40,5 @@ public class Task {
         task.endTime = endTime;
         task.taskStatus = taskStatus;
         return task;
-    }
-
-    //==비지니스 편의 메서드==//
-    public Task updateTask(String content, LocalDateTime startTime, LocalDateTime endTime) {
-        this.content = content;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        return this;
-    }
-    public Task updateTaskStatus(TaskStatus taskStatus, Long remainTime) {
-        this.taskStatus = taskStatus;
-        this.remainTime = remainTime;
-        return this;
     }
 }

@@ -15,9 +15,7 @@ public class TaskStatusRepository {
      * save, findOne
      */
     public void save(TaskStatus taskStatus) {
-        if (taskStatus.getId() == null) {
-            em.persist(taskStatus);
-        }
+        em.persist(taskStatus);
     }
     public TaskStatus findOne(Long id) {
         return em.find(TaskStatus.class, id);

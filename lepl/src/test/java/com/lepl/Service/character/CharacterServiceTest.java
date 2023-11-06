@@ -1,91 +1,89 @@
 package com.lepl.Service.character;
 
-import com.lepl.Service.member.MemberService;
+import com.lepl.domain.character.*;
 import com.lepl.domain.character.Character;
-import com.lepl.domain.character.Exp;
-import com.lepl.domain.member.Member;
-import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.List;
 
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest
-@Transactional // 쓰기모드 -> 서비스코드에 트랜잭션 유무 반드시 확인
+@Transactional
 @Slf4j
 class CharacterServiceTest {
     @Autowired
-    EntityManager em;
-    @Autowired
     CharacterService characterService;
+    @Autowired
+    CharacterItemService characterItemService;
     @Autowired
     ExpService expService;
     @Autowired
-    MemberService memberService;
-    static Long characterId; // 전역
+    FollowService followService;
 
     /**
-     * join, findOne, findCharacterWithMember, remove
+     * 캐릭터, 경험치 한번에 테스트
      */
+    
     @Test
-    @Order(1)
     @Rollback(value = false)
-    public void 캐릭저_저장과조회() throws Exception {
+    public void join() throws Exception {
         // given
         Exp exp = new Exp();
-        Character character = Character.createCharacter(exp, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        exp.setExpAll(0l);
+        exp.setExpValue(0l);
+        List<CharacterItem> characterItems = new ArrayList<>();
+        List<Follow> follows = new ArrayList<>();
+        List<Notification> notifications = new ArrayList<>();
+
+//        exp.updateExp(15d); // 경험치 15
+        Character character = Character.createCharacter(exp, characterItems, follows, notifications);
+
+        for(int i=0; i<2; i++) {
+            CharacterItem characterItem = new CharacterItem();
+            characterItem.setItemId(1l);
+            characterItem.setWearingStatus(true);
+            character.addCharacterItem(characterItem);
+            characterItemService.join(characterItem);
+
+            Follow follow = new Follow();
+//            character.addFriend(follow);
+            followService.join(follow);
+        }
 
         // when
-        expService.join(exp);
         characterService.join(character);
-        Character findCharacter = characterService.findOne(character.getId());
+        expService.join(exp);
 
         // then
-        Assertions.assertEquals(character.getId(), findCharacter.getId());
-        log.info("character Id : {}", character.getId());
-        characterId = character.getId();
+        log.info("character.getId() : {}",character.getId());
+        log.info("character.getExp().getExpAll() : {}",character.getExp().getExpAll());
+        log.info("character.getExp().getExpValue() : {}",character.getExp().getExpValue());
+        log.info("character.getExp().getLevel() : {}",character.getExp().getLevel());
+        log.info("character.getCharacterItems().get(0).getItemId() : {}",character.getCharacterItems().get(0).getItemId());
     }
 
-
     @Test
-    @Order(2)
-    public void 회원의_캐릭터조회() throws Exception {
+    public void find() throws Exception {
         // given
-        Exp exp = new Exp();
-        Character character = Character.createCharacter(exp, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-        Member member = Member.createMember("캐릭터서비스 테스트", "TEST");
-        expService.join(exp);
-        characterService.join(character);
-        member.setCharacter(character);
-        memberService.join(member);
 
         // when
-        Character findCharacter = characterService.findCharacterWithMember(member.getId());
 
         // then
-        Assertions.assertEquals(character.getId(), findCharacter.getId());
+
     }
 
     @Test
-    @Order(3)
-    @Rollback(value = false)
-    public void 캐릭터_삭제() throws Exception {
+    public void remove() throws Exception {
         // given
-        Character character = characterService.findOne(characterId); // 캐릭터_저장과조회() 에서 저장했던 캐릭터 조회
 
         // when
-        characterService.remove(character); // persist
-        log.info("character : {}", character); // 위에서 찾은 character 주소 그대로 사용
-        Character findCharacter = characterService.findOne(characterId);
-        log.info("findCharacter : {}", findCharacter); // null -> 영속성 컨텍스트에서 이미 삭제되었다는 것
 
         // then
-        Assertions.assertEquals(character.getId(), characterId);
-        Assertions.assertEquals(findCharacter, null);
+
     }
 }

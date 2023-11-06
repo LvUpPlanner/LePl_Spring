@@ -7,15 +7,13 @@ import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 @RequiredArgsConstructor
 public class ExpRepository {
     private final EntityManager em;
 
     /**
-     * save, findOne, remove, findOneWithMember, initPointToday
+     * save, findOne, remove
      */
     public void save(Exp exp) {
         if(exp.getId() == null) {
@@ -26,21 +24,19 @@ public class ExpRepository {
     public Exp findOne(Long id) {
         return em.find(Exp.class, id);
     }
-    public Exp findOneWithMember(Long memberId) {
-        List<Member> members = em.createQuery(
-                "select m from Member m" +
+    public Member findOneWithMember(Long memberId) {
+            return em.createQuery(
+                "select distinct m from Member m" +
                         " join fetch m.character c" +
                         " join fetch c.exp e" +
                         " where m.id = :memberId", Member.class)
                 .setParameter("memberId", memberId)
-                .getResultList();
-        if(members.isEmpty()) return null;
-        else return members.get(0).getCharacter().getExp();
+                .getSingleResult();
     }
 
     public void remove(Exp exp) { em.remove(exp);}
 
-    public void initPointToday() {
+    public void updatePoint() {
         em.createQuery(
             "update Exp e set e.pointTodayTimer=0, e.pointTodayTask=0")
                 .executeUpdate();

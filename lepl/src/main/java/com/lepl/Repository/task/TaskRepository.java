@@ -13,7 +13,7 @@ public class TaskRepository {
     private final EntityManager em;
 
     /**
-     * save, findOne, findAll, findOneWithMember, remove
+     * save, findOne, findAll, remove
      */
     public void save(Task task) {
         if(task.getId() == null){ // null 인 경우 db에 없다는 의미(db에 insert 할 때 id 생성)
@@ -30,8 +30,8 @@ public class TaskRepository {
                 .getResultList();
     }
 
-    public Task findOneWithMember(Long memberId, Long taskId) {
-        List<Task> tasks = em.createQuery(
+    public List<Task> findOneWithMember(Long memberId, Long taskId) {
+        return em.createQuery(
                 "select distinct t from Task t" +
                         " join fetch t.lists l" +
                         " where t.id = :taskId and" +
@@ -39,8 +39,6 @@ public class TaskRepository {
                 .setParameter("taskId", taskId)
                 .setParameter("memberId", memberId)
                 .getResultList();
-        if(tasks.isEmpty()) return null;
-        else return tasks.get(0);
     }
 
     public void remove(Task task) {

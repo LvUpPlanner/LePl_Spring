@@ -2,6 +2,7 @@ package com.lepl.Service.character;
 
 import com.lepl.Repository.character.FollowRepository;
 import com.lepl.domain.character.Follow;
+import com.lepl.domain.member.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +16,7 @@ public class FollowService {
     private final FollowRepository followRepository;
 
     /**
-     * join, findOne, findAll, remove, findAllWithFollowing, findAllWithFollower
+     * save, findOne, findAll, remove
      */
     @Transactional // 쓰기모드
     public Long join(Follow follow) {
@@ -28,30 +29,18 @@ public class FollowService {
 
     private void validateDuplicateFollow(Follow follow) {
         Follow findFollow = followRepository.findById(follow.getFollowerId(), follow.getFollowingId());
-        if (findFollow != null) {
+        if(findFollow!=null){
             // IllegalStateException 예외를 호출
             throw new IllegalStateException("이미 팔로우 요청을 하셨습니다.");
         }
     }
 
-    public Follow findOne(Long followId) {
-        return followRepository.findOne(followId);
-    }
-
-    public List<Follow> findAll() {
-        return followRepository.findAll();
-    }
+    public Follow findOne(Long followId) { return followRepository.findOne(followId); }
+    public List<Follow> findAll() {return followRepository.findAll();}
 
     @Transactional
-    public void remove(Follow follow) {
-        followRepository.remove(follow);
-    }
+    public void remove(Follow follow) { followRepository.remove(follow); }
 
-    public List<Follow> findAllWithFollowing(Long characterId) {
-        return followRepository.findAllWithFollowing(characterId);
-    }
-
-    public List<Follow> findAllWithFollower(Long characterId) {
-        return followRepository.findAllWithFollower(characterId);
-    }
+    public List<Follow> findAllWithFollowing(Long characterId) { return followRepository.findAllWithFollowing(characterId); }
+    public List<Follow> findAllWithFollower(Long characterId) { return followRepository.findAllWithFollower(characterId); }
 }
