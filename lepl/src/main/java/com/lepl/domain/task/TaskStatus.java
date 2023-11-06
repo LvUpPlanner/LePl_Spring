@@ -1,17 +1,17 @@
 package com.lepl.domain.task;
 
 
-import com.lepl.domain.member.Member;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import jakarta.persistence.*;
-
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @Table(name = "TASK_STATUS")
 public class TaskStatus {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "task_status_id")
     private Long id;
 
@@ -24,5 +24,12 @@ public class TaskStatus {
         taskStatus.setCompletedStatus(completedStatus);
         taskStatus.setTimerOnOff(timerOnOff);
         return taskStatus;
+    }
+
+    //==비지니스 편의 메서드==//
+    public TaskStatus update(Boolean completedStatus, Boolean timerOnOff) {
+        this.completedStatus = completedStatus;
+        this.timerOnOff = timerOnOff;
+        return this;
     }
 }

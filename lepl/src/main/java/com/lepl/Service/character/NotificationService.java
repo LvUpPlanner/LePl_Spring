@@ -15,16 +15,26 @@ public class NotificationService {
     private final NotificationRepository notificationRepository;
 
     /**
-     * save, findOne, findAll, remove
+     * join, findOne, findAll, remove, findAllWithCharacter
      */
     @Transactional // 쓰기모드
-    public Long join(Notification notification) { notificationRepository.save(notification); return notification.getId(); }
+    public Long join(Notification notification) {
+        notificationRepository.save(notification);
+        return notification.getId();
+    }
 
-    public Notification findOne(Long notificationId) { return notificationRepository.findOne(notificationId); }
-    public List<Notification> findAll() {return notificationRepository.findAll();}
+    public Notification findOne(Long notificationId) {
+        return notificationRepository.findOne(notificationId);
+    }
+
+    public List<Notification> findAll() {
+        return notificationRepository.findAll();
+    }
 
     @Transactional
-    public void remove(Notification notification) { notificationRepository.remove(notification); }
+    public void remove(Notification notification) {
+        notificationRepository.remove(notification);
+    }
 
     public List<Notification> findAllWithCharacter(Long characterId) {
         return notificationRepository.findAllWithCharacter(characterId);

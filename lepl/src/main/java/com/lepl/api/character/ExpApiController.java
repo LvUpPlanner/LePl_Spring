@@ -49,9 +49,9 @@ public class ExpApiController {
      */
     @GetMapping("/all")
     public Exp findOneWithMember(@Login Long memberId) {
-        Member member = expService.findOneWithMember(memberId);
-        if(member == null) return null;
-        return member.getCharacter().getExp();
+        Exp exp = expService.findOneWithMember(memberId);
+        if(exp == null) return null;
+        return exp;
     }
 
     /**
@@ -61,9 +61,8 @@ public class ExpApiController {
     @PostMapping("/tasks")
     public ResponseEntity<String> expTask(@Login Long memberId, @RequestBody List<TaskDto> taskDtos) {
         log.debug("exp/tasks 입장");
-        Member member = expService.findOneWithMember(memberId); // 영속 exp
-        if(member == null) return null;
-        Exp exp = member.getCharacter().getExp();;
+        Exp exp = expService.findOneWithMember(memberId); // 영속 exp
+        if(exp == null) return null;
         Long pointTimer = 0L;
         Long pointTask = 0L;
         log.debug("기존 exp? : {}",exp.getExpAll());
@@ -75,8 +74,8 @@ public class ExpApiController {
         for(Task task : tasks) {
             if(task.getTaskStatus().getCompletedStatus()) continue; // 이미 이전에 완료했던 일정이라 pass
             if(!task.getTaskStatus().getTimerOnOff()) { // 타이머가 아닌지 추가 점검
-                TaskStatus taskStatus = TaskStatus.createTaskStatus(true, false);
-                taskService.updateStatus(task, taskStatus, null);
+//                TaskStatus taskStatus = TaskStatus.createTaskStatus(true, false);
+                taskService.updateStatus(task, true, false, null);
                 pointTask++;
                 log.debug("확인용 pointTask : {}",pointTask);
             }
@@ -92,10 +91,9 @@ public class ExpApiController {
      */
     @PostMapping("/timers")
     public ResponseEntity<String> expTimer(@Login Long memberId, @RequestBody TimerDto timerDto) {
-        Member member = expService.findOneWithMember(memberId); // 영속 exp
+        Exp exp = expService.findOneWithMember(memberId); // 영속 exp
         Task task = taskService.findOne(timerDto.getTaskId());
-        if(member == null || task == null) return null;
-        Exp exp = member.getCharacter().getExp();
+        if(exp == null || task == null) return null;
         Long pointTimer = 0L;
         Long pointTask = 0L;
         // 이미 이전에 완료했던 일정은 아무처리 없이 null
@@ -130,7 +128,7 @@ public class ExpApiController {
                 curTime = curTime%(60*60*1000);
                 pointTimer = expTime; // 경험치용 시간
             }
-            taskService.updateStatus(task, taskStatus, remainTime); // 더티체킹
+            taskService.updateStatus(task, taskStatus.getCompletedStatus(), taskStatus.getTimerOnOff(), remainTime); // 더티체킹
             listsService.updateTime(task.getLists(), timerAllUseTime, curTime); // 더티체킹
         }else {
             log.debug("처음이후 타이머 종료(일정완료)");
@@ -156,7 +154,7 @@ public class ExpApiController {
                 curTime = curTime%(60*60*1000);
                 pointTimer = expTime; // 경험치용 시간
             }
-            taskService.updateStatus(task, taskStatus, remainTime); // 더티체킹
+            taskService.updateStatus(task, taskStatus.getCompletedStatus(), taskStatus.getTimerOnOff(), remainTime); // 더티체킹
             listsService.updateTime(task.getLists(), timerAllUseTime, curTime); // 더티체킹
         }
         // 경험치 업데이트
@@ -192,8 +190,8 @@ public class ExpApiController {
         memberService.join(member);
 
         // Task 3개정도
-        Lists lists = new Lists();
-        lists.setMember(member);
+        LocalDateTime today = LocalDateTime.now();
+        Lists lists = Lists.createLists(member, today, new ArrayList<>());
         listsService.join(lists); // 먼저 lists init
         for(long i = 1 ; i<=3; i++) {
             LocalDateTime end = LocalDateTime.now();
