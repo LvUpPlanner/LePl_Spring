@@ -20,9 +20,9 @@ public class ExpService {
      * join, findOne, findOneWithMember, remove, update, initPointToday
      */
     @Transactional // 쓰기모드
-    public Long join(Exp exp) {
+    public Exp join(Exp exp) {
         expRepository.save(exp);
-        return exp.getId();
+        return exp;
     }
 
     public Exp findOne(Long expId) {

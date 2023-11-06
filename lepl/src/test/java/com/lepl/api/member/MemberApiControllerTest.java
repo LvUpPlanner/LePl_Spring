@@ -70,6 +70,8 @@ class MemberApiControllerTest {
 
         // then
         verify(memberService).join(any());
+        verify(expService).join(any());
+        verify(characterService).join(any());
     }
 
     @Test
