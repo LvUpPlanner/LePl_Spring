@@ -1,7 +1,8 @@
-package com.lepl.Service.character;
+package com.lepl.Repository.character;
 
 import com.lepl.domain.character.Character;
 import com.lepl.domain.character.Follow;
+import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,63 +14,64 @@ import java.util.List;
 
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@SpringBootTest
-@Transactional // 쓰기모드 -> 서비스코드에 트랜잭션 유무 반드시 확인
+@SpringBootTest // 스프링 빈 사용하려면 통합테스트 사용 필수
 @Slf4j
-class FollowServiceTest {
+class FollowRepositoryTest {
     @Autowired
-    CharacterService characterService;
+    EntityManager em;
     @Autowired
-    FollowService followService;
-    @Autowired
-    ExpService expService;
+    FollowRepository followRepository;
     static Long followId; // 전역
     static Long characterId; // 전역
     static final Long CHARACTER_EX_ID = 10L;
-    static final String MESSAGE = "이미 팔로우 요청을 하셨습니다.";
 
     /**
-     * join(중복검증 포함), findOne, findAll, remove, findAllWithFollowing, findAllWithFollower
+     * save, findOne, findAll, findById, remove, findAllWithFollowing, findAllWithFollower
      */
-    @Order(1)
     @Test
+    @Order(1)
+    @Transactional
     @Rollback(value = false)
     public void 팔로우_저장과조회() throws Exception {
         // given
         Character character = new Character();
-        characterService.join(character); // id 기록위함
+        em.persist(character); // id 기록위함
         characterId = character.getId();
         Follow follow = Follow.createFollow(character, CHARACTER_EX_ID); // followerId 는 자동으로 자기자신 등록, followingId 는 임의로 10L인 캐릭터로 설정
 
         // when
-        followService.join(follow);
-        Follow findFollow = followService.findOne(follow.getId());
-        List<Follow> follows = followService.findAll();
+        followRepository.save(follow);
+        Follow findFollow = followRepository.findOne(follow.getId());
+        List<Follow> follows = followRepository.findAll();
+        Follow findFollow2 = followRepository.findById(follow.getFollowerId(), follow.getFollowingId());
+        followId = follow.getId();
 
         // then
         Assertions.assertEquals(follow.getId(), findFollow.getId());
+        Assertions.assertEquals(follow.getId(), findFollow2.getId());
         for (Follow f : follows) {
             Assertions.assertInstanceOf(Follow.class, f);
         }
-        followId = follow.getId();
     }
 
-    @Order(2)
     @Test
+    @Order(2)
+    @Transactional
     @Rollback(value = false)
     public void 팔로잉_팔로워_조회() throws Exception {
         // given
         Character c = new Character(); // characterId 인 캐릭터를 팔로우 하는 캐릭터를 임의로 생성 목적
-        characterService.join(c);
+        em.persist(c);
         Follow follow = Follow.createFollow(c, characterId);
-        followService.join(follow);
+        followRepository.save(follow);
+        em.flush();
 
         List<Follow> followers;
         List<Follow> followings;
 
         // when
-        followers = followService.findAllWithFollower(characterId);
-        followings = followService.findAllWithFollowing(characterId);
+        followers = followRepository.findAllWithFollower(characterId);
+        followings = followRepository.findAllWithFollowing(characterId);
 
         // then
         for (Follow f : followers) {
@@ -82,37 +84,25 @@ class FollowServiceTest {
             Assertions.assertEquals(f.getFollowingId(), CHARACTER_EX_ID);
             log.info("내가 팔로잉 하는 캐릭터 id : {}", f.getFollowingId()); // CHARACTER_EX_ID 이어야 정상
         }
-
     }
 
-    @Order(4)
     @Test
+    @Order(3)
+    @Transactional
+    @Rollback(value = false)
     public void 팔로우_제거() throws Exception {
         // given
-        Follow findFollow = followService.findOne(followId);
+        Follow findFollow = followRepository.findOne(followId);
+        log.info("findFollow : {}", findFollow);
 
         // when
-        followService.remove(findFollow); // 영속성에서 이미 제거
-        findFollow = followService.findOne(followId); // null 일 수 밖에
+        followRepository.remove(findFollow);
+        findFollow = followRepository.findOne(followId);
 
         // then
-        Assertions.assertNull(findFollow);
+        Assertions.assertEquals(findFollow, null);
+        log.info("findNotification : {}", findFollow);
+
     }
-
-    @Order(3)
-    @Test
-    public void 중복검증_예외() throws Exception {
-        // given
-        Follow findFollow = followService.findOne(followId);
-
-        // when
-        // then
-        Throwable exception = Assertions.assertThrows(IllegalStateException.class, () -> {
-            followService.join(findFollow); // 중복검증 예외 발생
-        });
-        Assertions.assertEquals(MESSAGE, exception.getMessage());
-        log.info("exception.getMessage() : {}", exception.getMessage());
-    }
-
 
 }
