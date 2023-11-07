@@ -69,7 +69,9 @@ public class ListsRepository {
      * TaskApiController 에서 사용하는 함수들
      */
     public void save(Lists lists) {
-        em.persist(lists);
+        if(lists.getId() == null) {
+            em.persist(lists);
+        }
     }
     // 현재 들어온 날짜의 lists(=하루일정 모음) 가 있는지 조회 + memberId 까지 같이 사용 => 이렇게 해야 구분이 가능
     // 단, LocalDateTime -> DateTime 형태로 변환 후 비교 하겠음.

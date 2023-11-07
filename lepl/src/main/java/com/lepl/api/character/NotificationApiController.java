@@ -3,11 +3,9 @@ package com.lepl.api.character;
 
 import com.lepl.Service.character.CharacterService;
 import com.lepl.Service.character.NotificationService;
-import com.lepl.Service.member.MemberService;
 import com.lepl.api.argumentresolver.Login;
 import com.lepl.domain.character.Character;
 import com.lepl.domain.character.Notification;
-import com.lepl.domain.member.Member;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,13 +28,19 @@ public class NotificationApiController {
     private final NotificationService notificationService;
 
     /**
+     * findAllWithCharacter
+     */
+
+    /**
      * 알림 조회 API
      */
     @GetMapping("/all")
     public ResponseEntity<List<FindNotificationDto>> findAllWithCharacter(@Login Long memberId) {
         Character character = characterService.findCharacterWithMember(memberId);
         List<Notification> notifications = notificationService.findAllWithCharacter(character.getId());
-        if(notifications.isEmpty()) return null;
+        if (notifications.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null); // 204
+        }
         List<FindNotificationDto> result = notifications.stream()
                 .map(o -> new FindNotificationDto(o))
                 .collect(Collectors.toList());
@@ -51,6 +55,7 @@ public class NotificationApiController {
         private String content;
         private LocalDateTime startTime;
         private LocalDateTime endTime;
+
         public FindNotificationDto(Notification notification) {
             this.id = notification.getId();
             this.content = notification.getContent();
