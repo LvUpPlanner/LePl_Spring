@@ -10,5 +10,8 @@ public class Messages {
     public static final String SUCCESS_FOLLOW = "팔로우 추가(알림 포함)가 완료되었습니다.";
     public static final String SUCCESS_FOLLOW_CANCEL = "팔로우를 취소하였습니다.";
     public static final String UNAUTHORIZED_FOLLOW_CANCEL = "팔로우를 취소할 권한이 없습니다.";
-
+    public static final String SUCCESS_TASK = "일정을 추가하였습니다.";
+    public static final String VALID_TASK = "이미 삭제된 일정입니다.";
+    public static final String SUCCESS_TASK_DELETE = "해당 일정이 삭제되었습니다.";
+    public static final String SUCCESS_TASK_UPDATE = "해당 일정이 수정되었습니다.";
 }
