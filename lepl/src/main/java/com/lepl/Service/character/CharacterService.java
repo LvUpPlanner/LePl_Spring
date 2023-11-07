@@ -20,7 +20,10 @@ public class CharacterService {
      * save, findOne, remove
      */
     @Transactional // 쓰기모드
-    public Long join(Character character) { characterRepository.save(character); return character.getId(); }
+    public Character join(Character character) {
+        characterRepository.save(character);
+        return character;
+    }
 
     public Character findOne(Long characterId) { return characterRepository.findOne(characterId); }
 

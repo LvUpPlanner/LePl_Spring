@@ -22,7 +22,10 @@ public class ExpService {
      * save, findOne, remove
      */
     @Transactional // 쓰기모드
-    public Long join(Exp exp) { expRepository.save(exp); return exp.getId(); }
+    public Exp join(Exp exp) {
+        expRepository.save(exp);
+        return exp;
+    }
 
     public Exp findOne(Long expId) { return expRepository.findOne(expId); }
     public Member findOneWithMember(Long memberId) { return expRepository.findOneWithMember(memberId);}

@@ -2,12 +2,12 @@ package com.lepl.domain.character;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @Getter
 public class Follow {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "follow_id")
     private Long id;
 
@@ -35,7 +35,10 @@ public class Follow {
     public void setCharacter(Character character) {
         this.character = character;
     }
+
     public void setFollowerId(Long followerId) {
         this.followerId = followerId;
     }
+
+    public void setId(Long id) { this.id = id; }
 }
