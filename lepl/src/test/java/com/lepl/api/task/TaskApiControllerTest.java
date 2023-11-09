@@ -6,8 +6,10 @@ import com.lepl.Service.member.MemberService;
 import com.lepl.Service.task.ListsService;
 import com.lepl.Service.task.TaskService;
 import com.lepl.Service.task.TaskStatusService;
+import com.lepl.domain.member.Member;
 import com.lepl.domain.task.Lists;
 import com.lepl.domain.task.Task;
+import com.lepl.domain.task.TaskStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +20,11 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.lepl.util.Messages.SESSION_NAME_LOGIN;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -67,7 +69,7 @@ class TaskApiControllerTest {
         map.put("endTime", en);
         ObjectMapper obj = new ObjectMapper();
         String content = obj.registerModule(new JavaTimeModule()).writeValueAsString(map); // Jackson 2.8.0 이전 버전에서는 JavaTimeModule 을 써야 에러 해결(직렬화 에러)
-        Lists lists = new Lists();
+        Lists lists = Lists.createLists(Member.createMember("1", "1"), st, new ArrayList<>());
 
         // when
         when(listsService.findByCurrent(MEMBER_ID, st)).thenReturn(lists);
@@ -92,7 +94,7 @@ class TaskApiControllerTest {
     public void 일정_삭제() throws Exception {
         // given
         String content = "{\"taskId\":1}";
-        Task task = new Task();
+        Task task = Task.createTask("test", LocalDateTime.now(), LocalDateTime.now(), TaskStatus.createTaskStatus(false, false));
 
         // when
         when(taskService.findOneWithMember(MEMBER_ID, TASK_ID)).thenReturn(task);
@@ -123,7 +125,8 @@ class TaskApiControllerTest {
         map.put("taskId", TASK_ID);
         ObjectMapper obj = new ObjectMapper();
         String content = obj.registerModule(new JavaTimeModule()).writeValueAsString(map); // Jackson 2.8.0 이전 버전에서는 JavaTimeModule 을 써야 에러 해결(직렬화 에러)
-        Task task = new Task();
+        Task task = Task.createTask("test", LocalDateTime.now(), LocalDateTime.now(), TaskStatus.createTaskStatus(false, false));
+
 
         // when
         when(taskService.findOneWithMember(MEMBER_ID, TASK_ID)).thenReturn(task);

@@ -5,15 +5,17 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
-@Getter @Setter
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Slf4j
 public class Exp {
     @Id @GeneratedValue
@@ -28,6 +30,17 @@ public class Exp {
     private Long pointTodayTimer=0L; // 일일 타이머 경험치량
     private Long pointTodayTask=0L; // 일일 일정 경험치량
 
+
+    /**
+     * 생성 편의 메서드
+     */
+    public static Exp createExp(Long expAll, Long expValue, Long level) {
+        Exp exp = new Exp();
+        exp.expAll = expAll;
+        exp.expValue = expValue;
+        exp.level = level;
+        return exp;
+    }
 
     /*
      * 비즈니스 편의 메서드

@@ -1,8 +1,9 @@
 package com.lepl.domain.task;
 
-import com.lepl.domain.member.Member;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import jakarta.persistence.*;
 
@@ -11,7 +12,7 @@ import java.time.LocalTime;
 
 @Entity
 @Getter
-@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Task {
     @Id
     @GeneratedValue
@@ -39,6 +40,29 @@ public class Task {
         task.startTime = startTime;
         task.endTime = endTime;
         task.taskStatus = taskStatus;
+        task.remainTime = 0L;
         return task;
+    }
+
+    //==연관관계 편의 메서드==//
+    public void setLists(Lists lists) {
+        this.lists = lists;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    //==비지니스 편의 메서드==//
+    public Task updateTask(String content, LocalDateTime startTime, LocalDateTime endTime) {
+        this.content = content;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        return this;
+    }
+
+    public Task updateTaskStatus(TaskStatus taskStatus, Long remainTime) {
+        this.taskStatus = taskStatus;
+        this.remainTime = remainTime;
+        return this;
     }
 }

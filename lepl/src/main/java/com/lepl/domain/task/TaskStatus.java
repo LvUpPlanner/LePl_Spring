@@ -1,14 +1,16 @@
 package com.lepl.domain.task;
 
 
-import com.lepl.domain.member.Member;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import jakarta.persistence.*;
 
 @Entity
-@Getter @Setter
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "TASK_STATUS")
 public class TaskStatus {
     @Id @GeneratedValue
@@ -21,8 +23,8 @@ public class TaskStatus {
     //==생성 편의 메서드==//
     public static TaskStatus createTaskStatus(Boolean completedStatus, Boolean timerOnOff) {
         TaskStatus taskStatus = new TaskStatus();
-        taskStatus.setCompletedStatus(completedStatus);
-        taskStatus.setTimerOnOff(timerOnOff);
+        taskStatus.completedStatus = completedStatus;
+        taskStatus.timerOnOff = timerOnOff;
         return taskStatus;
     }
 }

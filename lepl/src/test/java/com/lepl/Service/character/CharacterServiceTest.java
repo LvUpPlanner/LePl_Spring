@@ -33,38 +33,37 @@ class CharacterServiceTest {
     @Rollback(value = false)
     public void join() throws Exception {
         // given
-        Exp exp = new Exp();
-        exp.setExpAll(0l);
-        exp.setExpValue(0l);
-        List<CharacterItem> characterItems = new ArrayList<>();
-        List<Follow> follows = new ArrayList<>();
-        List<Notification> notifications = new ArrayList<>();
-
-//        exp.updateExp(15d); // 경험치 15
-        Character character = Character.createCharacter(exp, characterItems, follows, notifications);
-
-        for(int i=0; i<2; i++) {
-            CharacterItem characterItem = new CharacterItem();
-            characterItem.setItemId(1l);
-            characterItem.setWearingStatus(true);
-            character.addCharacterItem(characterItem);
-            characterItemService.join(characterItem);
-
-            Follow follow = new Follow();
-//            character.addFriend(follow);
-            followService.join(follow);
-        }
+        Exp exp = Exp.createExp(0L,0L,1L);
+        Character character = Character.createCharacter(exp, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
         // when
         characterService.join(character);
         expService.join(exp);
 
         // then
-        log.info("character.getId() : {}",character.getId());
-        log.info("character.getExp().getExpAll() : {}",character.getExp().getExpAll());
-        log.info("character.getExp().getExpValue() : {}",character.getExp().getExpValue());
-        log.info("character.getExp().getLevel() : {}",character.getExp().getLevel());
-        log.info("character.getCharacterItems().get(0).getItemId() : {}",character.getCharacterItems().get(0).getItemId());
+        Assertions.assertEquals(character.getId(), findCharacter.getId());
+        log.info("character Id : {}", character.getId());
+        characterId = character.getId();
+    }
+
+
+    @Test
+    @Order(2)
+    public void 회원의_캐릭터조회() throws Exception {
+        // given
+        Exp exp = Exp.createExp(0L,0L,1L);
+        Character character = Character.createCharacter(exp, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        Member member = Member.createMember("캐릭터서비스 테스트", "TEST");
+        expService.join(exp);
+        characterService.join(character);
+        member.setCharacter(character);
+        memberService.join(member);
+
+        // when
+        Character findCharacter = characterService.findCharacterWithMember(member.getId());
+
+        // then
+        Assertions.assertEquals(character.getId(), findCharacter.getId());
     }
 
     @Test

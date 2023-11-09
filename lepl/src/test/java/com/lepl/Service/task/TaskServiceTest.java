@@ -45,9 +45,17 @@ public class TaskServiceTest {
     @Test
     public void 일정삭제() throws Exception {
         // given
-        Task getTask = null;
-        List<Task> list_ori = null;
-        List<Task> list_nxt = null;
+        Task task = Task.createTask("멤버 테스트", LocalDateTime.now(), LocalDateTime.now(), TaskStatus.createTaskStatus(false,false));
+        Member member = Member.createMember("UID", "닉네임");
+        em.persist(member); // id 위해(FK 오류 방지)
+        Lists lists = Lists.createLists(member, LocalDateTime.now(), new ArrayList<>());
+        em.persist(task); // id
+        lists.addTask(task);
+        member.addLists(lists);
+        em.persist(lists);
+        log.info("전");
+        em.flush(); // insert
+        log.info("후");
 
         // when
         list_ori = taskService.findTasks(); // test1, test2

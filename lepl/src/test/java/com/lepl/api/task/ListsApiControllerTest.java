@@ -3,6 +3,7 @@ package com.lepl.api.task;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.lepl.Service.task.ListsService;
+import com.lepl.domain.member.Member;
 import com.lepl.domain.task.Lists;
 import com.lepl.domain.task.Task;
 import com.lepl.domain.task.TaskStatus;
@@ -51,9 +52,9 @@ class ListsApiControllerTest {
     public void 필요객체_생성() {
         LocalDateTime localDateTime = LocalDateTime.now();
         listsList = new ArrayList<>();
-        Lists l1 = new Lists();
+        Member member = Member.createMember("111", "경험치 테스트");
+        Lists l1 = Lists.createLists(member, LocalDateTime.now(), new ArrayList<>());
         l1.setId(1L);
-        l1.setListsDate(localDateTime);
         l1.setTimerAllUseTime(5L);
         TaskStatus taskStatus = TaskStatus.createTaskStatus(true, true);
         Task t1 = Task.createTask("test", localDateTime, localDateTime, taskStatus);

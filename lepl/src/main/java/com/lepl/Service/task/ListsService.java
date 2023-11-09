@@ -20,6 +20,29 @@ public class ListsService {
      * save, findOne, findByDate, findAll, remove, findByToday
      */
 
+    public Lists findOne(Long id) {
+        return listsRepository.findOne(id);
+    }
+
+    public List<Lists> findOneWithTask(Long id) {
+        return listsRepository.findOneWithTask(id);
+    }
+
+    public List<Lists> findByDate(LocalDateTime start, LocalDateTime end) {
+        return listsRepository.findByDate(start, end);
+    }
+
+    public List<Lists> findAll() {
+        return listsRepository.findAll();
+    }
+
+    public List<Lists> findAllWithTask() {
+        return listsRepository.findAllWithTask();
+    }
+
+
+    //////////////////// 실제 사용은 아래 ////////////////////////
+
     @Transactional // 쓰기모드
     public void join(Lists lists) {
         listsRepository.save(lists);
@@ -62,4 +85,10 @@ public class ListsService {
         lists.setTimerAllUseTime(timerAllUseTime);
         lists.setCurTime(curTime);
     }
+
+    @Transactional // 쓰기모드 - 타이머 종료..
+    public void updateTime(Lists lists, Long timerAllUseTime, Long curTime) {
+        lists.updateTime(timerAllUseTime, curTime);
+    }
+
 }

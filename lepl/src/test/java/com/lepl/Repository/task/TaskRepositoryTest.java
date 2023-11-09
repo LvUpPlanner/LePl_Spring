@@ -25,15 +25,7 @@ public class TaskRepositoryTest {
     @Rollback(false) // deleteTask() 테스트 위해 잠시 롤백 제거
     public void save_find_test() throws Exception {
         // given
-        Task task1 = new Task();
-        task1.setContent("test1");
-//        task1.setStartTime("10:30");
-//        task1.setEndTime("11:00");
-        Task task2 = new Task();
-        task2.setContent("test2");
-//        task2.setStartTime("10:30");
-//        task2.setEndTime("11:00");
-        System.out.println(task1.getId()); // null
+        Task task = Task.createTask("테스트입니다.", LocalDateTime.now(), LocalDateTime.now(), TaskStatus.createTaskStatus(false,false));
 
         // when
         taskRepository.save(task1);
@@ -43,15 +35,41 @@ public class TaskRepositoryTest {
         List<Task> list = taskRepository.findAll();
 
         // then
-        Assertions.assertEquals(task1, getTask); // 정상
-        if(!list.isEmpty()){
-            for(int i = 0 ; i<list.size();i++){
-                System.out.println(list.get(i).getContent()); // test1, test2ㅆ
-            }
+        Assertions.assertEquals(task.getId(), findTask.getId());
+        log.info("taskList size : {}", taskList.size());
+        log.info("taskID : {}", taskId);
+        for (Task t : taskList) {
+            log.info(t.getContent());
         }
     }
 
     @Test
+    @Transactional
+    public void 멤버의_일정조회() throws Exception {
+        // given
+        Task task = Task.createTask("멤버 테스트", LocalDateTime.now(), LocalDateTime.now(), TaskStatus.createTaskStatus(false,false));
+        Member member = Member.createMember("UID", "닉네임");
+        em.persist(member); // id 위해(FK 오류 방지)
+        Lists lists = Lists.createLists(member, LocalDateTime.now(), new ArrayList<>());
+        em.persist(task); // id
+        lists.addTask(task);
+        member.addLists(lists);
+        em.persist(lists);
+        log.info("전");
+        em.flush(); // insert
+        log.info("후");
+
+        // when
+        Task findTask = taskRepository.findOneWithMember(member.getId(), task.getId()); // flush
+
+        // then
+        Assertions.assertEquals(task, findTask); // em.clear() 없으므로 주소 동일
+        Assertions.assertEquals(task.getId(), findTask.getId());
+        Assertions.assertEquals(findTask.getContent(), "멤버 테스트");
+    }
+
+    @Test
+    @Order(2)
     @Transactional // 자동 롤백
     @Rollback(false) // h2에서 확인하려면 자동 롤백 제거 필요
     public void deleteTest() throws Exception {
