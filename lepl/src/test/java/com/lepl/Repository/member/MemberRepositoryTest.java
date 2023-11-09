@@ -36,7 +36,7 @@ class MemberRepositoryTest {
         // given
         Member member = Member.createMember("test", "test1");
         // 혹시모를 FK 에러 방지
-        Exp exp = new Exp();
+        Exp exp = Exp.createExp(0L,0L,1L);
         em.persist(exp); // FK id 위해
         Character character = Character.createCharacter(exp, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         em.persist(character); // FK id 위해

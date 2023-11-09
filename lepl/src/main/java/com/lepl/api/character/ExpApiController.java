@@ -167,10 +167,9 @@ public class ExpApiController {
     public void init() {
         log.info("PostConstruct 테스트 ");
         // 테스트용 데이터 삽입
-        Exp exp = new Exp();
+        Exp exp = Exp.createExp(5L, 5L, 1L);
         expService.join(exp);
-        Character character = new Character();
-        character.setExp(exp);
+        Character character = Character.createCharacter(exp, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         characterService.join(character);
 
         Member member = Member.createMember("123", "사용자1");

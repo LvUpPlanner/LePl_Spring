@@ -10,9 +10,9 @@ class ExpTest {
     @Test
     public void 경험치_업데이트() throws Exception {
         // given
-        Exp expTask = new Exp();
-        Exp expTimer = new Exp();
-        Exp expTaskNTimer = new Exp();
+        Exp expTask = Exp.createExp(0L,0L,1L);
+        Exp expTimer = Exp.createExp(0L,0L,1L);
+        Exp expTaskNTimer = Exp.createExp(0L,0L,1L);
 
         // when
         expTask.updateExp(2L, 0L);

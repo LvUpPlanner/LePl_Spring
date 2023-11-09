@@ -17,7 +17,7 @@ class CharacterTest {
 
     @BeforeEach // 테스트 실행 전
     public void beforeEach() {
-        exp = new Exp();
+        exp = Exp.createExp(0L,0L,1L);
         characterItemList = new ArrayList<>();
         followList = new ArrayList<>();
         notificationList = new ArrayList<>();
@@ -44,7 +44,7 @@ class CharacterTest {
         character.addNotification(new Notification());
         character.addNotification(new Notification());
         character.addCharacterItem(new CharacterItem());
-        character.addFollow(new Follow());
+        character.addFollow(Follow.createFollow(Character.createCharacter(Exp.createExp(0L, 0L, 1L), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()),1L));
 
         // then
         Assertions.assertEquals(character.getNotifications().size(), 2);

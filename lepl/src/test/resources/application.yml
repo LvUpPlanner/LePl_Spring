@@ -9,8 +9,8 @@ spring:
 
   jpa:
     hibernate:
-#      ddl-auto: create # table 자동 생성
-      ddl-auto: none
+      ddl-auto: create # table 자동 생성
+#      ddl-auto: none
     properties:
       hibernate:
         #        show_sql: true

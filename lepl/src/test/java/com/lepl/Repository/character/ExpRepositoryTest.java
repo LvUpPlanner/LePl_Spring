@@ -32,7 +32,7 @@ public class ExpRepositoryTest {
     @Rollback(value = false) // "삭제" 메소드에 활용하기 위해 롤백 취소
     public void 경험치_저장과조회() throws Exception {
         // given
-        Exp exp = new Exp();
+        Exp exp = Exp.createExp(0L,0L,1L);
 
         // when
         expRepository.save(exp); // persist
@@ -53,7 +53,7 @@ public class ExpRepositoryTest {
         // given
         Member member = Member.createMember("test1", "test1");
         Member member2 = Member.createMember("test2", "test2");
-        Exp exp = new Exp();
+        Exp exp = Exp.createExp(0L,0L,1L);
         em.persist(exp); // id 위해
         Character character = Character.createCharacter(exp, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         log.info("persist 이전 character id : {}", character.getId()); // null
