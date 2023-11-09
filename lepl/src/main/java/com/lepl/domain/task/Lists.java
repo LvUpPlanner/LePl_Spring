@@ -1,20 +1,23 @@
 package com.lepl.domain.task;
 
 import com.lepl.domain.member.Member;
-import lombok.Getter;
-import lombok.Setter;
-
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter @Setter
-@Entity
+@Getter
+@Entity @Setter
+//@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Lists {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "lists_id")
     private Long id;
 
@@ -23,8 +26,8 @@ public class Lists {
     private Member member;
 
     private LocalDateTime listsDate;
-    private Long timerAllUseTime=0L; // 타이머총사용시간 -> 반환때는 시:분:초로!
-    private Long curTime=0L; // 사용시간(계산용) -> 반환 절대안함
+    private Long timerAllUseTime = 0L; // 타이머총사용시간 -> 반환때는 시:분:초로!
+    private Long curTime = 0L; // 사용시간(계산용) -> 반환 절대안함
 
     // CascadeType.REMOVE 를 해줘야 고아객체가 안생기게 되며, Lists 삭제도 정상적으로 가능
     @OneToMany(mappedBy = "lists", cascade = CascadeType.REMOVE) // 양방향
@@ -38,8 +41,17 @@ public class Lists {
         task.setLists(this); // Task(엔티티)에 Lists(엔티티)참조
         this.tasks.add(task); // Lists(엔티티)의 List<Task>에 Task(엔티티)추가
     }
+
     public void setMember(Member member) {
         this.member = member;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setTimerAllUseTime(Long timerAllUseTime) {
+        this.timerAllUseTime = timerAllUseTime;
     }
 
     /**
@@ -50,12 +62,12 @@ public class Lists {
         Lists lists = new Lists();
         lists.setMember(member);
         // null 이면 오늘날짜
-        if(listsDate==null) lists.setListsDate(LocalDateTime.now());
-        else lists.setListsDate(listsDate);
+        if (listsDate == null) lists.listsDate = LocalDateTime.now();
+        else lists.listsDate = listsDate;
         // null 이면 바로 pass
-        for(Task task : tasks) {
+        for (Task task : tasks) {
             // 날짜 비교 함수
-            if(!compareDate(task, lists.getListsDate())) continue;
+            if (!compareDate(task, lists.getListsDate())) continue;
             lists.addTask(task); // addTask로 넣어줘야 task.setLists(this); 적용
         }
         return lists;
@@ -69,10 +81,16 @@ public class Lists {
         // 년,월,일 만 비교하면 충분 하므로 Time 은 비교X
         LocalDate taskDay = task.getStartTime().toLocalDate();
         LocalDate listsDay = listsDate.toLocalDate();
-        if(taskDay.compareTo(listsDay) == 0) { // 동일시 0
+        if (taskDay.compareTo(listsDay) == 0) { // 동일시 0
             return true;
         }
         return false;
+    }
+
+    public Lists updateTime(Long timerAllUseTime, Long curTime) {
+        this.timerAllUseTime = timerAllUseTime;
+        this.curTime = curTime;
+        return this;
     }
 
     /**

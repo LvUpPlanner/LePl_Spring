@@ -4,8 +4,10 @@ import com.lepl.domain.member.Member;
 import com.lepl.domain.task.Lists;
 import com.lepl.domain.task.Task;
 import com.lepl.domain.task.TaskStatus;
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,8 +27,11 @@ public class ListsRepositoryTest {
     EntityManager em;
     @Autowired
     ListsRepository listsRepository;
+    @Autowired
+    TaskRepository taskRepository;
     static List<Task> tasks; // 전역
     static Long memberId;
+    static Long listsId;
 
     @BeforeEach // @Test 마다 수행 전 호출
     public void beforeEach() {
@@ -37,8 +42,9 @@ public class ListsRepositoryTest {
             LocalDateTime date_e = LocalDateTime.of(2023, 11, i, 3, 0); // 3시
             LocalDateTime date2_s = LocalDateTime.of(2023, 11, i, 5, 0); // 5시
             LocalDateTime date2_e = LocalDateTime.of(2023, 11, i, 8, 0); // 8시
-            Task task = Task.createTask("조회 테스트입니다.", date_s, date_e, new TaskStatus());
-            Task task2 = Task.createTask("조회 테스트입니다.2", date2_s, date2_e, new TaskStatus());
+            TaskStatus taskStatus = TaskStatus.createTaskStatus(false, false);
+            Task task = Task.createTask("조회 테스트입니다.", date_s, date_e, taskStatus);
+            Task task2 = Task.createTask("조회 테스트입니다.2", date2_s, date2_e, taskStatus);
             tasks.add(task);
             tasks.add(task2);
         }
@@ -60,14 +66,18 @@ public class ListsRepositoryTest {
 
         // when
         List<Lists> listsList = new ArrayList<>();
+        log.info("첫 taskId {}", tasks.get(0).getId());
         for (int i = 1; i <= 3; i++) {
             LocalDateTime listsDate = LocalDateTime.of(2023, 11, i, 1, 0);
             Lists lists = Lists.createLists(member, listsDate, tasks);
             listsRepository.save(lists); // persist
             listsList.add(lists);
         }
+        listsId = listsList.get(0).getId();
         for (Task t : tasks) {
-            em.persist(t); // persist
+            log.info("taskId {}",t.getId());
+//            em.persist(t.getTaskStatus()); // FK
+//            em.persist(t);
             /**
              * 잠시 알게된 부분 정리
              * Lists.createLists 에서 tasks 내용이 수정이 되기 때문에 tasks 는 꼭 나중에 persist 적용!!
@@ -86,6 +96,7 @@ public class ListsRepositoryTest {
             Assertions.assertEquals(findLists.getId(), listsList.get(i - 1).getId());
             Assertions.assertEquals(findLists2.getId(), listsList.get(i - 1).getId());
         }
+        log.info("마지막 taskId {}", tasks.get(0).getId());
     }
 
     @Test
@@ -117,13 +128,13 @@ public class ListsRepositoryTest {
     @Rollback(value = false) // db 적용 확인위해
     public void 멤버의_일정_삭제() throws Exception {
         // given
-        Lists findLists = listsRepository.findOneWithMemberTask(memberId, 2L); // flush
+        Lists findLists = listsRepository.findOneWithMemberTask(memberId, listsId); // flush
 
         // when
         listsRepository.remove(findLists); // persist(delete)
         Lists lists3 = listsRepository.findOne(3L);
         log.info("delete 쿼리문 날라가는 시점 체크1");
-        findLists = listsRepository.findOneWithMemberTask(memberId, 2L); // flush
+        findLists = listsRepository.findOneWithMemberTask(memberId, listsId); // flush
         log.info("delete 쿼리문 날라가는 시점 체크2");
 
         // then

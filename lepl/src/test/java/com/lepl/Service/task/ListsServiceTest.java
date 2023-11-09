@@ -28,6 +28,7 @@ public class ListsServiceTest {
     EntityManager em;
     static List<Task> tasks; // 전역
     static Long memberId;
+    static Long listsId;
 
     @BeforeEach // @Test 마다 수행 전 호출
     public void beforeEach() {
@@ -38,8 +39,9 @@ public class ListsServiceTest {
             LocalDateTime date_e = LocalDateTime.of(2023, 11, i, 3, 0); // 3시
             LocalDateTime date2_s = LocalDateTime.of(2023, 11, i, 5, 0); // 5시
             LocalDateTime date2_e = LocalDateTime.of(2023, 11, i, 8, 0); // 8시
-            Task task = Task.createTask("조회 테스트입니다.", date_s, date_e, new TaskStatus());
-            Task task2 = Task.createTask("조회 테스트입니다.2", date2_s, date2_e, new TaskStatus());
+            TaskStatus taskStatus = TaskStatus.createTaskStatus(false,false);
+            Task task = Task.createTask("조회 테스트입니다.", date_s, date_e, taskStatus);
+            Task task2 = Task.createTask("조회 테스트입니다.2", date2_s, date2_e, taskStatus);
             tasks.add(task);
             tasks.add(task2);
         }
@@ -66,8 +68,9 @@ public class ListsServiceTest {
             listsService.join(lists);
             listsList.add(lists);
         }
+        listsId = listsList.get(0).getId();
         for (Task t : tasks) {
-            em.persist(t); // persist
+//            em.persist(t); // persist
         }
 
         // then
@@ -108,13 +111,13 @@ public class ListsServiceTest {
     @Rollback(value = false) // db 적용 확인위해
     public void 멤버의_일정_삭제() throws Exception {
         // given
-        Lists findLists = listsService.findOneWithMemberTask(memberId, 2L);
+        Lists findLists = listsService.findOneWithMemberTask(memberId, listsId);
 
         // when
         listsService.remove(findLists);
         Lists lists3 = listsService.findOne(3L);
         log.info("delete 쿼리문 날라가는 시점 체크1");
-        findLists = listsService.findOneWithMemberTask(memberId, 2L);
+        findLists = listsService.findOneWithMemberTask(memberId, listsId);
         log.info("delete 쿼리문 날라가는 시점 체크2");
 
         // then

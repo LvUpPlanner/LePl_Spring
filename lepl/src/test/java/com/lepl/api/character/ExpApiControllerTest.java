@@ -6,6 +6,7 @@ import com.lepl.Service.member.MemberService;
 import com.lepl.Service.task.ListsService;
 import com.lepl.Service.task.TaskService;
 import com.lepl.domain.character.Exp;
+import com.lepl.domain.member.Member;
 import com.lepl.domain.task.Lists;
 import com.lepl.domain.task.Task;
 import com.lepl.domain.task.TaskStatus;
@@ -19,6 +20,7 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import static com.lepl.util.Messages.SESSION_NAME_LOGIN;
 import static org.mockito.Mockito.*;
@@ -95,11 +97,10 @@ class ExpApiControllerTest {
         String content = "[{\"taskId\":1}, {\"taskId\":2}]";
         Exp exp = Exp.createExp(2L, 2L, 1L);
         Exp exp2 = Exp.createExp(4L,4L,1L);
-        Task t1 = new Task();
-        Task t2 = new Task();
         TaskStatus taskStatus = TaskStatus.createTaskStatus(false, false);
-        t1.setTaskStatus(taskStatus);
-        t2.setTaskStatus(taskStatus);
+        Task.createTask("test", LocalDateTime.now(), LocalDateTime.now(), taskStatus);
+        Task t1 = Task.createTask("test", LocalDateTime.now(), LocalDateTime.now(), taskStatus);
+        Task t2 = Task.createTask("test", LocalDateTime.now(), LocalDateTime.now(), taskStatus);
 
         // when
         when(expService.findOneWithMember(MEMBER_ID)).thenReturn(exp);
@@ -135,7 +136,8 @@ class ExpApiControllerTest {
         LocalDateTime start = LocalDateTime.now();
         Task task = Task.createTask("테스트 경험치 업데이트 첫 타이머 종료", start, end, taskStatus);
         Task task2 = Task.createTask("테스트 경험치 업데이트 처음 이후 타이머 종료", start, end, taskStatus);
-        Lists lists = new Lists();
+        Member member = Member.createMember("111", "경험치 테스트");
+        Lists lists = Lists.createLists(member, LocalDateTime.now(), new ArrayList<>());
         task.setLists(lists);
 
         // when

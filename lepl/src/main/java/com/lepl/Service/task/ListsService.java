@@ -41,13 +41,6 @@ public class ListsService {
     }
 
 
-    @Transactional // 쓰기모드 - 타이머 종료..
-    public void updateTime(Lists lists, Long timerAllUseTime, Long curTime) {
-        lists.setTimerAllUseTime(timerAllUseTime);
-        lists.setCurTime(curTime);
-    }
-
-
     //////////////////// 실제 사용은 아래 ////////////////////////
 
     @Transactional // 쓰기모드
@@ -75,4 +68,10 @@ public class ListsService {
     public Lists findOneWithMemberTask(Long memberId, Long listsId) {
         return listsRepository.findOneWithMemberTask(memberId, listsId);
     }
+
+    @Transactional // 쓰기모드 - 타이머 종료..
+    public void updateTime(Lists lists, Long timerAllUseTime, Long curTime) {
+        lists.updateTime(timerAllUseTime, curTime);
+    }
+
 }

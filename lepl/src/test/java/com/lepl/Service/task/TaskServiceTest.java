@@ -52,7 +52,7 @@ public class TaskServiceTest {
     @Test
     public void 멤버의_일정조회() throws Exception {
         // given
-        Task task = Task.createTask("멤버 테스트", LocalDateTime.now(), LocalDateTime.now(), new TaskStatus());
+        Task task = Task.createTask("멤버 테스트", LocalDateTime.now(), LocalDateTime.now(), TaskStatus.createTaskStatus(false,false));
         Member member = Member.createMember("UID", "닉네임");
         em.persist(member); // id 위해(FK 오류 방지)
         Lists lists = Lists.createLists(member, LocalDateTime.now(), new ArrayList<>());

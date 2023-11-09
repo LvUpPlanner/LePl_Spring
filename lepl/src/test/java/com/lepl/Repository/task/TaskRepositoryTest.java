@@ -36,7 +36,7 @@ public class TaskRepositoryTest {
     @Rollback(false) // 삭제() 테스트 위해 잠시 롤백 제거
     public void 일정_저장과조회() throws Exception {
         // given
-        Task task = Task.createTask("테스트입니다.", LocalDateTime.now(), LocalDateTime.now(), new TaskStatus());
+        Task task = Task.createTask("테스트입니다.", LocalDateTime.now(), LocalDateTime.now(), TaskStatus.createTaskStatus(false,false));
 
         // when
         taskRepository.save(task); // persist
@@ -47,6 +47,7 @@ public class TaskRepositoryTest {
         // then
         Assertions.assertEquals(task.getId(), findTask.getId());
         log.info("taskList size : {}", taskList.size());
+        log.info("taskID : {}", taskId);
         for (Task t : taskList) {
             log.info(t.getContent());
         }
@@ -56,7 +57,7 @@ public class TaskRepositoryTest {
     @Transactional
     public void 멤버의_일정조회() throws Exception {
         // given
-        Task task = Task.createTask("멤버 테스트", LocalDateTime.now(), LocalDateTime.now(), new TaskStatus());
+        Task task = Task.createTask("멤버 테스트", LocalDateTime.now(), LocalDateTime.now(), TaskStatus.createTaskStatus(false,false));
         Member member = Member.createMember("UID", "닉네임");
         em.persist(member); // id 위해(FK 오류 방지)
         Lists lists = Lists.createLists(member, LocalDateTime.now(), new ArrayList<>());
