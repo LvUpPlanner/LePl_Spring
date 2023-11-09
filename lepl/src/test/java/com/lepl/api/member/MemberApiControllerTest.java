@@ -50,9 +50,7 @@ class MemberApiControllerTest {
     public void 회원가입() throws Exception {
         // given
         String content = "{\"uid\":\"12345\", \"nickname\":\"회원가입 테스트\"}";
-        Member member = new Member();
-        member.setUid("12345");
-        member.setNickname("회원가입 테스트");
+        Member member = Member.createMember("12345", "회원가입 테스트");
         member.setId(1L);
 
         // when
@@ -136,7 +134,7 @@ class MemberApiControllerTest {
         session.setAttribute(SESSION_NAME_LOGIN, 1); // 회원 인증 인터셉터 통과위해
         // 테스트용 members 세팅
         List<Member> members = new ArrayList<>();
-        Exp exp = Exp.createExp(0L,0L,1L);
+        Exp exp = Exp.createExp(0L, 0L, 1L);
         Character character = Character.createCharacter(exp, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         Member m1 = Member.createMember("111", "테스트1");
         Member m2 = Member.createMember("222", "테스트2");
