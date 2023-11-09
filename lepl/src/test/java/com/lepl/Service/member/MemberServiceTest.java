@@ -38,7 +38,7 @@ public class MemberServiceTest {
     public void 회원가입_조회() throws Exception {
         // given
         Member member = Member.createMember(UID, "테스트 닉네임");
-        Exp exp = new Exp();
+        Exp exp = Exp.createExp(0L,0L,1L);
         em.persist(exp);
         Character character = Character.createCharacter(exp, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         em.persist(character);

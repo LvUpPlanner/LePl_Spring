@@ -60,11 +60,8 @@ class ExpApiControllerTest {
     @Test
     public void 경험치_조회() throws Exception {
         // given
-        Exp exp = new Exp();
+        Exp exp = Exp.createExp(15L, 5L, 2L);
         Exp exp2 = null;
-        exp.setExpAll(15L);
-        exp.setExpValue(5L);
-        exp.setLevel(2L);
 
         // when
         when(expService.findOneWithMember(MEMBER_ID)).thenReturn(exp);
@@ -96,19 +93,13 @@ class ExpApiControllerTest {
     public void 경험치_업데이트_일정완료() throws Exception {
         // given
         String content = "[{\"taskId\":1}, {\"taskId\":2}]";
-        Exp exp = new Exp();
-        Exp exp2 = new Exp();
+        Exp exp = Exp.createExp(2L, 2L, 1L);
+        Exp exp2 = Exp.createExp(4L,4L,1L);
         Task t1 = new Task();
         Task t2 = new Task();
         TaskStatus taskStatus = TaskStatus.createTaskStatus(false, false);
         t1.setTaskStatus(taskStatus);
         t2.setTaskStatus(taskStatus);
-        exp.setExpAll(2L);
-        exp.setExpValue(2L);
-        exp.setLevel(1L);
-        exp2.setExpAll(4L);
-        exp2.setExpValue(4L);
-        exp2.setLevel(1L);
 
         // when
         when(expService.findOneWithMember(MEMBER_ID)).thenReturn(exp);
@@ -136,11 +127,8 @@ class ExpApiControllerTest {
     public void 경험치_업데이트_타이머완료() throws Exception {
         // given
         String content = "{\"taskId\":1, \"useTime\":7200099}";
-        Exp exp = new Exp();
-        Exp exp2 = new Exp();
-        exp2.setExpAll(5L);
-        exp2.setExpValue(5L);
-        exp2.setLevel(1L);
+        Exp exp = Exp.createExp(0L,0L,1L);
+        Exp exp2 = Exp.createExp(5L,5L,1L);
         TaskStatus taskStatus = TaskStatus.createTaskStatus(false, false);
         TaskStatus taskStatus2 = TaskStatus.createTaskStatus(false, true);
         LocalDateTime end = LocalDateTime.now();

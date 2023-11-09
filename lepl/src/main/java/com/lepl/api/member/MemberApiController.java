@@ -80,7 +80,7 @@ public class MemberApiController {
     public ResponseEntity<RegisterMemberResponseDto> register(@RequestBody @Valid RegisterMemberRequestDto registerDto) {
         Member member = Member.createMember(registerDto.uid, registerDto.nickname);
 
-        Exp exp = new Exp();
+        Exp exp = Exp.createExp(0L, 0L, 1L);
         expService.join(exp);
         Character character = Character.createCharacter(exp, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         characterService.join(character);

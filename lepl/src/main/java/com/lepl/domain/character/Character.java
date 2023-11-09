@@ -1,17 +1,20 @@
 package com.lepl.domain.character;
 
 
-import lombok.Getter;
-import lombok.Setter;
-
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter @Setter
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Character {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "character_id")
     private Long id;
 
@@ -32,27 +35,34 @@ public class Character {
         characterItem.setCharacter(this); // CharacterItem(엔티티)에 Character(엔티티)참조
         this.characterItems.add(characterItem); // Character(엔티티)의 characterItems 리스트에 CharacterItem(엔티티)추가
     }
+
     public void addFollow(Follow follow) {
         follow.setCharacter(this);
         this.follows.add(follow);
     }
+
     public void addNotification(Notification notification) {
         notification.setCharacter(this);
         this.notifications.add(notification);
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     /**
      * 생성 편의 메서드
      */
     public static Character createCharacter(Exp exp, List<CharacterItem> characterItems, List<Follow> follows, List<Notification> notifications) {
         Character character = new Character();
-        character.setExp(exp);
-        for(CharacterItem characterItem : characterItems) {
+        character.exp = exp;
+        for (CharacterItem characterItem : characterItems) {
             character.addCharacterItem(characterItem); // 연관관계 편의 메서드
         }
-        for(Follow follow : follows) {
+        for (Follow follow : follows) {
             character.addFollow(follow); // 연관관계 편의 메서드
         }
-        for(Notification notification : notifications) {
+        for (Notification notification : notifications) {
             character.addNotification(notification); // 연관관계 편의 메서드
         }
         return character;

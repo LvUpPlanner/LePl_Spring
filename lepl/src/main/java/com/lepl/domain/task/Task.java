@@ -36,6 +36,7 @@ public class Task {
         task.startTime = startTime;
         task.endTime = endTime;
         task.taskStatus = taskStatus;
+        task.remainTime = 0L;
         return task;
     }
 

@@ -42,7 +42,7 @@ class ExpServiceTest {
     @Rollback(value = false)
     public void 경험치_저장과조회() throws Exception {
         // given
-        Exp exp = new Exp();
+        Exp exp = Exp.createExp(0L,0L,1L);
         Member member = Member.createMember("경험치테스트", "TEST!!");
         Character character = Character.createCharacter(exp, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         member.setCharacter(character);

@@ -33,7 +33,7 @@ class CharacterRepositoryTest {
     public void 캐릭터_저장과조회() throws Exception {
         // given
         // EXP id 없으면 FK 오류
-        Exp exp = new Exp();
+        Exp exp = Exp.createExp(0L,0L,1L);
         em.persist(exp); // id 생성위해
         Character character = Character.createCharacter(exp, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 

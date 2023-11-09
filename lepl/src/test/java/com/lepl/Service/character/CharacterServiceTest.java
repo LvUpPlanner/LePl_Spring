@@ -37,7 +37,7 @@ class CharacterServiceTest {
     @Rollback(value = false)
     public void 캐릭저_저장과조회() throws Exception {
         // given
-        Exp exp = new Exp();
+        Exp exp = Exp.createExp(0L,0L,1L);
         Character character = Character.createCharacter(exp, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
         // when
@@ -56,7 +56,7 @@ class CharacterServiceTest {
     @Order(2)
     public void 회원의_캐릭터조회() throws Exception {
         // given
-        Exp exp = new Exp();
+        Exp exp = Exp.createExp(0L,0L,1L);
         Character character = Character.createCharacter(exp, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         Member member = Member.createMember("캐릭터서비스 테스트", "TEST");
         expService.join(exp);

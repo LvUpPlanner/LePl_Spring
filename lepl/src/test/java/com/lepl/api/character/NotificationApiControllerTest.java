@@ -3,6 +3,7 @@ package com.lepl.api.character;
 import com.lepl.Service.character.CharacterService;
 import com.lepl.Service.character.NotificationService;
 import com.lepl.domain.character.Character;
+import com.lepl.domain.character.Exp;
 import com.lepl.domain.character.Notification;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,8 @@ class NotificationApiControllerTest {
         // given
         MockHttpSession session = new MockHttpSession();
         session.setAttribute(SESSION_NAME_LOGIN, MEMBER_ID); // 회원 인증 인터셉터 통과 + @Login memberId
-        Character character = new Character();
+        Exp exp = Exp.createExp(0L, 0L, 1L);
+        Character character = Character.createCharacter(exp, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         character.setId(CHARACTER_ID);
 
         List<Notification> notifications = new ArrayList<>();

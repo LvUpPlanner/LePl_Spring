@@ -1,6 +1,7 @@
 package com.lepl.Repository.character;
 
 import com.lepl.domain.character.Character;
+import com.lepl.domain.character.Exp;
 import com.lepl.domain.character.Notification;
 import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -31,8 +33,10 @@ class NotificationRepositoryTest {
     @Rollback(value = false)
     public void 알림_저장과조회() throws Exception {
         // given
-        Character character = new Character();
+        Exp exp = Exp.createExp(0L, 0L, 1L);
+        Character character = Character.createCharacter(exp, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         Notification notification = Notification.createNotification(character, "테스트 알림입니다.");
+        em.persist(exp);
         em.persist(character);
 
         // when
@@ -52,8 +56,10 @@ class NotificationRepositoryTest {
     @Transactional
     public void 캐릭터의_알림전체조회() throws Exception {
         // given
-        Character character = new Character();
+        Exp exp = Exp.createExp(0L, 0L, 1L);
+        Character character = Character.createCharacter(exp, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         Notification notification = Notification.createNotification(character, "테스트 알림입니다.123123");
+        em.persist(exp); // FK ID
         em.persist(character);
         em.persist(notification);
 
