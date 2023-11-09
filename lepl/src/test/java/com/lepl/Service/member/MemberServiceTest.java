@@ -20,9 +20,13 @@ public class MemberServiceTest {
     @Test
     public void 회원가입() throws Exception {
         // given
-        Member member = new Member();
-        member.setUid("12345");
-        member.setNickname("test5");
+        Member member = Member.createMember(UID, "테스트 닉네임");
+        Exp exp = Exp.createExp(0L,0L,1L);
+        em.persist(exp);
+        Character character = Character.createCharacter(exp, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        em.persist(character);
+        member.setCharacter(character);
+
         // when
         Long saveId = memberService.join(member);
 

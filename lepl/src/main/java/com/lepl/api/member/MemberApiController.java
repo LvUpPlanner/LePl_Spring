@@ -75,9 +75,7 @@ public class MemberApiController {
         member.setUid(request.getUid());
         member.setNickname(request.getNickname());
 
-        // 캐릭터, 경험치 테이블 추가!
-        Exp exp = new Exp();
-        Character character = new Character();
+        Exp exp = Exp.createExp(0L, 0L, 1L);
         expService.join(exp);
 //        log.info("expId : {}", exp.getId());
         character.setExp(exp);

@@ -1,15 +1,18 @@
 package com.lepl.domain.character;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Getter @Setter
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Notification {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "notification_id")
     private Long id;
 
@@ -30,5 +33,12 @@ public class Notification {
         notification.content = content;
         notification.startTime = LocalDateTime.now();
         return notification;
+    }
+
+    /**
+     * 연관관계 편의 메서드
+     */
+    public void setCharacter(Character character) {
+        this.character = character;
     }
 }

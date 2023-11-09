@@ -1,10 +1,13 @@
 package com.lepl.domain.character;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Follow {
     @Id
     @GeneratedValue
@@ -30,7 +33,7 @@ public class Follow {
     }
 
     /**
-     * setter
+     * 연관관계 편의 메서드
      */
     public void setCharacter(Character character) {
         this.character = character;
@@ -40,5 +43,7 @@ public class Follow {
         this.followerId = followerId;
     }
 
-    public void setId(Long id) { this.id = id; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

@@ -6,6 +6,7 @@ import com.lepl.Service.character.FollowService;
 import com.lepl.Service.character.NotificationService;
 import com.lepl.Service.member.MemberService;
 import com.lepl.domain.character.Character;
+import com.lepl.domain.character.Exp;
 import com.lepl.domain.character.Follow;
 import com.lepl.domain.member.Member;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,8 +26,8 @@ import java.util.Map;
 import static com.lepl.util.Messages.SESSION_NAME_LOGIN;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -69,10 +70,10 @@ class FollowApiControllerTest {
         ObjectMapper obj = new ObjectMapper();
         String content = obj.writeValueAsString(map);
 
-        Member member = new Member();
-        Character character = new Character();
-        Follow follow = new Follow();
-        Character findCharacter = new Character();
+        Member member = Member.createMember("123456789", "팔로우 사용자");
+        Character character = Character.createCharacter(Exp.createExp(0L, 0L, 1L), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        Follow follow = Follow.createFollow(Character.createCharacter(Exp.createExp(0L, 0L, 1L), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()),1L);;
+        Character findCharacter = Character.createCharacter(Exp.createExp(0L, 0L, 1L), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
         // when
         when(memberService.findOne(MEMBER_ID)).thenReturn(member);
@@ -104,12 +105,11 @@ class FollowApiControllerTest {
         map.put("followId", FOLLOW_ID);
         ObjectMapper obj = new ObjectMapper();
         String content = obj.writeValueAsString(map);
-
-        Character character = new Character();
+        Character character = Character.createCharacter(Exp.createExp(0L, 0L, 1L), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         character.setId(CHARACTER_ID);
-        Character character2 = new Character();
+        Character character2 = Character.createCharacter(Exp.createExp(0L, 0L, 1L), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         character2.setId(CHARACTER_ID2);
-        Follow follow = new Follow();
+        Follow follow = Follow.createFollow(Character.createCharacter(Exp.createExp(0L, 0L, 1L), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()),1L);
         follow.setId(FOLLOW_ID);
         follow.setCharacter(character);
 
@@ -145,13 +145,13 @@ class FollowApiControllerTest {
     @Test
     public void 팔로잉_조회() throws Exception {
         // given
-        Character character = new Character();
+        Character character = Character.createCharacter(Exp.createExp(0L, 0L, 1L), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         character.setId(1L);
         List<Follow> follows = new ArrayList<>();
         List<Follow> follows2 = new ArrayList<>();
-        Follow f1 = new Follow();
-        Follow f2 = new Follow();
-        Follow f3 = new Follow();
+        Follow f1 = Follow.createFollow(Character.createCharacter(Exp.createExp(0L, 0L, 1L), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()),1L);;
+        Follow f2 = Follow.createFollow(Character.createCharacter(Exp.createExp(0L, 0L, 1L), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()),1L);;
+        Follow f3 = Follow.createFollow(Character.createCharacter(Exp.createExp(0L, 0L, 1L), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()),1L);;
         follows.add(f1);
         follows.add(f2);
         follows.add(f3);
@@ -187,13 +187,13 @@ class FollowApiControllerTest {
     @Test
     public void 팔로워_조회() throws Exception {
         // given
-        Character character = new Character();
+        Character character = Character.createCharacter(Exp.createExp(0L, 0L, 1L), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         character.setId(1L);
         List<Follow> follows = new ArrayList<>();
         List<Follow> follows2 = new ArrayList<>();
-        Follow f1 = new Follow();
-        Follow f2 = new Follow();
-        Follow f3 = new Follow();
+        Follow f1 = Follow.createFollow(Character.createCharacter(Exp.createExp(0L, 0L, 1L), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()),1L);;
+        Follow f2 = Follow.createFollow(Character.createCharacter(Exp.createExp(0L, 0L, 1L), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()),1L);;
+        Follow f3 = Follow.createFollow(Character.createCharacter(Exp.createExp(0L, 0L, 1L), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()),1L);;
         follows.add(f1);
         follows.add(f2);
         follows.add(f3);
