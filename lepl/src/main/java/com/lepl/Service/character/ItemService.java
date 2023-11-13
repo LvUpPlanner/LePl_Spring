@@ -36,8 +36,16 @@ public class ItemService {
         return itemRepository.findOne(id);
     }
 
+    public Item findByName(String name) {
+        return itemRepository.findByName(name);
+    }
     public List<Item> findAll() {
         return itemRepository.findAll();
+    }
+
+    @Transactional
+    public int updatePurchase(int purchase_quantity) {
+        return itemRepository.updatePurchase(purchase_quantity);
     }
 
     @Transactional
