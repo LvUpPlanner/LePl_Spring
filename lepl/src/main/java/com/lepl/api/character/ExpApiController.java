@@ -166,35 +166,38 @@ public class ExpApiController {
     @Transactional
     public void init() {
         log.info("PostConstruct 테스트 ");
+        String[] tempUid = {"123", "1234"};
         // 테스트용 데이터 삽입
-        Exp exp = Exp.createExp(5L, 5L, 1L);
-        expService.join(exp);
-        Character character = Character.createCharacter(exp, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-        characterService.join(character);
+        for(int u=0; u<2; u++) {
+            Exp exp = Exp.createExp(5L, 5L, 1L);
+            expService.join(exp);
+            Character character = Character.createCharacter(exp, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+            characterService.join(character);
 
-        Member member = Member.createMember("123", "사용자1");
-        member.setCharacter(character);
-        memberService.join(member);
+            Member member = Member.createMember(tempUid[u], "사용자"+(u+1));
+            member.setCharacter(character);
+            memberService.join(member);
 
-        // Task 3개정도
-        LocalDateTime today = LocalDateTime.now();
-        Lists lists = Lists.createLists(member, today, new ArrayList<>());
-        listsService.join(lists); // 먼저 lists init
-        for (long i = 1; i <= 3; i++) {
-            LocalDateTime end = LocalDateTime.now();
-            LocalDateTime start = LocalDateTime.of(2023, Month.SEPTEMBER, 21, 20, 30);
-            TaskStatus taskStatus = TaskStatus.createTaskStatus(false, false); // default
-            Task t = Task.createTask("test", start, end, taskStatus);
-            t.setLists(lists);
-            taskService.join(t);
+            // Task 3개정도
+            LocalDateTime today = LocalDateTime.now();
+            Lists lists = Lists.createLists(member, today, new ArrayList<>());
+            listsService.join(lists); // 먼저 lists init
+            for (long i = 1; i <= 3; i++) {
+                LocalDateTime end = LocalDateTime.now();
+                LocalDateTime start = LocalDateTime.of(2023, Month.SEPTEMBER, 21, 20, 30);
+                TaskStatus taskStatus = TaskStatus.createTaskStatus(false, false); // default
+                Task t = Task.createTask("test", start, end, taskStatus);
+                t.setLists(lists);
+                taskService.join(t);
+            }
+
+            // 번외) 시간 계산 테스트용
+            LocalDateTime startTime = LocalDateTime.of(2023, Month.OCTOBER, 13, 13, 10);
+            LocalDateTime endTime = LocalDateTime.of(2023, Month.OCTOBER, 13, 15, 10);
+            Date end = Timestamp.valueOf(endTime);
+            Date start = Timestamp.valueOf(startTime);
+            Long diff = (end.getTime() - start.getTime());
+            log.debug("시간 계산 테스트용 밀리세컨단위 : {}", diff);
         }
-
-        // 번외) 시간 계산 테스트용
-        LocalDateTime startTime = LocalDateTime.of(2023, Month.OCTOBER, 13, 13, 10);
-        LocalDateTime endTime = LocalDateTime.of(2023, Month.OCTOBER, 13, 15, 10);
-        Date end = Timestamp.valueOf(endTime);
-        Date start = Timestamp.valueOf(startTime);
-        Long diff = (end.getTime() - start.getTime());
-        log.debug("시간 계산 테스트용 밀리세컨단위 : {}", diff);
     }
 }

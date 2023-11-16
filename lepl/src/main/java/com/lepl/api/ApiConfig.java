@@ -28,7 +28,8 @@ public class ApiConfig implements WebMvcConfigurer {
                 .order(2)
                 .addPathPatterns("/**") // 모든 경로 접근
                 .excludePathPatterns("/", "/api/v1/members/login", "/api/v1/members/register",
-                        "/api/v1/members/logout","/image/**","/css/**","/*.ico","/error"); // 제외 경로!
+                        "/api/v1/members/logout","/api/v1/members/*",
+                        "/image/**","/css/**","/*.ico","/error"); // 제외 경로!
 
     }
 
