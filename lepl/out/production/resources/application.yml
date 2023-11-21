@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:h2:tcp://localhost/~/lepldb/lepl;mode=mysql
+    url: jdbc:h2:tcp://localhost/~/lepldb/lepl
     username: sa
     password:
       driver-class-name: org.h2.Driver
