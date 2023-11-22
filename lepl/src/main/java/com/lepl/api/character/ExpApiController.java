@@ -200,20 +200,22 @@ public class ExpApiController {
         }
     }
 
-    @PostConstruct
-    @Transactional
+//    @PostConstruct
+//    @Transactional
     public void init2() {
         log.info("PostConstruct 테스트 ");
         // 테스트용 데이터 삽입
-        for(int u=0; u<1000; u++) {
+        for(int u=0; u<5000; u++) {
             // Lists 1000개
             Member member = memberService.findOne(1L); // "1234" uid
-            LocalDateTime today = LocalDateTime.now();
+//            LocalDateTime today = LocalDateTime.now();
+            LocalDateTime today = LocalDateTime.of(2023, 11, 20, 20, 30);
             Lists lists = Lists.createLists(member, today, new ArrayList<>());
             listsService.join(lists); // 먼저 lists init
             for (long i = 1; i <= 3; i++) {
-                LocalDateTime end = LocalDateTime.now();
-                LocalDateTime start = LocalDateTime.of(2023, Month.SEPTEMBER, 21, 20, 30);
+//                LocalDateTime end = LocalDateTime.now();
+                LocalDateTime end = LocalDateTime.of(2023, 11, 20, 20, 30);
+                LocalDateTime start = LocalDateTime.of(2023, 11, 20, 10, 30);
                 TaskStatus taskStatus = TaskStatus.createTaskStatus(false, false); // default
                 Task t = Task.createTask("test", start, end, taskStatus);
                 t.setLists(lists);

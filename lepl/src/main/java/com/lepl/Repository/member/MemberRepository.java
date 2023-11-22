@@ -1,5 +1,6 @@
 package com.lepl.Repository.member;
 
+import com.lepl.api.member.dto.FindMemberResponseDto;
 import com.lepl.domain.member.Member;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -33,13 +34,13 @@ public class MemberRepository {
         return findMembers.isEmpty() ? null : findMembers.get(0);
     }
 
-    public List<Member> findAllWithPage(int pageId) {
-        return em.createQuery("select m from Member m " +
-                        "join fetch m.character c " +
-                        "join fetch c.exp e " +
-                        "order by m.id desc", Member.class)
-                .setFirstResult((pageId - 1) * 10) // 페이징
-                .setMaxResults(10) // 개수임!!
+    public List<FindMemberResponseDto> findAllWithPage(int pageId) {
+        int offset = (pageId-1) * 10;
+        int limit = 10;
+        return em.createNativeQuery("select m.member_id, m.nickname, e.level " +
+                        "from (select * from member order by member_id desc limit "+offset+","+limit+") m " +
+                        "inner join character c on m.character_id=c.character_id " +
+                        "inner join exp e on c.exp_id=e.exp_id;")
                 .getResultList();
     }
 }
