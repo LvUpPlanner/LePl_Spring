@@ -1,4 +1,4 @@
-package com.lepl.api;
+package com.lepl.config;
 
 import com.lepl.api.argumentresolver.LoginMemberArgumentResolver;
 import com.lepl.api.interceptor.MemberCheckInterceptor;
@@ -28,8 +28,8 @@ public class ApiConfig implements WebMvcConfigurer {
                 .order(2)
                 .addPathPatterns("/**") // 모든 경로 접근
                 .excludePathPatterns("/", "/api/v1/members/login", "/api/v1/members/register",
-                        "/api/v1/members/logout","/api/v1/members/*",
-                        "/image/**","/css/**","/*.ico","/error"); // 제외 경로!
+                        "/api/v1/members/logout", "/api/v1/members/*",
+                        "/image/**", "/css/**", "/*.ico", "/error"); // 제외 경로!
 
     }
 
@@ -42,6 +42,7 @@ public class ApiConfig implements WebMvcConfigurer {
                 .setCacheControl(cacheControl); // 브라우저 캐시 추가
 //                .addResourceLocations("file:///var/www/images-spring/");
     }
+
     // CORS
     @Override
     public void addCorsMappings(CorsRegistry registry) {
