@@ -1,5 +1,6 @@
 package com.lepl.Service.member;
 
+import com.lepl.api.member.dto.FindMemberResponseDto;
 import com.lepl.domain.character.Character;
 import com.lepl.domain.character.Exp;
 import com.lepl.domain.member.Member;
@@ -75,7 +76,7 @@ public class MemberServiceTest {
     public void 회원_페이징_캐시_조회() throws Exception {
         // given
         // when
-        List<Member> members = memberService.findAllWithPage(1);
+        List<FindMemberResponseDto> dto = memberService.findAllWithPage(1);
         log.info("캐시되었으면 쿼리 안날라감1");
         memberService.findAllWithPage(1);
         log.info("캐시되었으면 쿼리 안날라감2");
@@ -86,7 +87,7 @@ public class MemberServiceTest {
         memberService.findAllWithPage(1);
 
         // then
-        for (Member m : members) {
+        for (FindMemberResponseDto m : dto) {
             log.info("member.id : {}", m.getId());
             log.info("member.nickName : {}", m.getNickname());
         }

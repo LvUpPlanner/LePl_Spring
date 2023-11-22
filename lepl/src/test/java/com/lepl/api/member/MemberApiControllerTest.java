@@ -3,6 +3,7 @@ package com.lepl.api.member;
 import com.lepl.Service.character.CharacterService;
 import com.lepl.Service.character.ExpService;
 import com.lepl.Service.member.MemberService;
+import com.lepl.api.member.dto.FindMemberResponseDto;
 import com.lepl.domain.character.Character;
 import com.lepl.domain.character.Exp;
 import com.lepl.domain.member.Member;
@@ -133,15 +134,10 @@ class MemberApiControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute(SESSION_NAME_LOGIN, 1); // 회원 인증 인터셉터 통과위해
         // 테스트용 members 세팅
-        List<Member> members = new ArrayList<>();
-        Exp exp = Exp.createExp(0L, 0L, 1L);
-        Character character = Character.createCharacter(exp, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-        Member m1 = Member.createMember("111", "테스트1");
-        Member m2 = Member.createMember("222", "테스트2");
-        Member m3 = Member.createMember("333", "테스트3");
-        m1.setCharacter(character);
-        m2.setCharacter(character);
-        m3.setCharacter(character);
+        List<FindMemberResponseDto> members = new ArrayList<>();
+        FindMemberResponseDto m1 = new FindMemberResponseDto(111L, "테스트1", 1L);
+        FindMemberResponseDto m2 = new FindMemberResponseDto(222L, "테스트2", 1L);
+        FindMemberResponseDto m3 = new FindMemberResponseDto(333L, "테스트3", 1L);
         members.add(m1);
         members.add(m2);
         members.add(m3);

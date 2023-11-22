@@ -1,6 +1,8 @@
 package com.lepl.Repository.member;
 
 
+import com.lepl.api.character.FollowApiController;
+import com.lepl.api.member.dto.FindMemberResponseDto;
 import com.lepl.domain.character.Character;
 import com.lepl.domain.character.Exp;
 import com.lepl.domain.member.Member;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest
@@ -78,14 +81,16 @@ class MemberRepositoryTest {
     @Transactional
     public void 회원조회_Page() throws Exception {
         // given
-        List<Member> memberList;
+        List<FindMemberResponseDto> memberList = new ArrayList<>();
 
         // when
         memberList = memberRepository.findAllWithPage(1); // order by desc
+        log.info("memberList : {}", memberList.size());
+        log.info("memberList.get(0) : {}", memberList.get(0));
 
         // then
-        for(Member member : memberList) {
-            log.info("member id : {}, nickname : {}", member.getId(), member.getNickname());
+        for(FindMemberResponseDto dto : memberList) {
+            log.info("member id : {}, nickname : {}", dto.getId(), dto.getNickname());
         }
         Assertions.assertEquals(memberList.get(0).getNickname(), "test1");
         Assertions.assertEquals(memberList.get(1).getNickname(), "사용자1"); // 이미 DB에 사용자1 하나 존재인 상태였음
