@@ -17,8 +17,8 @@ public class CacheConfig extends CachingConfigurerSupport {
     public CacheManager cacheManager() {
         CaffeineCacheManager cacheManager = new CaffeineCacheManager("members");
         cacheManager.setCaffeine(Caffeine.newBuilder()
-                .initialCapacity(100) // 내부 해시 테이블의 최소한의 크기
-                .maximumSize(100) // 캐시에 포함할 수 있는 최대 엔트리 수
+                .initialCapacity(50) // 내부 해시 테이블의 최소한의 크기
+                .maximumSize(50) // 캐시에 포함할 수 있는 최대 엔트리 수
 //                .weakKeys() // 직접 키를 설정하므로 주석처리
                 .recordStats());
         return cacheManager;
