@@ -5,7 +5,7 @@ import com.lepl.Service.character.CharacterService;
 import com.lepl.Service.character.ExpService;
 import com.lepl.Service.member.MemberService;
 import com.lepl.api.argumentresolver.Login;
-import com.lepl.api.task.ListsApiController;
+import com.lepl.api.member.dto.FindMemberResponseDto;
 import com.lepl.domain.character.Character;
 import com.lepl.domain.character.Exp;
 import com.lepl.domain.member.Member;
@@ -22,7 +22,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -83,9 +82,7 @@ public class MemberApiController {
 //        log.info("expId FK : {}", character.getExp().getId());
 
         member.setCharacter(character);
-        memberService.join(member);
-
-        memberService.initCacheMembers(); // members 캐시 초기화
+        member = memberService.join(member);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new RegisterMemberResponseDto(member));
     }
@@ -122,12 +119,9 @@ public class MemberApiController {
      * 수정필요! 임의로 레벨정보까지만 포함했음!
      */
     @GetMapping("/{pageId}")
-    public List<FindMemberResponseDto> findAllWithPage(@PathVariable int pageId) {
-        List<Member> members = memberService.findAllWithPage(pageId);
-        List<FindMemberResponseDto> result = members.stream()
-                .map(o -> new FindMemberResponseDto(o))
-                .collect(Collectors.toList());
-        return result;
+    public ResponseEntity<List<FindMemberResponseDto>> findAllWithPage(@PathVariable int pageId) {
+        List<FindMemberResponseDto> result = memberService.findAllWithPage(pageId);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
 
@@ -145,18 +139,6 @@ public class MemberApiController {
     public String testUidV2(@Login Long id) {
         Member member = memberService.findOne(id);
         return "테스트 uid : "+member.getUid();
-    }
-
-    @Getter
-    static class FindMemberResponseDto {
-        private Long id;
-        private String nickname;
-        private Long level;
-        public FindMemberResponseDto(Member member) {
-            this.id = member.getId();
-            this.nickname = member.getNickname();
-            this.level = member.getCharacter().getExp().getLevel();
-        }
     }
 
     @Getter

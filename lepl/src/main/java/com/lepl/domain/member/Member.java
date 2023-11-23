@@ -15,6 +15,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Slf4j
+@Table(name = "MEMBER", indexes = @Index(name = "IDX_MEMBER_ID", columnList = "member_id desc"))
 public class Member {
     @Id
     @GeneratedValue

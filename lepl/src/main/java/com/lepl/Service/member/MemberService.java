@@ -1,11 +1,12 @@
 package com.lepl.Service.member;
 
 import com.lepl.Repository.member.MemberRepository;
-import com.lepl.domain.character.Character;
+import com.lepl.api.member.dto.FindMemberResponseDto;
 import com.lepl.domain.member.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,9 +49,18 @@ public class MemberService {
         return memberRepository.findByUid(uid);
     }
 
-    @Cacheable(value = "members", key = "#pageId") // [캐시 없으면 저장] 조회
-    public List<Member> findAllWithPage(int pageId) { return memberRepository.findAllWithPage(pageId); }
-    // 캐시에 저장된 값 제거 (회원가입 로직에 추가. 업데이트 땐 일단 무시)
-    @CacheEvict(value="members", allEntries = true)
-    public void initCacheMembers(){}
+    /**
+     * 회원 최신순 조회 + 캐시
+     */
+    @Cacheable(value = "members", key = "#pageId", cacheNames = "members") // [캐시 없으면 저장] 조회
+    public List<FindMemberResponseDto> findAllWithPage(int pageId) {
+        return memberRepository.findAllWithPage(pageId);
+    }
+
+    // 캐시에 저장된 값 제거 -> 30분 마다 실행하겠다.
+    // 초(0-59) 분(0-59) 시간(0-23) 일(1-31) 월(1-12) 요일(0-6) (0: 일, 1: 월, 2:화, 3:수, 4:목, 5:금, 6:토)
+    @Scheduled(cron = "00 30 * * * *") // 30분 00초 마다 수행
+    @CacheEvict(value = "members", allEntries = true)
+    public void initCacheMembers() {
+    }
 }

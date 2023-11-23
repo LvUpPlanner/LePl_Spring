@@ -1,6 +1,8 @@
 package com.lepl.Service.member;
 
-import com.lepl.Repository.member.MemberRepository;
+import com.lepl.api.member.dto.FindMemberResponseDto;
+import com.lepl.domain.character.Character;
+import com.lepl.domain.character.Exp;
 import com.lepl.domain.member.Member;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -35,23 +37,40 @@ public class MemberServiceTest {
         Assertions.assertEquals(member, memberRepository.findOne(saveId));
     }
 
-    // 일부러 예외가 터지게끔 코드를 실행해서 예외가 발생하는지 보는 테스트
-//    @Test(expected = IllegalStateException.class) // 해당 예외 터지면 종료해줌
-////    @Test
-//    public void 중복_회원_예외() throws Exception {
-//        // given
-//        Member member1 = new Member();
-//        member1.setUid("123");
-//        member1.setNickname("test1");
-//        Member member2 = new Member();
-//        member2.setUid("123"); // 중복
-//        member2.setNickname("test2");
-//
-//        // when
-//        memberService.join(member1);
-//        memberService.join(member2); // 예외가 발생해야 함. (예외 터지게끔 보낸상황)
-//
-//        // then
-//        Assertions.fail("예외가 발생해야 한다."); // 위에서 문제가 없으면 여기까지 온다.
-//    }
+    @Test
+    @Order(2)
+    public void 중복검증_예외() throws Exception {
+        // given
+        Member member = memberService.findOne(memberId);
+
+        // when
+        // then
+        Throwable exception = Assertions.assertThrows(IllegalStateException.class, () -> {
+            memberService.join(member); // 예외발생 로직
+        });
+        Assertions.assertEquals(MESSAGE, exception.getMessage());
+        log.info("exception.getMessage() : {}", exception.getMessage());
+    }
+
+    @Test
+    @Order(3)
+    public void 회원_페이징_캐시_조회() throws Exception {
+        // given
+        // when
+        List<FindMemberResponseDto> dto = memberService.findAllWithPage(1);
+        log.info("캐시되었으면 쿼리 안날라감1");
+        memberService.findAllWithPage(1);
+        log.info("캐시되었으면 쿼리 안날라감2");
+        memberService.findAllWithPage(1);
+        log.info("캐시되었으면 쿼리 안날라감3");
+        memberService.initCacheMembers(); // 캐시 초기화
+        log.info("캐시 초기화 했으므로 쿼리 날라가야 함");
+        memberService.findAllWithPage(1);
+
+        // then
+        for (FindMemberResponseDto m : dto) {
+            log.info("member.id : {}", m.getId());
+            log.info("member.nickName : {}", m.getNickname());
+        }
+    }
 }
