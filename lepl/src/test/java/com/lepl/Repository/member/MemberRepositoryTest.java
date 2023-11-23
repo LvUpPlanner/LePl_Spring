@@ -1,6 +1,10 @@
 package com.lepl.Repository.member;
 
 
+import com.lepl.api.character.FollowApiController;
+import com.lepl.api.member.dto.FindMemberResponseDto;
+import com.lepl.domain.character.Character;
+import com.lepl.domain.character.Exp;
 import com.lepl.domain.member.Member;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Assertions;
@@ -10,7 +14,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
-// 현재 메모리에서 테스트하기 때문에 h2 DB에 적용을 보려면 main 함수에서!!
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest
 class MemberRepositoryTest {
     @Autowired
@@ -65,10 +73,27 @@ class MemberRepositoryTest {
         System.out.println(findMember2);
 
         // then
-        Assertions.assertEquals(member, findMember1);
-        Assertions.assertEquals(member, findMember2);
-        System.out.println(member.getUid());
-        System.out.println(findMember1.getUid());
-        System.out.println(findMember2.getId());
+        Assertions.assertEquals(findMember.getNickname(),"test1");
+        Assertions.assertEquals(findMember2, null);
+    }
+
+    @Test
+    @Order(3)
+    @Transactional
+    public void 회원조회_Page() throws Exception {
+        // given
+        List<FindMemberResponseDto> memberList = new ArrayList<>();
+
+        // when
+        memberList = memberRepository.findAllWithPage(1); // order by desc
+        log.info("memberList : {}", memberList.size());
+        log.info("memberList.get(0) : {}", memberList.get(0));
+
+        // then
+        for(FindMemberResponseDto dto : memberList) {
+            log.info("member id : {}, nickname : {}", dto.getId(), dto.getNickname());
+        }
+        Assertions.assertEquals(memberList.get(0).getNickname(), "test1");
+        Assertions.assertEquals(memberList.get(1).getNickname(), "사용자1"); // 이미 DB에 사용자1 하나 존재인 상태였음
     }
 }
