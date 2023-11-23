@@ -13,10 +13,10 @@ public class NotificationRepository {
     private final EntityManager em;
 
     /**
-     * save, findOne, findAll, remove
+     * save, findOne, findAll, remove, findAllWithCharacter
      */
     public void save(Notification notification) {
-        if(notification.getId() == null) {
+        if (notification.getId() == null) {
             em.persist(notification);
         }
     }
@@ -30,12 +30,14 @@ public class NotificationRepository {
                 .getResultList();
     }
 
-    public void remove(Notification notification) { em.remove(notification);}
+    public void remove(Notification notification) {
+        em.remove(notification);
+    }
 
     public List<Notification> findAllWithCharacter(Long characterId) {
         return em.createQuery(
-                "select n from Notification n" +
-                        " where n.character.id = :characterId", Notification.class)
+                        "select n from Notification n" +
+                                " where n.character.id = :characterId", Notification.class)
                 .setParameter("characterId", characterId)
                 .getResultList();
     }

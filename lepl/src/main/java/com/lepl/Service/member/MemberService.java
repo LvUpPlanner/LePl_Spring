@@ -19,20 +19,26 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     /**
+     * join(중복검증 포함), findOne, findByUid, {findAllWithPage, initCacheMembers}(=회원 최신순 조회+캐시)
+     */
+
+    /**
      * 회원가입
      */
     @Transactional // 쓰기모드 필요해서 선언
-    public Long join(Member member) {
+    public Member join(Member member) {
         // 1. 중복 회원 검증(필수)
         validateDuplicateMember(member);
         // 2. 회원 저장
         memberRepository.save(member);
-        return member.getId();
+//        return member.getId();
+        return member;
     }
 
+    // 중복검증..
     private void validateDuplicateMember(Member member) {
         Member findMember = memberRepository.findByUid(member.getUid());
-        if(findMember!=null){
+        if (findMember != null) {
             // IllegalStateException 예외를 호출
             throw new IllegalStateException("이미 존재하는 회원입니다.");
         }
@@ -45,6 +51,7 @@ public class MemberService {
     public Member findOne(Long id) {
         return memberRepository.findOne(id);
     }
+
     public Member findByUid(String uid) {
         return memberRepository.findByUid(uid);
     }

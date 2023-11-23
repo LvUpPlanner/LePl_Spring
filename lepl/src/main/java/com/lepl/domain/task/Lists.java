@@ -34,7 +34,7 @@ public class Lists {
     private List<Task> tasks = new ArrayList<>();
 
     /**
-     * 연관관계 편의 메서드 => 코드 감소
+     * 연관관계 편의메서드 => 코드 감소
      * 즉, 연관관계 있는 엔티티끼리 유용한 메서드를 작성하면 됨
      */
     public void addTask(Task task) {
@@ -44,7 +44,6 @@ public class Lists {
 
     public void setMember(Member member) {
         this.member = member;
-        member.getLists().add(this); // 기존 setter 로는 이부분 로직이 없음
     }
 
     public void setId(Long id) {
@@ -56,10 +55,10 @@ public class Lists {
     }
 
     /**
-     * 생성 메서드 => 수많은 정보를 한번에
+     * 생성 편의메서드 => 수많은 정보를 한번에
      * 즉, 수많은 코드 작성을 또 줄여줌 & localDateTime null 일때 처리 등등
      */
-    public static Lists createLists(Member member, LocalDateTime localDateTime, List<Task> tasks) {
+    public static Lists createLists(Member member, LocalDateTime listsDate, List<Task> tasks) {
         Lists lists = new Lists();
         lists.setMember(member);
         // null 이면 오늘날짜
@@ -71,9 +70,6 @@ public class Lists {
             if (!compareDate(task, lists.getListsDate())) continue;
             lists.addTask(task); // addTask로 넣어줘야 task.setLists(this); 적용
         }
-        // null이면 오늘날짜
-        if(localDateTime==null) lists.setListsDate(LocalDateTime.now());
-        else lists.setListsDate(localDateTime);
         return lists;
     }
 
@@ -98,10 +94,8 @@ public class Lists {
     }
 
     /**
-     * 조회 로직
-     * 리스트(하루단위)내의 전체 일정 개수 조회
+     * 조회 편의메서드
+     * 리스트(하루단위)내의 전체 일정 개수 조회 => 필요하면 작성
      */
-    public int getTaskCount() {
-        return this.tasks.size();
-    }
+
 }

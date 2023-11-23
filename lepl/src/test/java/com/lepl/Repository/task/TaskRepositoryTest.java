@@ -1,38 +1,48 @@
 package com.lepl.Repository.task;
 
+import com.lepl.domain.member.Member;
+import com.lepl.domain.task.Lists;
 import com.lepl.domain.task.Task;
+import com.lepl.domain.task.TaskStatus;
 import jakarta.persistence.EntityManager;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 
-// 현재 메모리에서 테스트하기 때문에 h2 DB에 적용을 보려면 main 함수에서!!
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest
+@Slf4j
 public class TaskRepositoryTest {
     @Autowired
     TaskRepository taskRepository;
     @Autowired
     EntityManager em;
+    static Long taskId;
 
+    /**
+     * save, findOne, findAll, findOneWithMember, remove
+     */
     @Test
+    @Order(1)
     @Transactional // 자동 롤백
-    @Rollback(false) // deleteTask() 테스트 위해 잠시 롤백 제거
-    public void save_find_test() throws Exception {
+    @Rollback(false) // 삭제() 테스트 위해 잠시 롤백 제거
+    public void 일정_저장과조회() throws Exception {
         // given
         Task task = Task.createTask("테스트입니다.", LocalDateTime.now(), LocalDateTime.now(), TaskStatus.createTaskStatus(false,false));
 
         // when
-        taskRepository.save(task1);
-        taskRepository.save(task2);
-//        em.flush(); // 강제 flush
-        Task getTask = taskRepository.findOne(task1.getId());
-        List<Task> list = taskRepository.findAll();
+        taskRepository.save(task); // persist
+        taskId = task.getId();
+        Task findTask = taskRepository.findOne(task.getId()); // 캐시에서 가져오는
+        List<Task> taskList = taskRepository.findAll(); // flush
 
         // then
         Assertions.assertEquals(task.getId(), findTask.getId());
@@ -71,25 +81,18 @@ public class TaskRepositoryTest {
     @Test
     @Order(2)
     @Transactional // 자동 롤백
-    @Rollback(false) // h2에서 확인하려면 자동 롤백 제거 필요
-    public void deleteTest() throws Exception {
+    @Rollback(false) // db 확인용
+    public void 일정_삭제() throws Exception {
         // given
-        Task getTask = null;
-        
-        // when
-        List<Task> list = taskRepository.findAll(); // test1, test2
-        if(!list.isEmpty()) getTask = list.get(0); // test1
+        Task task = taskRepository.findOne(taskId); // 위에서 저장했던 Task 찾기
 
-        if(getTask != null) {
-            System.out.println(getTask.getId()); // 1
-            taskRepository.remove(getTask);
-//            em.flush(); // 강제 flush
-        }
-        list = taskRepository.findAll(); // test2
-        
+        // when
+        taskRepository.remove(task); // persist(delete)
+        em.flush(); // 강제 flush()
+        em.clear();
+        task = taskRepository.findOne(taskId);
+
         // then
-        if(!list.isEmpty()) {
-            for(Task t : list) System.out.println(t.getId()); // 2
-        }
+        Assertions.assertEquals(task, null);
     }
 }

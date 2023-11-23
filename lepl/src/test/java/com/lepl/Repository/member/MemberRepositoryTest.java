@@ -7,8 +7,8 @@ import com.lepl.domain.character.Character;
 import com.lepl.domain.character.Exp;
 import com.lepl.domain.member.Member;
 import jakarta.persistence.EntityManager;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
@@ -20,10 +20,16 @@ import java.util.stream.Collectors;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest
+@Slf4j
 class MemberRepositoryTest {
     @Autowired
     MemberRepository memberRepository;
-    @Autowired EntityManager em;
+    @Autowired
+    EntityManager em;
+
+    /**
+     * save, findOne, findByUid, findAllWithPage
+     */
 
     @Test
     @Order(1)
@@ -57,20 +63,13 @@ class MemberRepositoryTest {
     @Test
     @Order(2)
     @Transactional
-    @Rollback(false)
-    public void testMember() throws Exception {
+    public void 회원조회_UID() throws Exception {
         // given
-        Member member = new Member();
-        member.setUid("123");
-        member.setNickname("test1");
-        // when
-        memberRepository.save(member);
-//        em.flush(); // 강제 flush
+        Member findMember;
 
-        Member findMember1 = memberRepository.findOne(member.getId());
-        Member findMember2 = memberRepository.findByUid("123");
-//        Member findMember2 = memberRepository.findByUid("1234");
-        System.out.println(findMember2);
+        // when
+        findMember = memberRepository.findByUid("test");
+        Member findMember2 = memberRepository.findByUid("testtest");
 
         // then
         Assertions.assertEquals(findMember.getNickname(),"test1");

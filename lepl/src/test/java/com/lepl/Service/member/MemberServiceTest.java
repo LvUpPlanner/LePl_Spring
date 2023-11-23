@@ -4,23 +4,39 @@ import com.lepl.api.member.dto.FindMemberResponseDto;
 import com.lepl.domain.character.Character;
 import com.lepl.domain.character.Exp;
 import com.lepl.domain.member.Member;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import jakarta.persistence.EntityManager;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 
+
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest
-@Transactional // 서비스 부분은 대부분 트랜잭션 사용
-//@Rollback(false)
+@Transactional // 쓰기모드 -> 서비스코드에 트랜잭션 유무 반드시 확인
+@Slf4j
 public class MemberServiceTest {
     @Autowired
+    EntityManager em;
+    @Autowired
     MemberService memberService;
-    @Autowired MemberRepository memberRepository;
+    static final String UID = "12345";
+    static final String MESSAGE = "이미 존재하는 회원입니다.";
+    static Long memberId;
+
+    /**
+     * join(중복검증 포함), findOne, findByUid, {findAllWithPage, initCacheMembers}(=회원 최신순_페이징 조회+캐시)
+     */
 
     @Test
-    public void 회원가입() throws Exception {
+    @Order(1)
+    @Rollback(value = false)
+    public void 회원가입_조회() throws Exception {
         // given
         Member member = Member.createMember(UID, "테스트 닉네임");
         Exp exp = Exp.createExp(0L,0L,1L);
@@ -30,11 +46,14 @@ public class MemberServiceTest {
         member.setCharacter(character);
 
         // when
-        Long saveId = memberService.join(member);
+        memberService.join(member);
+        Member findMember = memberService.findOne(member.getId());
+        Member findMember2 = memberService.findByUid(UID);
 
         // then
-        // DB에 저장된 member를 찾으려고 레퍼지토리의 함수 사용
-        Assertions.assertEquals(member, memberRepository.findOne(saveId));
+        Assertions.assertEquals(member.getId(), findMember.getId());
+        Assertions.assertEquals(member.getId(), findMember2.getId());
+        memberId = member.getId();
     }
 
     @Test

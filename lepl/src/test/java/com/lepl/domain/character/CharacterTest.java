@@ -1,16 +1,13 @@
 package com.lepl.domain.character;
 
-import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@SpringBootTest
 @Slf4j
 class CharacterTest {
     Exp exp;
@@ -27,31 +24,12 @@ class CharacterTest {
     }
 
     @Test
-    @Transactional
-    public void 캐릭터_경험치_관련() throws Exception {
+    public void 생성_편의메서드() throws Exception {
         // given
-        Exp exp = new Exp();
-        exp.setExpAll(0l);
-        exp.setExpValue(0l);
-        List<CharacterItem> characterItems = new ArrayList<>();
-        List<Follow> follows = new ArrayList<>();
-        List<Notification> notifications = new ArrayList<>();
-
-        for(int i=0; i<2; i++) {
-            CharacterItem characterItem = new CharacterItem();
-            characterItem.setItemId(1l);
-            characterItem.setWearingStatus(true);
-            characterItems.add(characterItem);
-
-            Follow follow = new Follow();
-            follow.setFollowerId(10L);
-            follows.add(follow);
-        }
+        Character character;
 
         // when
-//        exp.updateExp(15d); // 경험치 15
-        Character character = Character.createCharacter(exp, characterItems, follows, notifications);
-        em.persist(character); // id 확인
+        character = Character.createCharacter(exp, characterItemList, followList, notificationList);
 
         // then
         Assertions.assertInstanceOf(Character.class, character);
