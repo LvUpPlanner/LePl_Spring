@@ -1,44 +1,49 @@
 package com.lepl.Service.character;
 
-import com.lepl.domain.character.*;
+import com.lepl.Service.member.MemberService;
 import com.lepl.domain.character.Character;
+import com.lepl.domain.character.Exp;
+import com.lepl.domain.member.Member;
+import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.List;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest
-@Transactional
+@Transactional // 쓰기모드 -> 서비스코드에 트랜잭션 유무 반드시 확인
 @Slf4j
 class CharacterServiceTest {
     @Autowired
-    CharacterService characterService;
+    EntityManager em;
     @Autowired
-    CharacterItemService characterItemService;
+    CharacterService characterService;
     @Autowired
     ExpService expService;
     @Autowired
-    FollowService followService;
+    MemberService memberService;
+    static Long characterId; // 전역
 
     /**
-     * 캐릭터, 경험치 한번에 테스트
+     * join, findOne, findCharacterWithMember, remove
      */
-    
     @Test
+    @Order(1)
     @Rollback(value = false)
-    public void join() throws Exception {
+    public void 캐릭저_저장과조회() throws Exception {
         // given
         Exp exp = Exp.createExp(0L,0L,1L);
         Character character = Character.createCharacter(exp, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
         // when
-        characterService.join(character);
         expService.join(exp);
+        characterService.join(character);
+        Character findCharacter = characterService.findOne(character.getId());
 
         // then
         Assertions.assertEquals(character.getId(), findCharacter.getId());
@@ -67,22 +72,20 @@ class CharacterServiceTest {
     }
 
     @Test
-    public void find() throws Exception {
+    @Order(3)
+    @Rollback(value = false)
+    public void 캐릭터_삭제() throws Exception {
         // given
+        Character character = characterService.findOne(characterId); // 캐릭터_저장과조회() 에서 저장했던 캐릭터 조회
 
         // when
+        characterService.remove(character); // persist
+        log.info("character : {}", character); // 위에서 찾은 character 주소 그대로 사용
+        Character findCharacter = characterService.findOne(characterId);
+        log.info("findCharacter : {}", findCharacter); // null -> 영속성 컨텍스트에서 이미 삭제되었다는 것
 
         // then
-
-    }
-
-    @Test
-    public void remove() throws Exception {
-        // given
-
-        // when
-
-        // then
-
+        Assertions.assertEquals(character.getId(), characterId);
+        Assertions.assertEquals(findCharacter, null);
     }
 }

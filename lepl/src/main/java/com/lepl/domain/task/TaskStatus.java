@@ -6,14 +6,13 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import jakarta.persistence.*;
-
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "TASK_STATUS")
 public class TaskStatus {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "task_status_id")
     private Long id;
 
@@ -26,5 +25,12 @@ public class TaskStatus {
         taskStatus.completedStatus = completedStatus;
         taskStatus.timerOnOff = timerOnOff;
         return taskStatus;
+    }
+
+    //==비지니스 편의 메서드==//
+    public TaskStatus update(Boolean completedStatus, Boolean timerOnOff) {
+        this.completedStatus = completedStatus;
+        this.timerOnOff = timerOnOff;
+        return this;
     }
 }

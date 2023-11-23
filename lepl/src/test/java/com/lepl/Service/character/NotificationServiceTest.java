@@ -4,17 +4,20 @@ import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import com.lepl.domain.character.Character;
 import com.lepl.domain.character.Exp;
 import com.lepl.domain.character.Notification;
-import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest
+@Transactional // 쓰기모드 -> 서비스코드에 트랜잭션 유무 반드시 확인
+@Slf4j
 public class NotificationServiceTest {
     @Autowired
     NotificationService notificationService;
@@ -53,7 +56,8 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void 테스트() throws Exception {
+    @Order(2)
+    public void 캐릭터의_알림전체조회() throws Exception {
         // given
         Exp exp = Exp.createExp(0L, 0L, 1L);
         Character character = Character.createCharacter(exp, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
@@ -63,10 +67,29 @@ public class NotificationServiceTest {
         notificationService.join(notification);
 
         // when
-        Long id = notificationService.join(notification);
-        Notification findNotification = notificationService.findOne(id);
+        List<Notification> notifications = notificationService.findAllWithCharacter(character.getId()); // flush
 
         // then
-        Assertions.assertEquals(findNotification.getContent(), "test");
+        for (Notification no : notifications) {
+            Assertions.assertInstanceOf(Notification.class, no);
+            log.info("no.id : {}", no.getId());
+        }
     }
+
+    @Test
+    @Order(3)
+    public void 알림_삭제() throws Exception {
+        // given
+        Notification findNotification = notificationService.findOne(notificationId);
+        log.info("findNotification : {}", findNotification);
+
+        // when
+        notificationService.remove(findNotification);
+        findNotification = notificationService.findOne(notificationId);
+
+        // then
+        Assertions.assertNull(findNotification);
+        log.info("findNotification : {}", findNotification);
+    }
+
 }

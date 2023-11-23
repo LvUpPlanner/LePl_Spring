@@ -1,31 +1,44 @@
 package com.lepl.Repository.character;
 
+import com.lepl.domain.character.Character;
 import com.lepl.domain.character.Exp;
+import com.lepl.domain.member.Member;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 
-@SpringBootTest
+import java.util.ArrayList;
+
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@SpringBootTest // Bean 사용 위해
+@Slf4j
 public class ExpRepositoryTest {
     @Autowired
     ExpRepository expRepository;
     @Autowired
     EntityManager em;
+    static Long expId; // 전역
 
+    /**
+     * save, findOne, remove, findOneWithMember, initPointToday
+     */
     @Test
+    @Order(1)
     @Transactional
-    @Rollback(value = false)
-    public void updatePoint() throws Exception {
+    @Rollback(value = false) // "삭제" 메소드에 활용하기 위해 롤백 취소
+    public void 경험치_저장과조회() throws Exception {
         // given
         Exp exp = Exp.createExp(0L,0L,1L);
 
         // when
-        expRepository.updatePoint();
-        exp = expRepository.findOne(exp.getId());
+        expRepository.save(exp); // persist
+        log.info("save 시점 확인");
+        expId = exp.getId();
+        Exp findExp = expRepository.findOne(expId);
 
         // then
         Assertions.assertEquals(exp, findExp);

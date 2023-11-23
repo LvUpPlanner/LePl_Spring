@@ -52,18 +52,6 @@ public class Member {
     }
 
     //==생성 편의 메서드==//
-    /**코드 중복 감소 효과 및 uid가 not null임을 강조 및 nickname 처리 등등 하기 위해*/
-    public static Member createMember(String uid, String nickname, List<Lists> lists, Profile profile, Character character) {
-        Member member = new Member();
-        if(uid == null) log.info("uid", "uid 가 필요합니다.");
-        if(nickname == null) nickname = "닉네임을 등록해주세요";
-        member.setUid(uid);
-        member.setNickname(nickname);
-        member.setLists(lists);
-        member.setProfile(profile);
-        member.setCharacter(character);
-        return member;
-    }
     public static Member createMember(String uid, String nickname) {
         Member member = new Member();
         if (uid == null) log.info("uid", "uid 가 필요합니다.");

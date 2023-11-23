@@ -7,7 +7,6 @@ import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import jakarta.persistence.EntityManager;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,12 +15,20 @@ import java.util.stream.Collectors;
 public class MemberRepository {
     private final EntityManager em;
 
+    /**
+     * save, findOne, findByUid, findAllWithPage
+     */
+
     public void save(Member member) {
-        em.persist(member); // db 저장
+        if(member.getId() == null) {
+            em.persist(member); // db 저장
+        }
     }
+
     public Member findOne(Long id) {
         return em.find(Member.class, id);
     }
+
     public Member findByUid(String uid) {
         List<Member> findMembers = em.createQuery("select m from Member m where m.uid = :uid", Member.class)
                 .setParameter("uid", uid)
