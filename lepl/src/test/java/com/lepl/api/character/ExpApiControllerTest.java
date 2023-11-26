@@ -96,7 +96,7 @@ class ExpApiControllerTest {
         // given
         String content = "[{\"taskId\":1}, {\"taskId\":2}]";
         Exp exp = Exp.createExp(2L, 2L, 1L);
-        Exp exp2 = Exp.createExp(4L,4L,1L);
+        Exp exp2 = Exp.createExp(4L, 4L, 1L);
         TaskStatus taskStatus = TaskStatus.createTaskStatus(false, false);
         Task.createTask("test", LocalDateTime.now(), LocalDateTime.now(), taskStatus);
         Task t1 = Task.createTask("test", LocalDateTime.now(), LocalDateTime.now(), taskStatus);
@@ -128,8 +128,8 @@ class ExpApiControllerTest {
     public void 경험치_업데이트_타이머완료() throws Exception {
         // given
         String content = "{\"taskId\":1, \"useTime\":7200099}";
-        Exp exp = Exp.createExp(0L,0L,1L);
-        Exp exp2 = Exp.createExp(5L,5L,1L);
+        Exp exp = Exp.createExp(0L, 0L, 1L);
+        Exp exp2 = Exp.createExp(5L, 5L, 1L);
         TaskStatus taskStatus = TaskStatus.createTaskStatus(false, false);
         TaskStatus taskStatus2 = TaskStatus.createTaskStatus(false, true);
         LocalDateTime end = LocalDateTime.now();
