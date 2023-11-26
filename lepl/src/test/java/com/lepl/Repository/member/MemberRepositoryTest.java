@@ -93,6 +93,5 @@ class MemberRepositoryTest {
             log.info("member id : {}, nickname : {}", dto.getId(), dto.getNickname());
         }
         Assertions.assertEquals(memberList.get(0).getNickname(), "test1");
-        Assertions.assertEquals(memberList.get(1).getNickname(), "사용자1"); // 이미 DB에 사용자1 하나 존재인 상태였음
     }
 }

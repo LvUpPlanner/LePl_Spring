@@ -14,7 +14,6 @@ import com.lepl.domain.member.Member;
 import com.lepl.domain.task.Lists;
 import com.lepl.domain.task.Task;
 import com.lepl.domain.task.TaskStatus;
-import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
