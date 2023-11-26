@@ -28,7 +28,7 @@ public class CharacterService {
         return characterRepository.findOne(characterId);
     }
 
-    @Cacheable(value = "users", key = "#memberId") // [캐시 없으면 저장] 조회
+    @Cacheable(value = "users", key = "#memberId", cacheNames = "users", cacheManager = "cacheManager2") // [캐시 없으면 저장] 조회
     public Character findCharacterWithMember(Long memberId) {
         return characterRepository.findCharacterWithMember(memberId);
     }
