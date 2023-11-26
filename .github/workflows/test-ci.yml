@@ -12,6 +12,11 @@ jobs:
   build:
     runs-on: ubuntu-latest # 최신 우분투 사용
 
+    # 루트 경로 지정(작업경로 지정) - 전역으로 지정한것
+    defaults:
+      run:
+        working-directory: ./lepl
+
     steps:
       - uses: actions/checkout@v3
 
@@ -19,16 +24,27 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '17'
-
-      # 권한
+          distribution: 'corretto' # JDK 17에 필수 temurin or adopt or corretto
+      
+      # 권한먼저!!
       - name: Grant execute permission for gradlew
-        run: chmod +x ./lepl/gradlew
+        run: chmod +x ./gradlew
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2 # JDK 17지원
+        with:
+          arguments: build
+          build-root-directory: ./lepl
+          # cache-read-only: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/develop' }}
+
+      - name: New Gradle
+        run: ./gradlew init
 
       # 빌드 -> 이때는 test 코드 실행 제외
       - name: Build with Gradle
-        run: ./lepl/gradlew build -x test
+        run: ./gradlew build -x test
 
       # 테스트 코드 (프로필로 실행)
       - name: Test with Gradle
-        run: SPRING_PROFILES_ACTIVE=[test] ./lepl/gradlew test
+        run: SPRING_PROFILES_ACTIVE=[test] ./gradlew test
 
