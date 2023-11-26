@@ -82,5 +82,6 @@ public class TaskServiceV2 implements TaskService {
     public void updateStatus(Task task, Boolean completedStatus, Boolean timerOnOff, Long remainTime) {
         TaskStatus taskStatus = task.getTaskStatus().update(completedStatus, timerOnOff);
         task.updateTaskStatus(taskStatus, remainTime);
+        sleep(200);
     }
 }
