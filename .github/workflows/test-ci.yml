@@ -2,8 +2,8 @@ name: CI Test
 
 on:
   push:
-#    branches: [ "main" ]
-    branches: [ "kbh" ]
+   branches: [ "main" ]
+    # branches: [ "kbh" ]
 #  schedule:
   # - cron: '00 12 * * *' # UST 가 default. UST 10:00는 한국시간 21:00(9H 차이)
   # - cron: '00 19 * * *' # UST 가 default. UST 19:00는 한국시간 04:00(9H 차이)
