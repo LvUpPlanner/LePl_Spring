@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-@EnableCaching // 캐시 사용
+//@EnableCaching // 캐시 사용 => CacheConfig.java 로 관리
 @EnableScheduling // 스케줄링 사용
 @SpringBootApplication
 public class LePlApplication {

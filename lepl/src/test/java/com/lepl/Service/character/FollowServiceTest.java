@@ -27,7 +27,7 @@ class FollowServiceTest {
     ExpService expService;
     static Long followId; // 전역
     static Long characterId; // 전역
-    static final Long CHARACTER_EX_ID = 10L;
+    static final Long CHARACTER_EX_ID = 15L;
     static final String MESSAGE = "이미 팔로우 요청을 하셨습니다.";
 
     /**
@@ -42,7 +42,6 @@ class FollowServiceTest {
         Character character = Character.createCharacter(exp, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         expService.join(exp);
         characterService.join(character); // id 기록위함
-        characterId = character.getId();
         Follow follow = Follow.createFollow(character, CHARACTER_EX_ID); // followerId 는 자동으로 자기자신 등록, followingId 는 임의로 10L인 캐릭터로 설정
 
         // when
@@ -56,6 +55,7 @@ class FollowServiceTest {
             Assertions.assertInstanceOf(Follow.class, f);
         }
         followId = follow.getId();
+        characterId = character.getId();
     }
 
     @Order(2)
@@ -66,7 +66,7 @@ class FollowServiceTest {
         Exp exp = Exp.createExp(0L, 0L, 1L);
         Character c = Character.createCharacter(exp, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()); // characterId 인 캐릭터를 팔로우 하는 캐릭터를 임의로 생성 목적
         expService.join(exp);
-        characterService.join(c);
+        c = characterService.join(c);
         Follow follow = Follow.createFollow(c, characterId);
         followService.join(follow);
 
