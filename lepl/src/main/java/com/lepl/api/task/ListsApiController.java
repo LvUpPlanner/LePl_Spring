@@ -28,7 +28,7 @@ public class ListsApiController {
     /**
      * 일정 조회(1) - 모든 Lists(=하루단위 일정모음) 조회
      */
-    @GetMapping(value = "/all")
+    @GetMapping("/all")
     public List<ListsResDto> findAllWithTask() {
         List<Lists> lists = listsService.findAllWithTask();
         List<ListsResDto> result = lists.stream()

@@ -1,6 +1,10 @@
 package com.lepl.Service.member;
 
 import com.lepl.Repository.member.MemberRepository;
+import com.lepl.domain.member.Member;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import com.lepl.api.member.dto.FindMemberResponseDto;
 import com.lepl.domain.member.Member;
 import lombok.RequiredArgsConstructor;

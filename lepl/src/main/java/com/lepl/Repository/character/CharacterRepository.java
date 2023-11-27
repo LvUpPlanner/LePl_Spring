@@ -26,6 +26,15 @@ public class CharacterRepository {
         return em.find(Character.class, id);
     }
 
+    //캐릭터 화폐 업데이트
+    public void updateCoin(Long money, Long characterId) {
+        em.createQuery("update Character c set c.money =: money" +
+                        " where c.id =: characterId")
+                .setParameter("money", money)
+                .setParameter("characterId", characterId)
+                .executeUpdate();
+    }
+
     /**
      * memberId로 캐릭터 조회
      */

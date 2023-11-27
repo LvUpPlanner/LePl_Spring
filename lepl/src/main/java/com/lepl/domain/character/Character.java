@@ -18,6 +18,7 @@ public class Character {
     @Column(name = "character_id")
     private Long id;
 
+    private Long money = 0l; //Long 타입: 경험치를 화폐로 변경해서 사용하기 때문에 경험치와 같은 타입으로 선언
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "exp_id") // FK
     private Exp exp;

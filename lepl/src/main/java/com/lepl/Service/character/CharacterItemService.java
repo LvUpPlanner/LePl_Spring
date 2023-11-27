@@ -24,6 +24,17 @@ public class CharacterItemService {
     public CharacterItem findOne(Long characterItemId) { return characterItemRepository.findOne(characterItemId); }
     public List<CharacterItem> findAll() {return characterItemRepository.findAll();}
 
+    //사용자 소유 아이템 전체 조회
+    public List<CharacterItem> findAllWithMemberItem(Long characterId) {
+        return characterItemRepository.findAllWithMemberItem(characterId);
+    }
+
+    //아이템 착용 여부
+    @Transactional
+    public void updateStatus(Long characterItemId, int status) {
+        characterItemRepository.updateStatus(characterItemId, status);
+    }
+
     @Transactional
     public void remove(CharacterItem characterItem) { characterItemRepository.remove(characterItem); }
 }

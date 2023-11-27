@@ -28,6 +28,12 @@ public class CharacterService {
         return characterRepository.findOne(characterId);
     }
 
+    //캐릭터 화폐 업데이트
+    @Transactional
+    public void updateCoin(Long money, Long characterId) {
+        characterRepository.updateCoin(money, characterId);
+    }
+
     @Cacheable(value = "users", key = "#memberId", cacheNames = "users", cacheManager = "cacheManager2") // [캐시 없으면 저장] 조회
     public Character findCharacterWithMember(Long memberId) {
         return characterRepository.findCharacterWithMember(memberId);

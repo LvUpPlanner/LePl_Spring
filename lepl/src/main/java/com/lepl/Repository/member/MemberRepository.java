@@ -1,5 +1,11 @@
 package com.lepl.Repository.member;
 
+import com.lepl.domain.member.Member;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
+
+import jakarta.persistence.EntityManager;
+import java.util.List;
 import com.lepl.api.member.dto.FindMemberResponseDto;
 import com.lepl.domain.member.Member;
 import jakarta.persistence.EntityManager;
@@ -9,7 +15,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 @Repository
 @RequiredArgsConstructor // 생성자 주입 + 엔티티매니저 주입 제공
 public class MemberRepository {
