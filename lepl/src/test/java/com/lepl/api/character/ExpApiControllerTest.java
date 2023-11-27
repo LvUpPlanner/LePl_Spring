@@ -5,6 +5,7 @@ import com.lepl.Service.character.ExpService;
 import com.lepl.Service.member.MemberService;
 import com.lepl.Service.task.ListsService;
 import com.lepl.Service.task.TaskService;
+import com.lepl.domain.character.Character;
 import com.lepl.domain.character.Exp;
 import com.lepl.domain.member.Member;
 import com.lepl.domain.task.Lists;
@@ -101,8 +102,12 @@ class ExpApiControllerTest {
         Task.createTask("test", LocalDateTime.now(), LocalDateTime.now(), taskStatus);
         Task t1 = Task.createTask("test", LocalDateTime.now(), LocalDateTime.now(), taskStatus);
         Task t2 = Task.createTask("test", LocalDateTime.now(), LocalDateTime.now(), taskStatus);
+        Member member = Member.createMember("111", "경험치 테스트");
+        Character character = Character.createCharacter(exp, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        member.setCharacter(character);
 
         // when
+        when(memberService.findOne(MEMBER_ID)).thenReturn(member);
         when(expService.findOneWithMember(MEMBER_ID)).thenReturn(exp);
         when(taskService.findOne(TASK_ID)).thenReturn(t1);
         when(taskService.findOne(TASK_ID2)).thenReturn(t2);
@@ -139,8 +144,11 @@ class ExpApiControllerTest {
         Member member = Member.createMember("111", "경험치 테스트");
         Lists lists = Lists.createLists(member, LocalDateTime.now(), new ArrayList<>());
         task.setLists(lists);
+        Character character = Character.createCharacter(exp, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        member.setCharacter(character);
 
         // when
+        when(memberService.findOne(MEMBER_ID)).thenReturn(member);
         when(expService.findOneWithMember(MEMBER_ID)).thenReturn(exp);
         when(taskService.findOne(TASK_ID)).thenReturn(task);
         when(expService.update(any(), any(), any())).thenReturn(exp2);
